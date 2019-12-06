@@ -13,7 +13,7 @@ This project is based on [iNeedToBuy.xyz](https://app.ineedtobuy.xyz/), a mobile
 * Site: [https://tcl-3-smart-shopping-list.netlify.com/](https://tcl-3-smart-shopping-list.netlify.com/)
 * Repo: [https://github.com/the-collab-lab/tcl-3-smart-shopping-list](https://github.com/the-collab-lab/tcl-3-smart-shopping-list)
 * Clone URL: `git@github.com:the-collab-lab/tcl-3-smart-shopping-list.git`
-* Issue list: []()
+* Issue list: [https://github.com/the-collab-lab/tcl-3-smart-shopping-list/projects/1](https://github.com/the-collab-lab/tcl-3-smart-shopping-list/projects/1)
 * Project wiki: [https://github.com/the-collab-lab/tcl-3-smart-shopping-list/wiki](https://github.com/the-collab-lab/tcl-3-smart-shopping-list/wiki)
 * Database: [https://console.firebase.google.com/project/tcl-3-smart-shopping-list/database/firestore/data~2F](https://console.firebase.google.com/project/tcl-3-smart-shopping-list/database/firestore/data~2F)
 
@@ -25,42 +25,42 @@ Each week, the team of 4 developers will split into 2 pairs of 2 developers each
 
 Pairings will go as follows:
 
-#### Week 1, {start date - end date}
+#### Week 1, 12/16 – 12/22
 
 1. Radhika & Ernie
 2. Nikema & Mike
 
-#### Week 2, {start date - end date}
+#### Week 2, 12/23 – 12/29
 
 1. Ernie & Nikema
 2. Mike & Radhika
 
-#### Week 3, {start date - end date}
+#### Week 3, 12/30 – 1/5
 
 1. Ernie & Mike
 2. Radhika & Nikema
 
-#### Week 4, {start date - end date}
+#### Week 4, 1/6 – 1/12
 
 1. Ernie & Radhika
 2. Mike & Nikema
 
-#### Week 5, {start date - end date}
+#### Week 5, 1/13 – 1/19
 
 1. Nikema & Ernie
 2. Radhika & Mike
 
-#### Week 6, {start date - end date}
+#### Week 6, 1/20 – 1/26
 
 1. Mike & Ernie
 2. Nikema & Radhika
 
-#### Week 7, {start date - end date}
+#### Week 7, 1/27 – 2/2
 
 1. Radhika & Ernie
 2. Nikema & Mike
 
-#### Week 8, {start date - end date}
+#### Week 8, 2/3 – 2/9
 
 1. Ernie & Nikema
 2. Mike & Radhika
@@ -81,7 +81,7 @@ On odd-numbered weeks, we’ll use the rest of the time to cover a learning topi
 
 ### How to know what to do
 
-The project is organized in GitHub as a set of [user stories](https://www.mountaingoatsoftware.com/agile/user-stories), each with a description of the desired functionality as well as [acceptance criteria](https://www.leadingagile.com/2014/09/acceptance-criteria/) (AC) that describe how you know whether the task or story is complete. You can find the stories on [the project board]() on GitHub.
+The project is organized in GitHub as a set of [user stories](https://www.mountaingoatsoftware.com/agile/user-stories), each with a description of the desired functionality as well as [acceptance criteria](https://www.leadingagile.com/2014/09/acceptance-criteria/) (AC) that describe how you know whether the task or story is complete. You can find the stories on [the project board](https://github.com/the-collab-lab/tcl-3-smart-shopping-list/projects/1) on GitHub.
 
 A task or story is “done” when the following are all true:
 
