@@ -1,12 +1,10 @@
 import React from 'react';
-import List from './pages/List';
-import AddItem from './pages/AddItem';
+import AppRouter from './AppRouter';
 
 function App() {
   return (
     <main>
-      <AddItem />
-      <List />
+      <AppRouter/>
     </main>
   );
 }
