@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Hello from './hello';
+import Hello from './Hello';
 import HelloAgain from './HelloAgain';
 // import App from './App';
 
