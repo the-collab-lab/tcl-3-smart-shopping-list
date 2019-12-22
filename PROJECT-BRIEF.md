@@ -32,38 +32,38 @@ Pairings will go as follows:
 
 #### Week 2, 12/23 – 12/29
 
-1. Ernie & Nikema
-2. Mike & Radhika
+1. Monica & Nikema
+2. Mike & Amber
 
 #### Week 3, 12/30 – 1/5
 
-1. Ernie & Mike
-2. Radhika & Nikema
+1. Monica & Mike
+2. Amber & Nikema
 
 #### Week 4, 1/6 – 1/12
 
-1. Ernie & Radhika
+1. Monica & Amber
 2. Mike & Nikema
 
 #### Week 5, 1/13 – 1/19
 
-1. Nikema & Ernie
-2. Radhika & Mike
+1. Nikema & Monica
+2. Amber & Mike
 
 #### Week 6, 1/20 – 1/26
 
-1. Mike & Ernie
-2. Nikema & Radhika
+1. Mike & Monica
+2. Nikema & Amber
 
 #### Week 7, 1/27 – 2/2
 
-1. Radhika & Ernie
+1. Amber & Monica
 2. Nikema & Mike
 
 #### Week 8, 2/3 – 2/9
 
-1. Ernie & Nikema
-2. Mike & Radhika
+1. Monica & Nikema
+2. Mike & Amber
 
 ### Pair Programming
 
