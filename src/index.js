@@ -4,7 +4,26 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import firebase from '@firebase/app';
+import '@firebase/firestore';
+import { FirestoreProvider } from 'react-firestore';
+
+const config = {
+  apiKey: 'AIzaSyAL1ymvsgrfyGGcLBWQYYXqdixr0tPzuS8',
+  projectId: 'tcl-3-smart-shopping-list',
+};
+
+firebase.initializeApp(config);
+
+function Root() {
+  return (
+    <FirestoreProvider firebase={firebase}>
+      <App />
+    </FirestoreProvider>
+  );
+}
+
+ReactDOM.render(<Root />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
