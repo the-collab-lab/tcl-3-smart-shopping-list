@@ -1,10 +1,12 @@
 import React from 'react';
 import { FirestoreCollection } from 'react-firestore';
+import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 
 const List = () => {
   return (
-    <section>
+    <>
+      <Link to="/add-item">Click here to add an item</Link>
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
@@ -24,7 +26,7 @@ const List = () => {
           );
         }}
       />
-    </section>
+    </>
   );
 };
 
