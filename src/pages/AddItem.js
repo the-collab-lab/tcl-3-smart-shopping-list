@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withFirestore } from 'react-firestore';
+import { Link } from 'react-router-dom';
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
@@ -22,18 +23,21 @@ const AddItem = ({ firestore }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Add Item:
-        <input
-          value={name}
-          placeholder="apples"
-          type="text"
-          onChange={handleChange}
-        />
-      </label>
-      <input type="submit" value="Add Item" />
-    </form>
+    <>
+      <Link to="/">Go back to list</Link>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Add Item:
+          <input
+            value={name}
+            placeholder="apples"
+            type="text"
+            onChange={handleChange}
+          />
+        </label>
+        <input type="submit" value="Add Item" />
+      </form>
+    </>
   );
 };
 // Wrap this component in the higher order component withFirestore to directly access the database
