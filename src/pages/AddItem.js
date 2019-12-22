@@ -18,6 +18,7 @@ const AddItem = ({ firestore }) => {
   const handleSubmit = event => {
     event.preventDefault();
     addItem(name);
+    setName('');
   };
 
   return (
