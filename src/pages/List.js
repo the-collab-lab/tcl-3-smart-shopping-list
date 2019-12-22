@@ -16,13 +16,11 @@ const List = () => {
           return isLoading ? (
             <Loading />
           ) : (
-            <main>
-              <ul>
-                {data.map(item => (
-                  <li key={item.id}>{item.name}</li>
-                ))}
-              </ul>
-            </main>
+            <ul>
+              {data.map(item => (
+                <li key={item.id}>{item.name}</li>
+              ))}
+            </ul>
           );
         }}
       />

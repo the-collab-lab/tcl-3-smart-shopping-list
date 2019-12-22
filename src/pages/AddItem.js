@@ -25,7 +25,12 @@ const AddItem = ({ firestore }) => {
     <form onSubmit={handleSubmit}>
       <label>
         Add Item:
-        <input value={name} type="text" onChange={handleChange} />
+        <input
+          value={name}
+          placeholder="apples"
+          type="text"
+          onChange={handleChange}
+        />
       </label>
       <input type="submit" value="Add Item" />
     </form>
