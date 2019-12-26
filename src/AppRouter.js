@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import AddItem from './pages/AddItem';
 import List from './pages/List';
-import NewList from './pages/List';
+import NewList from './pages/NewList';
 
 export default function AppRouter() {
   return (

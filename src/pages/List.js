@@ -7,6 +7,8 @@ const List = () => {
   return (
     <>
       <Link to="/add-item">Click here to add an item</Link>
+      <br />
+      <Link to="/new-list">New List</Link>
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
