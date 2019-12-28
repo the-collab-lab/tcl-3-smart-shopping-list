@@ -6,14 +6,12 @@ import HomePage from './pages/HomePage';
 
 export default function AppRouter() {
   return (
-    <>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={List} />
-          <Route path="/add-item" component={AddItem} />
-          <Route path="/home" component={HomePage} />
-        </Switch>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={List} />
+        <Route path="/add-item" component={AddItem} />
+        <Route path="/home" component={HomePage} />
+      </Switch>
+    </BrowserRouter>
   );
 }
