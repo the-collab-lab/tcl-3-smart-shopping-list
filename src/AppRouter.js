@@ -8,9 +8,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={List} />
+        <Route exact path="/" component={HomePage} />
         <Route path="/add-item" component={AddItem} />
-        <Route path="/home" component={HomePage} />
+        <Route path="/list" component={List} />
       </Switch>
     </BrowserRouter>
   );
