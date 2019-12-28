@@ -1,0 +1,16 @@
+.container {
+  position: absolute;
+  bottom: 0px;
+  border: 3px solid red;
+  text-align: center;
+  /* margin: 0 auto; */
+  /* transform: translate(-10%, -10%); */
+}
+
+.left-tab {
+  float: left;
+}
+.right-tab {
+  float: right;
+  padding-left: 15px;
+}
