@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { withFirestore } from 'react-firestore';
-import { Link } from 'react-router-dom';
 import AddItemHeader from './AddItemHeader';
 
 const AddItem = ({ firestore }) => {
@@ -25,16 +24,8 @@ const AddItem = ({ firestore }) => {
 
   return (
     <>
-      <header>
-        <Link to="/list">
-          <button>
-            <i class="arrow left"></i>
-          </button>
-        </Link>
-      </header>
-
       <AddItemHeader />
-      <Link to="/">Go back to list</Link>
+
       <form onSubmit={handleSubmit}>
         <label>
           Add Item:
