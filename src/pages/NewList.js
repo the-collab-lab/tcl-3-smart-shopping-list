@@ -9,16 +9,11 @@ A shopping list consists of a set of items associated with a user’s token. Tok
   [x] Generate a new, unique token
   [x] Save the token to localStorage
   [x] Show the user the list view
-
-The following script can be used to generate a suitable token: https://gist.github.com/segdeha/21a42618ce5a54916c5b58d36ec2992e
 */
 
 const NewList = () => {
-  const generatedToken = getToken();
-  const initialToken = window.localStorage.getItem('token') || generatedToken;
-
+  const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
-
   useEffect(() => {
     window.localStorage.setItem('token', token);
   }, [token]);
@@ -29,7 +24,6 @@ const NewList = () => {
 
       <p>token: {token}</p>
       <p>(new list items will show here)</p>
-
       <Link to="/">Go Home</Link>
     </>
   );
