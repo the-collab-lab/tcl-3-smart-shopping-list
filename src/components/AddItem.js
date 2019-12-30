@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import { withFirestore } from 'react-firestore';
 
-const Help = data => {
-  console.log({ data });
-  return null;
-};
-
 function capitalize(s) {
-  return s.slice(0).toUpperCase() + s.slice(1);
+  return s.slice(0, 1).toUpperCase() + s.slice(1);
 }
 
-function Hello({ firestore }) {
+function AddItem({ firestore, token }) {
   const [item, setItem] = useState('');
 
   function submitForm(e) {
     e.preventDefault();
-    const fRef = firestore.collection('steve-test');
+    const fRef = firestore.collection(token);
     fRef.add({ id: item, name: capitalize(item), createAt: Date.now() });
+    setItem('');
   }
 
   return (
@@ -32,4 +28,4 @@ function Hello({ firestore }) {
   );
 }
 
-export default withFirestore(Hello);
+export default withFirestore(AddItem);
