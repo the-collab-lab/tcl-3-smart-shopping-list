@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import getToken from '../helpers/token';
+import getToken from '../lib/token';
 import { Link } from 'react-router-dom';
 
 /* 
