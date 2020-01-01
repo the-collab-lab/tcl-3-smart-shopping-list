@@ -1,17 +1,19 @@
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AddItem from './pages/AddItem';
 import List from './pages/List';
 import NewList from './pages/NewList';
+import HomePage from './pages/HomePage';
 
 export default function AppRouter() {
   return (
-    <>
+    <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={List} />
+        <Route exact path="/" component={HomePage} />
         <Route path="/add-item" component={AddItem} />
         <Route path="/new-list" component={NewList} />
+        <Route path="/list" component={List} />
       </Switch>
-    </>
+    </BrowserRouter>
   );
 }
