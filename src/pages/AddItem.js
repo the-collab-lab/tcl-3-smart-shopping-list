@@ -22,6 +22,28 @@ const AddItem = ({ firestore }) => {
     setName('');
   };
 
+  // const updateDatabase = data => {
+  //   DataTransferItemList.DocRef.doc(data.id).update({
+  //     estimated_next_purchase: data.estimated_next_purchase
+  //   })
+  // }
+
+  /*
+    const updateDatabase = data => {
+    itemsDocRef.doc(data.id).update({
+      numberOfDays: data.numberOfDays,
+      dateOfPurchase: data.dateOfPurchase,
+      numberOfPurchases: data.numberOfPurchases,
+    });
+
+    some how we need to add token to this area but not sure how to do it
+
+    maybe I can start with the inputs for creating a radio button? is that what it's called
+  };
+  
+  
+  */
+
   return (
     <>
       <AddItemHeader />
@@ -37,6 +59,25 @@ const AddItem = ({ firestore }) => {
           />
         </label>
         <input type="submit" value="Add Item" />
+
+        <div className="radio">
+          <label>
+            <input type="radio" value="7" checked={true} />
+            Soon
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input type="radio" value="14" />
+            Kind of Soon
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input type="radio" value="30" />
+            Not Soon
+          </label>
+        </div>
       </form>
     </>
   );
