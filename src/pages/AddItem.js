@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
+import getToken from '../lib/token';
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
 
+  const initialToken = () => window.localStorage.getItem('token') || getToken();
+  const [token] = useState(initialToken);
+  // const[ redirect, setRedirect ] = useState(false)
+  useEffect(() => {
+    window.localStorage.setItem('token', token);
+  }, [token]);
+
+  console.log(token);
+
   // Send the new item to Firebase
   const addItem = name => {
-    firestore.collection('items').add({ name });
+    firestore.collection('items').add({ name, token });
   };
 
   // The state every time an event happens
@@ -18,9 +28,14 @@ const AddItem = ({ firestore }) => {
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
-    addItem(name);
+    addItem(name, token);
     setName('');
+    isSubmitted;
   };
+
+  // if (this.state.submitted === true) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <>
