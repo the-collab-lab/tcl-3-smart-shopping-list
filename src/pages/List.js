@@ -23,9 +23,7 @@ const List = () => {
           ) : (
             <ul>
               {data.map(item => (
-                <li key={item.id}>
-                  {item.name} -- token: {item.token}
-                </li>
+                <li key={item.id}>{item.name}</li>
               ))}
             </ul>
           );
