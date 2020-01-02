@@ -51,6 +51,26 @@ const AddItem = ({ firestore }) => {
           />
           <label>Soon</label>
         </div>
+        <div>
+          <input
+            type="radio"
+            id={data.very_soon}
+            value={data.very_soon}
+            checked={data.very_soon === nextExpectedPurchase}
+            onChange={setNextExpectedPurchase}
+          />
+          <label>Very Soon</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id={data.not_soon}
+            value={data.not_soon}
+            checked={data.not_soon === nextExpectedPurchase}
+            onChange={setNextExpectedPurchase}
+          />
+          <label>Not Soon</label>
+        </div>
       </form>
     </>
   );
