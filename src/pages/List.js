@@ -5,21 +5,8 @@ import Loading from '../components/Loading';
 // import firebase from 'firebase/app';
 
 const List = () => {
-  // var db = firebase.firestore();
-  // let itemsRef = db.collection('items');
-  // let query = itemsRef.orderBy('name').where('token', '==', 'baron flew gibby');
-
-  // query
-  //   .get()
-  //   .then(function(querySnapshot) {
-  //     querySnapshot.forEach(function(doc) {
-  //       // doc.data() is never undefined for query doc snapshots
-  //       console.log(doc.id, ' => ', doc.data());
-  //     });
-  //   })
-  //   .catch(function(error) {
-  //     console.log('Error getting documents: ', error);
-  //   });
+  // TODO: Get the token saved in local storage and use it to filter the list
+  const getStoredToken = () => window.localStorage.getItem('token');
   return (
     <>
       <Link to="/add-item">Click here to add an item</Link>
@@ -31,7 +18,7 @@ const List = () => {
         path="items"
         // Sort the data
         sort="name"
-        filter={['token', '==', 'baron flew gibby']}
+        filter={['token', '==', getStoredToken()]}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
