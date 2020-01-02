@@ -15,9 +15,10 @@ const AddItem = ({ firestore }) => {
 
   console.log('token:', token);
 
-  var query = firestore.collection('items').where('token', '==', token);
+  // var query = firestore.collection('items').where('token', '==', token);
   // console.log(query)
   // Send the new item to Firebase
+
   const addItem = name => {
     firestore.collection('items').add({ name, token });
   };
