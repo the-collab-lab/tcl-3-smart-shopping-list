@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import getToken from '../lib/token';
+import NavTabs from '../components/NavTabs';
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
@@ -56,6 +57,7 @@ const AddItem = ({ firestore }) => {
         </label>
         <input type="submit" value="Add Item" />
       </form>
+      <NavTabs />
     </>
   );
 };

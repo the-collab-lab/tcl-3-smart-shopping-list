@@ -1,7 +1,7 @@
 import React from 'react';
 import { FirestoreCollection } from 'react-firestore';
-import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
+import NavTabs from '../components/NavTabs';
 // import firebase from 'firebase/app';
 
 const List = () => {
@@ -9,10 +9,6 @@ const List = () => {
   const getStoredToken = () => window.localStorage.getItem('token');
   return (
     <>
-      <Link to="/add-item">Click here to add an item</Link>
-      <br />
-      <Link to="/new-list">New List</Link>
-
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
@@ -35,6 +31,7 @@ const List = () => {
           );
         }}
       />
+      <NavTabs />
     </>
   );
 };
