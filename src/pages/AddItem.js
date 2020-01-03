@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
+import getToken from '../lib/token';
+import NavTabs from '../components/NavTabs';
 
 const expectedPurchase = { soon: 7, verySoon: 14, notSoon: 30 };
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
-  // Try to keep your types consistent. If the setter always sets a number,
-  // then initialize with a number
+
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
-  // Send the new item to Firebase
-  const addItem = () => {
-    console.log('this is addiTem', addItem);
-    const token = window.localStorage.getItem('token');
-    // console.log('this is token', token);
-    const doc = firestore.collection(token).doc(name);
-    doc.set({ name, nextExpectedPurchase });
+  const initialToken = () => window.localStorage.getItem('token') || getToken();
+  const [token] = useState(initialToken);
+  useEffect(() => {
+    window.localStorage.setItem('token', token);
+  }, [token]);
+
+  const addItem = name => {
+    firestore.collection('items').add({ name, token, nextExpectedPurchase });
   };
 
   // The state every time an event happens
@@ -24,16 +26,14 @@ const AddItem = ({ firestore }) => {
     setName(event.target.value);
   };
 
-  // Value returns as a string. We need to be sure to send a number.
   const handleSelect = event => {
     setNextExpectedPurchase(parseInt(event.target.value, 10));
   };
 
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
-    console.log('is the event handler working?');
     event.preventDefault();
-    addItem();
+    addItem(name, token);
     setName('');
   };
 
