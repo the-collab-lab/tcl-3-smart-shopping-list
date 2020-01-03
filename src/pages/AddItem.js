@@ -12,7 +12,10 @@ const AddItem = ({ firestore }) => {
 
   // Send the new item to Firebase
   const addItem = () => {
-    const doc = firestore.collection('items').doc(name);
+    console.log('this is addiTem', addItem);
+    const token = window.localStorage.getItem('token');
+    console.log('token', token);
+    const doc = firestore.collection(token).doc(name);
     doc.set({ name, nextExpectedPurchase });
   };
 
@@ -28,6 +31,7 @@ const AddItem = ({ firestore }) => {
 
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
+    console.log('is the event handler working?');
     event.preventDefault();
     addItem();
     setName('');
