@@ -9,16 +9,9 @@ const AddItem = ({ firestore }) => {
 
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
-  // const[ redirect, setRedirect ] = useState(false)
   useEffect(() => {
     window.localStorage.setItem('token', token);
   }, [token]);
-
-  console.log('token:', token);
-
-  // var query = firestore.collection('items').where('token', '==', token);
-  // console.log(query)
-  // Send the new item to Firebase
 
   const addItem = name => {
     firestore.collection('items').add({ name, token });
@@ -34,12 +27,7 @@ const AddItem = ({ firestore }) => {
     event.preventDefault();
     addItem(name, token);
     setName('');
-    // isSubmitted;
   };
-
-  // if (this.state.submitted === true) {
-  //   return <Redirect to="/" />;
-  // }
 
   return (
     <>
