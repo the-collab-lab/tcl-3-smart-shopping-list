@@ -14,7 +14,7 @@ const AddItem = ({ firestore }) => {
   const addItem = () => {
     console.log('this is addiTem', addItem);
     const token = window.localStorage.getItem('token');
-    console.log('token', token);
+    // console.log('this is token', token);
     const doc = firestore.collection(token).doc(name);
     doc.set({ name, nextExpectedPurchase });
   };
