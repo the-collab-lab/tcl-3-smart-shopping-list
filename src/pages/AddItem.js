@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
+import getToken from '../lib/token';
+import NavTabs from '../components/NavTabs';
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
 
-  // Send the new item to Firebase
+  const initialToken = () => window.localStorage.getItem('token') || getToken();
+  const [token] = useState(initialToken);
+  useEffect(() => {
+    window.localStorage.setItem('token', token);
+  }, [token]);
+
   const addItem = name => {
-    firestore.collection('items').add({ name });
+    firestore.collection('items').add({ name, token });
   };
 
   // The state every time an event happens
@@ -18,7 +25,7 @@ const AddItem = ({ firestore }) => {
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
-    addItem(name);
+    addItem(name, token);
     setName('');
   };
 
@@ -38,6 +45,7 @@ const AddItem = ({ firestore }) => {
         </label>
         <input type="submit" value="Add Item" />
       </form>
+      <NavTabs />
     </>
   );
 };
