@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import getToken from '../lib/token';
-import NavTabs from '../components/NavTabs';
 
-const expectedPurchase = { soon: 7, verySoon: 14, notSoon: 30 };
+const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
@@ -73,11 +72,11 @@ const AddItem = ({ firestore }) => {
             <input
               type="radio"
               id={expectedPurchase.verySoon}
-              value={expectedPurchase.verySoon}
-              checked={expectedPurchase.verySoon === nextExpectedPurchase}
+              value={expectedPurchase.kindOfSoon}
+              checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
               onChange={handleSelect}
             />
-            Very Soon
+            Kind of Soon
           </label>
         </div>
         <div>
