@@ -52,10 +52,6 @@ const AddItem = ({ firestore }) => {
         </label>
         <input type="submit" value="Add Item" />
         <div>
-          {/* Good habit to wrap inputs with the label.
-              This way, clicking the label also selects the input. 
-              If you wanted, this could be its own component.
-              Or we could use <select> instead of radio buttons. */}
           <label>
             <input
               type="radio"
