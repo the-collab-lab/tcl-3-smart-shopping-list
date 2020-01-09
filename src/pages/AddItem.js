@@ -12,9 +12,9 @@ const Flash = ({ message }) => <div className="flash">{message}</div>;
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
 
-  const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
+  const [error, setError] = useState(false);
 
-  const dismissError = () => {};
+  const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
@@ -42,30 +42,47 @@ const AddItem = ({ firestore }) => {
     'Chicken nuggets',
   ];
 
-  const checkForMatches = inputString => shoppingList.includes(inputString);
+  const normalizedName = name => {
+    name = name.toLowerCase().trim();
+    let normalizedName = '';
+    let symbol = `.,;:!?"`;
+    for (let i = 0; i < name.length; i++) {
+      if (!symbol.includes(name[i])) {
+        normalizedName += name.slice(i, i + 1);
+      }
+    }
+    return normalizedName;
+  };
+
+  const checkForMatches = inputString => {
+    shoppingList.includes(inputString);
+  };
+
+  const normalizedShoppingList = shoppingList.map(item => normalizedName(item));
+
+  const normalizedString = normalizedName(shoppingList[2]);
+
+  // console.log('this is normalized string', normalizedString)
+
+  // console.log('this is normalized shop list', (normalizedShoppingList))
+
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
     console.log('Is there a match? ', checkForMatches(name));
-
-    addItem(name, token);
+    setError(checkForMatches(name));
+    console.log('this is Error', error);
+    // addItem(name, token);
     setName('');
   };
 
-  /* 
-  TODO: 
-  When the user adds an item
-  check the list for duplicates
-    Normalize capitalization
-    Remove punctuation
-    use array.includes() to check if the item is in the list
+  let className = 'error-hidden';
 
-    If the item is in the list
-      Warn the user
-    Else 
-      Add to database
-
-  */
+  useEffect(() => {
+    if (error) {
+      className = 'error-visible';
+    }
+  }, [error]);
 
   return (
     <>
@@ -120,7 +137,7 @@ const AddItem = ({ firestore }) => {
         </div>
       </form>
 
-      <div className="flash">
+      <div className={className}>
         <button onClick={''}>✖</button>
       </div>
     </>
