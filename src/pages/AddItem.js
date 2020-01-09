@@ -14,6 +14,8 @@ const AddItem = ({ firestore }) => {
 
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
+  const dismissError = () => {};
+
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
   useEffect(() => {
@@ -92,6 +94,10 @@ const AddItem = ({ firestore }) => {
           </label>
         </div>
       </form>
+
+      <div className="flash">
+        <button onClick={''}>✖</button>
+      </div>
     </>
   );
 };
