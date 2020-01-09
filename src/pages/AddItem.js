@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import getToken from '../lib/token';
+import './AddItem.css';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
+
+//Flash error message
+const Flash = ({ message }) => <div className="flash">{message}</div>;
 
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
