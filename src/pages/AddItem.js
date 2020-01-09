@@ -34,13 +34,38 @@ const AddItem = ({ firestore }) => {
   const handleSelect = event => {
     setNextExpectedPurchase(parseInt(event.target.value, 10));
   };
+  const shoppingList = [
+    'apples',
+    "O'douls",
+    'Cottage Cheese, 16oz',
+    'pickles',
+    'Chicken nuggets',
+  ];
 
+  const checkForMatches = inputString => shoppingList.includes(inputString);
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
+    console.log('Is there a match? ', checkForMatches(name));
+
     addItem(name, token);
     setName('');
   };
+
+  /* 
+  TODO: 
+  When the user adds an item
+  check the list for duplicates
+    Normalize capitalization
+    Remove punctuation
+    use array.includes() to check if the item is in the list
+
+    If the item is in the list
+      Warn the user
+    Else 
+      Add to database
+
+  */
 
   return (
     <>
