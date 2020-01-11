@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import '../pages/HomePage.css';
 
 const JoinList = () => {
@@ -8,8 +10,9 @@ const JoinList = () => {
   const [joinToken] = useState(getJoinToken);
 
   useEffect(() => {
-    window.localStorage.setItem('token', joinToken);
-  }, [joinToken]);
+    window.localStorage.setItem('token', userJoinToken);
+  }, [userJoinToken]);
+
   console.log('the join token added to localStorage:', joinToken);
   const handleChange = event => {
     setUserJoinToken(event.target.value);
@@ -34,8 +37,9 @@ const JoinList = () => {
           type="text"
           onChange={handleChange}
         />
-
-        <input type="submit" value="Grab Your List" />
+        <Link to="/list">
+          <input type="submit" value="Grab Your List" />
+        </Link>
       </form>
     </div>
   );

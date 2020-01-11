@@ -3,21 +3,23 @@ import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import getToken from '../lib/token';
 
-const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
-
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
 
-  const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
-
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
+  // const[ redirect, setRedirect ] = useState(false)
   useEffect(() => {
     window.localStorage.setItem('token', token);
   }, [token]);
 
+  console.log('token:', token);
+
+  // var query = firestore.collection('items').where('token', '==', token);
+  // console.log(query)
+  // Send the new item to Firebase
   const addItem = name => {
-    firestore.collection('items').add({ name, token, nextExpectedPurchase });
+    firestore.collection('items').add({ name, token });
   };
 
   // The state every time an event happens
@@ -25,16 +27,17 @@ const AddItem = ({ firestore }) => {
     setName(event.target.value);
   };
 
-  const handleSelect = event => {
-    setNextExpectedPurchase(parseInt(event.target.value, 10));
-  };
-
   // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
     addItem(name, token);
     setName('');
+    // isSubmitted;
   };
+
+  // if (this.state.submitted === true) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <>
@@ -51,42 +54,6 @@ const AddItem = ({ firestore }) => {
           />
         </label>
         <input type="submit" value="Add Item" />
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.soon}
-              value={expectedPurchase.soon}
-              checked={expectedPurchase.soon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.verySoon}
-              value={expectedPurchase.kindOfSoon}
-              checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Kind of Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.notSoon}
-              value={expectedPurchase.notSoon}
-              checked={expectedPurchase.notSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Not Soon
-          </label>
-        </div>
       </form>
     </>
   );
