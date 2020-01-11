@@ -3,12 +3,14 @@ import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
+import HomePageButton from '../components/HomePageButton';
 
 const List = () => {
   const getStoredToken = () => window.localStorage.getItem('token');
 
   return (
     <>
+      <HomePageButton />
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
