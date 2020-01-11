@@ -3,18 +3,14 @@ import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import getToken from '../lib/token';
 import './AddItem.css';
+import ItemError from './ItemError';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
-//Flash error message
-const Flash = ({ message }) => <div className="flash">{message}</div>;
-
 const AddItem = ({ firestore }) => {
   const [name, setName] = useState('');
-
-  const [error, setError] = useState(false);
-
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
+  const [duplicate, setDuplicate] = useState(false);
 
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token] = useState(initialToken);
@@ -22,27 +18,12 @@ const AddItem = ({ firestore }) => {
     window.localStorage.setItem('token', token);
   }, [token]);
 
-  const addItem = name => {
-    firestore.collection('items').add({ name, token, nextExpectedPurchase });
-  };
+  // const addItem = name => {
+  //   firestore.collection('items').add({ name, token, nextExpectedPurchase });
+  // };
 
-  // The state every time an event happens
-  const handleChange = event => {
-    setName(event.target.value);
-  };
-
-  const handleSelect = event => {
-    setNextExpectedPurchase(parseInt(event.target.value, 10));
-  };
-  const shoppingList = [
-    'apples',
-    "O'douls",
-    'Cottage Cheese, 16oz',
-    'pickles',
-    'Chicken nuggets',
-  ];
-
-  const normalizedName = name => {
+  //normalized function
+  const normalizeName = name => {
     name = name.toLowerCase().trim();
     let normalizedName = '';
     let symbol = `.,;:!?"`;
@@ -54,35 +35,62 @@ const AddItem = ({ firestore }) => {
     return normalizedName;
   };
 
-  const checkForMatches = inputString => {
-    shoppingList.includes(inputString);
+  const addItem = (normalizedName, nextExpectedPurchase) => {
+    firestore
+      .collection('items')
+      .doc(name)
+      .set({ name: '' });
+
+    //set doc ID = to item name
+    //Nikema: I'm grabbing the database wrong and I don't know what it is could you take a look?
+    const itemsDocRef = firestore
+      .collection('items')
+      .doc(name)
+      .collection('items')
+      .doc(normalizedName);
+
+    // is there an existing doc ID that is equal to the new name?
+    itemsDocRef.get().then(docSnapshot => {
+      if (docSnapshot.exists) {
+        //giving it sometime before it refreshes
+        let timeWindowBeforeRefresh = 3000;
+        itemsDocRef.onSnapshot(doc => {
+          setDuplicate(true);
+          setTimeout(function() {
+            setDuplicate(false);
+          }, timeWindowBeforeRefresh);
+        });
+      } else {
+        itemsDocRef.set({
+          name: name,
+          nextExpectedPurchase: nextExpectedPurchase,
+        });
+        setName('');
+      }
+    });
   };
 
-  const normalizedShoppingList = shoppingList.map(item => normalizedName(item));
+  // The state every time an event happens
+  const handleChange = event => {
+    setName(event.target.value);
+  };
 
-  const normalizedString = normalizedName(shoppingList[2]);
+  const handleSelect = event => {
+    setNextExpectedPurchase(parseInt(event.target.value, 10));
+  };
 
-  // console.log('this is normalized string', normalizedString)
+  // const handleSubmit = event => {
+  //   event.preventDefault();
 
-  // console.log('this is normalized shop list', (normalizedShoppingList))
+  //   addItem(name, token);
+  //   setName('');
+  // };
 
-  // Handle the click of the Add Item button on the form
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('Is there a match? ', checkForMatches(name));
-    setError(checkForMatches(name));
-    console.log('this is Error', error);
-    // addItem(name, token);
-    setName('');
+    let normalizedName = normalizeName(name);
+    addItem(normalizedName, token, nextExpectedPurchase);
   };
-
-  let className = 'error-hidden';
-
-  useEffect(() => {
-    if (error) {
-      className = 'error-visible';
-    }
-  }, [error]);
 
   return (
     <>
@@ -137,9 +145,7 @@ const AddItem = ({ firestore }) => {
         </div>
       </form>
 
-      <div className={className}>
-        <button onClick={''}>✖</button>
-      </div>
+      {duplicate ? <ItemError /> : null}
     </>
   );
 };
