@@ -5,15 +5,13 @@ import NavTabs from '../components/NavTabs';
 export default function HomePage() {
   const [userJoinToken, setUserJoinToken] = useState('');
 
-  const getJoinToken = () => window.localStorage.getItem('joinToken');
+  const getJoinToken = () => window.localStorage.getItem('token');
   const [joinToken] = useState(getJoinToken);
-  // const [joinToken] = useState('');
 
-  // useEffect(() =>  {
-  //   window.localStorage.setItem('joinToken', userJoinToken);
-  //   },[userJoinToken]
-  // );
-  console.log('the join token below useEffect:', joinToken);
+  useEffect(() => {
+    window.localStorage.setItem('token', joinToken);
+  }, [joinToken]);
+  console.log('the join token added to localStorage:', joinToken);
   const handleChange = event => {
     setUserJoinToken(event.target.value);
   };
@@ -21,7 +19,7 @@ export default function HomePage() {
   // token to use:  low stone iambic
   const handleSubmit = event => {
     event.preventDefault();
-    window.localStorage.setItem('joinToken', userJoinToken);
+    window.localStorage.setItem('token', userJoinToken);
     console.log('the join token inside of console.log:', userJoinToken);
     setUserJoinToken('');
   };
