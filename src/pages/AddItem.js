@@ -18,10 +18,6 @@ const AddItem = ({ firestore }) => {
     window.localStorage.setItem('token', token);
   }, [token]);
 
-  // const addItem = name => {
-  //   firestore.collection('items').add({ name, token, nextExpectedPurchase });
-  // };
-
   //normalized function
   const normalizeName = name => {
     name = name.toLowerCase().trim();
@@ -36,19 +32,8 @@ const AddItem = ({ firestore }) => {
   };
 
   const addItem = (normalizedName, token, nextExpectedPurchase) => {
-    // firestore
-    //   .collection('items')
-    // .doc(name)
-    // .doc(name)
-    // .set({ name: '' });
-
     //set doc ID = to item name
-    //Nikema: I'm grabbing the database wrong and I don't know what it is could you take a look?
-    const itemsDocRef = firestore
-      .collection('items')
-      // .doc(name)
-      // .collection('items')
-      .doc(normalizedName);
+    const itemsDocRef = firestore.collection('items').doc(normalizedName);
 
     // is there an existing doc ID that is equal to the new name?
     itemsDocRef.get().then(docSnapshot => {
@@ -62,11 +47,6 @@ const AddItem = ({ firestore }) => {
           }, timeWindowBeforeRefresh);
         });
       } else {
-        // itemsDocRef.set({
-        //   name: name,
-        //   nextExpectedPurchase: nextExpectedPurchase,
-        // });
-        // return firestore.collection('items').add({ name, token, nextExpectedPurchase })
         itemsDocRef.set({ name, token, nextExpectedPurchase });
         setName('');
       }
@@ -81,13 +61,6 @@ const AddItem = ({ firestore }) => {
   const handleSelect = event => {
     setNextExpectedPurchase(parseInt(event.target.value, 10));
   };
-
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-
-  //   addItem(name, token);
-  //   setName('');
-  // };
 
   const handleSubmit = event => {
     event.preventDefault();
