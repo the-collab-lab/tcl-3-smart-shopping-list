@@ -18,6 +18,11 @@ const AddItem = ({ firestore }) => {
   const [duplicate, setDuplicate] = useState(false);
 
   const addItem = () => {
+    if (checkForDuplicates(name)) {
+      return;
+    }
+    checkForDuplicates(name);
+    console.log('Duplicate? ', duplicate);
     if (!duplicate) {
       firestore.collection('items').add({ name, token, nextExpectedPurchase });
     }
@@ -46,15 +51,13 @@ const AddItem = ({ firestore }) => {
 
     console.log('found', found);
 
-    setDuplicate(found);
+    setDuplicate(found === normalizedName);
     return found;
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (checkForDuplicates(name)) {
-      return;
-    }
+
     addItem();
     setName('');
   };
