@@ -35,18 +35,19 @@ const AddItem = ({ firestore }) => {
     return normalizedName;
   };
 
-  const addItem = (normalizedName, nextExpectedPurchase) => {
-    firestore
-      .collection('items')
-      .doc(name)
-      .set({ name: '' });
+  const addItem = (normalizedName, token, nextExpectedPurchase) => {
+    // firestore
+    //   .collection('items')
+    // .doc(name)
+    // .doc(name)
+    // .set({ name: '' });
 
     //set doc ID = to item name
     //Nikema: I'm grabbing the database wrong and I don't know what it is could you take a look?
     const itemsDocRef = firestore
       .collection('items')
-      .doc(name)
-      .collection('items')
+      // .doc(name)
+      // .collection('items')
       .doc(normalizedName);
 
     // is there an existing doc ID that is equal to the new name?
@@ -61,10 +62,12 @@ const AddItem = ({ firestore }) => {
           }, timeWindowBeforeRefresh);
         });
       } else {
-        itemsDocRef.set({
-          name: name,
-          nextExpectedPurchase: nextExpectedPurchase,
-        });
+        // itemsDocRef.set({
+        //   name: name,
+        //   nextExpectedPurchase: nextExpectedPurchase,
+        // });
+        // return firestore.collection('items').add({ name, token, nextExpectedPurchase })
+        itemsDocRef.set({ name, token, nextExpectedPurchase });
         setName('');
       }
     });
