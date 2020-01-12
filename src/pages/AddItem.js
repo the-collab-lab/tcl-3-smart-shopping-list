@@ -29,7 +29,7 @@ const AddItem = ({ firestore }) => {
   };
   const checkForDuplicates = name => {
     let normalizedName = normalizeName(name);
-
+    console.log(normalizedName);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     setDuplicate(normalizedList.includes(normalizedName));
 
@@ -38,8 +38,8 @@ const AddItem = ({ firestore }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    checkForDuplicates();
-    addItem(name, token, nextExpectedPurchase);
+    checkForDuplicates(name);
+    // addItem(name, token, nextExpectedPurchase);
     setName('');
   };
 
