@@ -19,7 +19,10 @@ const AddItem = ({ firestore }) => {
   // console.log(query)
   // Send the new item to Firebase
   const addItem = name => {
+    firestore.collection('items').add({ name, token, nextExpectedPurchase });
     firestore.collection('items').add({ name, token });
+    //const addItem = name => {
+    //firestore.collection('items').add({ name, token });
   };
 
   // The state every time an event happens
