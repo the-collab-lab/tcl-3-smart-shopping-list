@@ -9,14 +9,18 @@ import { ListContext } from '../listContext';
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = ({ firestore }) => {
-  const { token, setShoppingList, shoppingList } = useContext(ListContext);
+  const { token, setShoppingList, shoppingList, fetchList } = useContext(
+    ListContext,
+  );
 
   const [name, setName] = useState('');
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
   const [duplicate, setDuplicate] = useState(false);
 
-  const addItem = name => {
-    firestore.collection('items').add({ name, token, nextExpectedPurchase });
+  const addItem = () => {
+    if (!duplicate) {
+      firestore.collection('items').add({ name, token, nextExpectedPurchase });
+    }
   };
 
   // The state every time an event happens
@@ -28,18 +32,30 @@ const AddItem = ({ firestore }) => {
     setNextExpectedPurchase(parseInt(event.target.value, 10));
   };
   const checkForDuplicates = name => {
+    if (shoppingList.length === 0) {
+      fetchList(token);
+    }
     let normalizedName = normalizeName(name);
-    console.log(normalizedName);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
-    setDuplicate(normalizedList.includes(normalizedName));
+    console.log('Shopping List', shoppingList);
+    console.log('Normalized List', normalizedList);
+    console.log('Normalized Name', normalizedName);
+    // const isDuplicate = normalizedList.includes(normalizedName);
+    const found = normalizedList.find(item => item === normalizedName);
+    // if (normalizedList.filter(item => item === normalizedName))
 
-    console.log('normalizedList ', normalizedList);
+    console.log('found', found);
+
+    setDuplicate(found);
+    return found;
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    checkForDuplicates(name);
-    // addItem(name, token, nextExpectedPurchase);
+    if (checkForDuplicates(name)) {
+      return;
+    }
+    addItem();
     setName('');
   };
 

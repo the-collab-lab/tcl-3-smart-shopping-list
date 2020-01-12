@@ -6,7 +6,6 @@ import { ListContext } from '../listContext';
 
 const List = () => {
   const { setShoppingList, shoppingList } = useContext(ListContext);
-  console.log(shoppingList);
   const getStoredToken = () => window.localStorage.getItem('token');
   return (
     <>
