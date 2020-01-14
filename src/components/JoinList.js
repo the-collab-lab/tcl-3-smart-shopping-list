@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
 
 const JoinList = () => {
-  const [userJoinToken, setUserJoinToken] = useState('');
+  const [userJoinToken, setUserJoinToken] = useState(
+    window.localStorage.getItem('token') || '',
+  );
 
   const getJoinToken = () => window.localStorage.getItem('token');
   const [joinToken] = useState(getJoinToken);
@@ -18,7 +20,7 @@ const JoinList = () => {
     setUserJoinToken(event.target.value);
   };
 
-  // token to use:  low stone iambic, "kelp bruce puny"
+  // token to use:  low stone iambic, "kelp bruce puny", conner oaken liz
 
   const handleSubmit = event => {
     event.preventDefault();
