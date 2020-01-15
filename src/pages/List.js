@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
 
+
 const List = () => {
   const getStoredToken = () => window.localStorage.getItem('token');
-
+  // const [data] = useState(data)
   return (
     <>
       <HomePageButton />
+
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
@@ -24,6 +26,8 @@ const List = () => {
           if (data.length === 0) {
             return <ErrorMessage />;
           }
+          console.log('data:', data)
+          
           return isLoading ? (
             <Loading />
           ) : (
@@ -36,8 +40,8 @@ const List = () => {
           );
         }}
       />
-
       <NavTabs />
+  
     </>
   );
 };
