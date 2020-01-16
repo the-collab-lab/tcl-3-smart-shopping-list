@@ -8,3 +8,11 @@
   border-radius: 2px;
   background-color: rgb(240, 128, 128, 0.1);
 }
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}

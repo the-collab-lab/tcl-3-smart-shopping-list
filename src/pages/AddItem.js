@@ -1,56 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
-import getToken from '../lib/token';
 import './AddItem.css';
 import ItemError from './ItemError';
+import { ListContext } from '../listContext';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = ({ firestore }) => {
+  const {
+    token,
+    duplicate,
+    setDuplicate,
+    checkForDuplicates,
+    shoppingList,
+    fetchList,
+    toggleShow,
+    error,
+    setError,
+  } = useContext(ListContext);
+
   const [name, setName] = useState('');
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
-  const [duplicate, setDuplicate] = useState(false);
 
-  const initialToken = () => window.localStorage.getItem('token') || getToken();
-  const [token] = useState(initialToken);
   useEffect(() => {
-    window.localStorage.setItem('token', token);
-  }, [token]);
-
-  //normalized function
-  const normalizeName = name => {
-    name = name.toLowerCase().trim();
-    let normalizedName = '';
-    let symbol = `.,;:!?"`;
-    for (let i = 0; i < name.length; i++) {
-      if (!symbol.includes(name[i])) {
-        normalizedName += name.slice(i, i + 1);
-      }
+    if (shoppingList.length === 0) {
+      fetchList(token);
     }
-    return normalizedName;
-  };
-
-  const addItem = (normalizedName, token, nextExpectedPurchase) => {
-    //set doc ID = to item name
-    const itemsDocRef = firestore.collection('items').doc(normalizedName);
-
-    // is there an existing doc ID that is equal to the new name?
-    itemsDocRef.get().then(docSnapshot => {
-      if (docSnapshot.exists) {
-        //giving it sometime before it refreshes
-        let timeWindowBeforeRefresh = 3000;
-        itemsDocRef.onSnapshot(doc => {
-          setDuplicate(true);
-          setTimeout(function() {
-            setDuplicate(false);
-          }, timeWindowBeforeRefresh);
-        });
-      } else {
-        itemsDocRef.set({ name, token, nextExpectedPurchase });
-        setName('');
-      }
-    });
+    if (error) {
+      setTimeout(() => {
+        console.log('setting error state to false...');
+        setError(false);
+      }, 2000);
+    }
+    console.log(
+      'Message from useEffect(): The shopping list value changed to',
+      shoppingList,
+    );
+    console.log('Message from useEffect(): The error value changed to', error);
+    console.log(
+      'Message from useEffect(): The duplicate value changed to',
+      duplicate,
+    );
+  }, [duplicate, error, fetchList, setError, shoppingList, token]);
+  const addItem = () => {
+    if (!checkForDuplicates(name)) {
+      firestore.collection('items').add({ name, token, nextExpectedPurchase });
+      fetchList(token);
+      setDuplicate(false);
+    }
   };
 
   // The state every time an event happens
@@ -64,8 +62,9 @@ const AddItem = ({ firestore }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    let normalizedName = normalizeName(name);
-    addItem(normalizedName, token, nextExpectedPurchase);
+
+    addItem();
+    setName('');
   };
 
   return (
@@ -121,7 +120,11 @@ const AddItem = ({ firestore }) => {
         </div>
       </form>
 
-      {duplicate ? <ItemError /> : null}
+      {error ? (
+        <ItemError className={toggleShow(true)} />
+      ) : (
+        <ItemError className={toggleShow(false)} />
+      )}
     </>
   );
 };

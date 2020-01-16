@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
+import { ListContext } from '../listContext';
 
 const List = () => {
+  const { setShoppingList, shoppingList } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
   return (
     <>
@@ -21,7 +23,8 @@ const List = () => {
             <Loading />
           ) : (
             <ul>
-              {data.map(item => (
+              {setShoppingList(data)}
+              {shoppingList.map(item => (
                 <li key={item.id}>{item.name}</li>
               ))}
             </ul>
