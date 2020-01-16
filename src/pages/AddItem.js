@@ -20,7 +20,10 @@ const AddItem = ({ firestore }) => {
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
   useEffect(() => {
-    console.log('here duplicate value', duplicate);
+    console.log(
+      'Message from useEffect(): The duplicate value changed to',
+      duplicate,
+    );
   }, [duplicate]);
   const addItem = () => {
     if (shoppingList.length === 0) {
