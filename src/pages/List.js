@@ -24,8 +24,8 @@ const List = () => {
           ) : (
             <ul>
               {setShoppingList(data)}
-              {shoppingList.map(item => (
-                <li key={item.id}>{item.name}</li>
+              {shoppingList.map((item, index) => (
+                <li key={index}>{item.name}</li>
               ))}
             </ul>
           );
