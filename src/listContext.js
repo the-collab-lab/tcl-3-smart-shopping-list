@@ -38,6 +38,9 @@ const ListContextProvider = props => {
   };
 
   const checkForDuplicates = name => {
+    if (shoppingList.length === 0) {
+      fetchList(token);
+    }
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     console.log('Shopping List', shoppingList);

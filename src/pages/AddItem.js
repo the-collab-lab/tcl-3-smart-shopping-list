@@ -20,17 +20,22 @@ const AddItem = ({ firestore }) => {
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
   useEffect(() => {
+    if (shoppingList.length === 0) {
+      fetchList(token);
+    }
+    console.log(
+      'Message from useEffect(): The shopping list value changed to',
+      shoppingList,
+    );
     console.log(
       'Message from useEffect(): The duplicate value changed to',
       duplicate,
     );
-  }, [duplicate]);
+  }, [duplicate, fetchList, shoppingList, token]);
   const addItem = () => {
-    if (shoppingList.length === 0) {
-      fetchList(token);
-    }
     if (!checkForDuplicates(name)) {
       firestore.collection('items').add({ name, token, nextExpectedPurchase });
+      fetchList(token);
     }
   };
 
