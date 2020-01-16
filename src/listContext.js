@@ -11,6 +11,7 @@ const ListContextProvider = props => {
   const [token] = useState(initialToken);
   const [shoppingList, setShoppingList] = useState([]);
   const [duplicate, setDuplicate] = useState();
+  const [error, setError] = useState(false);
 
   // getting the token from localStorage
   useEffect(() => {
@@ -49,19 +50,27 @@ const ListContextProvider = props => {
     console.log('Was the item found?', normalizedList.includes(normalizedName));
     const found = normalizedList.includes(normalizedName);
     setDuplicate(found);
+    setError(found);
     console.log('From checkForDuplicates(): duplicate?', duplicate);
     return found;
   };
-
+  function toggleShow(isError) {
+    setError(isError);
+    return isError ? 'show' : 'hide';
+  }
   return (
     <ListContext.Provider
       value={{
         token,
         shoppingList,
         setShoppingList,
+        setDuplicate,
         duplicate,
         fetchList,
         checkForDuplicates,
+        toggleShow,
+        error,
+        setError,
       }}
     >
       {props.children}
