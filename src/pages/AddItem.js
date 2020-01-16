@@ -62,7 +62,6 @@ const AddItem = ({ firestore }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-
     addItem();
     setName('');
   };
@@ -70,7 +69,6 @@ const AddItem = ({ firestore }) => {
   return (
     <>
       <AddItemHeader />
-
       <form onSubmit={handleSubmit}>
         <label>
           Add Item:

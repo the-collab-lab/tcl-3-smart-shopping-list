@@ -18,6 +18,7 @@ const ListContextProvider = props => {
     window.localStorage.setItem('token', token);
   }, [token]);
 
+  // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
     var db = firebase.firestore();
     let itemsRef = db.collection('items');
@@ -28,7 +29,6 @@ const ListContextProvider = props => {
       .then(function(querySnapshot) {
         const tempArray = [];
         querySnapshot.forEach(function(doc) {
-          // doc.data() is never undefined for query doc snapshots
           tempArray.push(doc.data());
         });
         setShoppingList(tempArray);
@@ -39,9 +39,6 @@ const ListContextProvider = props => {
   };
 
   const checkForDuplicates = name => {
-    if (shoppingList.length === 0) {
-      fetchList(token);
-    }
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     console.log('Shopping List', shoppingList);
@@ -51,13 +48,14 @@ const ListContextProvider = props => {
     const found = normalizedList.includes(normalizedName);
     setDuplicate(found);
     setError(found);
-    console.log('From checkForDuplicates(): duplicate?', duplicate);
     return found;
   };
+  // Tell the ItemError component to show the error message when we enter a duplicate item
   function toggleShow(isError) {
     setError(isError);
     return isError ? 'show' : 'hide';
   }
+
   return (
     <ListContext.Provider
       value={{
