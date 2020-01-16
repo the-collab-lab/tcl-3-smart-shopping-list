@@ -1,29 +1,32 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withFirestore } from 'react-firestore';
 import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
-import normalizeName from '../lib/normalizeName';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = ({ firestore }) => {
-  const { token, setShoppingList, shoppingList, fetchList } = useContext(
-    ListContext,
-  );
+  const {
+    token,
+    duplicate,
+    checkForDuplicates,
+    shoppingList,
+    fetchList,
+  } = useContext(ListContext);
 
   const [name, setName] = useState('');
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
-  const [duplicate, setDuplicate] = useState(false);
 
+  useEffect(() => {
+    console.log('here duplicate value', duplicate);
+  }, [duplicate]);
   const addItem = () => {
-    if (checkForDuplicates(name)) {
-      return;
+    if (shoppingList.length === 0) {
+      fetchList(token);
     }
-    checkForDuplicates(name);
-    console.log('Duplicate? ', duplicate);
-    if (!duplicate) {
+    if (!checkForDuplicates(name)) {
       firestore.collection('items').add({ name, token, nextExpectedPurchase });
     }
   };
@@ -35,24 +38,6 @@ const AddItem = ({ firestore }) => {
 
   const handleSelect = event => {
     setNextExpectedPurchase(parseInt(event.target.value, 10));
-  };
-  const checkForDuplicates = name => {
-    if (shoppingList.length === 0) {
-      fetchList(token);
-    }
-    let normalizedName = normalizeName(name);
-    let normalizedList = shoppingList.map(item => normalizeName(item.name));
-    console.log('Shopping List', shoppingList);
-    console.log('Normalized List', normalizedList);
-    console.log('Normalized Name', normalizedName);
-    // const isDuplicate = normalizedList.includes(normalizedName);
-    const found = normalizedList.find(item => item === normalizedName);
-    // if (normalizedList.filter(item => item === normalizedName))
-
-    console.log('found', found);
-
-    setDuplicate(found === normalizedName);
-    return found;
   };
 
   const handleSubmit = event => {

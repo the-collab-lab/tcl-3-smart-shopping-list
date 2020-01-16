@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import getToken from './lib/token';
 import firebase from 'firebase/app';
+import normalizeName from './lib/normalizeName';
 
 const ListContext = React.createContext();
 
@@ -9,6 +10,7 @@ const ListContextProvider = props => {
 
   const [token] = useState(initialToken);
   const [shoppingList, setShoppingList] = useState([]);
+  const [duplicate, setDuplicate] = useState();
 
   // getting the token from localStorage
   useEffect(() => {
@@ -34,9 +36,30 @@ const ListContextProvider = props => {
         console.log('Error getting documents: ', error);
       });
   };
+
+  const checkForDuplicates = name => {
+    let normalizedName = normalizeName(name);
+    let normalizedList = shoppingList.map(item => normalizeName(item.name));
+    console.log('Shopping List', shoppingList);
+    console.log('Normalized List', normalizedList);
+    console.log('Normalized Name', normalizedName);
+    console.log('Was the item found?', normalizedList.includes(normalizedName));
+    const found = normalizedList.includes(normalizedName);
+    setDuplicate(found);
+    console.log('From checkForDuplicates(): duplicate?', duplicate);
+    return found;
+  };
+
   return (
     <ListContext.Provider
-      value={{ token, shoppingList, setShoppingList, fetchList }}
+      value={{
+        token,
+        shoppingList,
+        setShoppingList,
+        duplicate,
+        fetchList,
+        checkForDuplicates,
+      }}
     >
       {props.children}
     </ListContext.Provider>
