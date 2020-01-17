@@ -29,20 +29,11 @@ const AddItem = ({ firestore }) => {
     }
     if (error) {
       setTimeout(() => {
-        console.log('setting error state to false...');
         setError(false);
       }, 2000);
     }
-    console.log(
-      'Message from useEffect(): The shopping list value changed to',
-      shoppingList,
-    );
-    console.log('Message from useEffect(): The error value changed to', error);
-    console.log(
-      'Message from useEffect(): The duplicate value changed to',
-      duplicate,
-    );
   }, [duplicate, error, fetchList, setError, shoppingList, token]);
+
   const addItem = () => {
     if (!checkForDuplicates(name)) {
       firestore.collection('items').add({ name, token, nextExpectedPurchase });

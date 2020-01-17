@@ -41,10 +41,6 @@ const ListContextProvider = props => {
   const checkForDuplicates = name => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
-    console.log('Shopping List', shoppingList);
-    console.log('Normalized List', normalizedList);
-    console.log('Normalized Name', normalizedName);
-    console.log('Was the item found?', normalizedList.includes(normalizedName));
     const found = normalizedList.includes(normalizedName);
     setDuplicate(found);
     setError(found);
