@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
@@ -7,7 +7,7 @@ import HomePageButton from '../components/HomePageButton';
 
 const List = () => {
   const getStoredToken = () => window.localStorage.getItem('token');
-  // const [data] = useState(data)
+
   return (
     <>
       <HomePageButton />
