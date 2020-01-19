@@ -10,7 +10,6 @@ const ListContextProvider = props => {
 
   const [token] = useState(initialToken);
   const [name, setName] = useState('');
-
   const [shoppingList, setShoppingList] = useState([]);
 
   // getting the token from localStorage

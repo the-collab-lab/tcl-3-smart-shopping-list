@@ -25,13 +25,7 @@ const AddItem = () => {
     if (shoppingList.length === 0) {
       fetchList(token);
     }
-
-    // if (error) {
-    //   setTimeout(() => {
-    //     setError(false);
-    //   }, 2000);
-    // }
-  }, [fetchList, isDuplicate, shoppingList, token, name, error]);
+  }, [fetchList, shoppingList, token]);
 
   // The state every time an event happens
   const handleChange = event => {
