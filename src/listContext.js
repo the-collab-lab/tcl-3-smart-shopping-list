@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import getToken from './lib/token';
 import firebase from 'firebase/app';
 import normalizeName from './lib/normalizeName';
@@ -11,11 +11,6 @@ const ListContextProvider = props => {
   const [token] = useState(initialToken);
   const [name, setName] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
-
-  // getting the token from localStorage
-  useEffect(() => {
-    window.localStorage.setItem('token', token);
-  }, [token]);
 
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
