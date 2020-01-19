@@ -9,9 +9,9 @@ const ListContextProvider = props => {
   const initialToken = () => window.localStorage.getItem('token') || getToken();
 
   const [token] = useState(initialToken);
+  const [name, setName] = useState('');
+
   const [shoppingList, setShoppingList] = useState([]);
-  const [duplicate, setDuplicate] = useState();
-  const [error, setError] = useState(false);
 
   // getting the token from localStorage
   useEffect(() => {
@@ -34,18 +34,28 @@ const ListContextProvider = props => {
         setShoppingList(tempArray);
       })
       .catch(function(error) {
-        console.log('Error getting documents: ', error);
+        console.error('Error getting shopping list ', error);
       });
   };
 
-  const checkForDuplicates = name => {
+  function isDuplicate(name) {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
-    const found = normalizedList.includes(normalizedName);
-    setDuplicate(found);
-    setError(found);
-    return found;
-  };
+    const isDupe = normalizedList.includes(normalizedName);
+
+    console.log('here, isDupe?', isDupe);
+    return isDupe;
+  }
+
+  function addItem(name, nextExpectedPurchase) {
+    if (!isDuplicate(name)) {
+      let db = firebase.firestore();
+      let itemsRef = db.collection('items');
+      itemsRef.doc().set({ name, token, nextExpectedPurchase });
+      fetchList(token);
+      setName('');
+    }
+  }
 
   return (
     <ListContext.Provider
@@ -53,17 +63,15 @@ const ListContextProvider = props => {
         token,
         shoppingList,
         setShoppingList,
-        setDuplicate,
-        duplicate,
         fetchList,
-        checkForDuplicates,
-        error,
-        setError,
+        isDuplicate,
+        addItem,
+        name,
+        setName,
       }}
     >
       {props.children}
     </ListContext.Provider>
   );
 };
-
-export { ListContext, ListContextProvider };
+export { ListContextProvider, ListContext };

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { withFirestore } from 'react-firestore';
+
 import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
@@ -7,44 +7,36 @@ import { ListContext } from '../listContext';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
-const AddItem = ({ firestore }) => {
+const AddItem = () => {
   const {
     token,
-    duplicate,
-    setDuplicate,
-    checkForDuplicates,
     shoppingList,
     fetchList,
-    error,
-    setError,
+    isDuplicate,
+    addItem,
+    name,
+    setName,
   } = useContext(ListContext);
 
-  const [name, setName] = useState('');
+  const [error, setError] = useState(false);
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
   useEffect(() => {
     if (shoppingList.length === 0) {
       fetchList(token);
     }
-    if (error) {
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
-    }
-  }, [duplicate, error, fetchList, setError, shoppingList, token]);
 
-  const addItem = () => {
-    if (!checkForDuplicates(name)) {
-      firestore.collection('items').add({ name, token, nextExpectedPurchase });
-      fetchList(token);
-      setDuplicate(false);
-      setName('');
-    }
-  };
+    // if (error) {
+    //   setTimeout(() => {
+    //     setError(false);
+    //   }, 2000);
+    // }
+  }, [fetchList, isDuplicate, shoppingList, token, name, error]);
 
   // The state every time an event happens
   const handleChange = event => {
     setName(event.target.value);
+    setError(isDuplicate(event.target.value));
   };
 
   const handleSelect = event => {
@@ -53,7 +45,8 @@ const AddItem = ({ firestore }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    addItem();
+    setError(isDuplicate(name));
+    addItem(name, nextExpectedPurchase);
   };
 
   return (
@@ -107,10 +100,9 @@ const AddItem = ({ firestore }) => {
           </label>
         </div>
       </form>
-
-      {error && <ItemError />}
+      {error && name && <ItemError name={name} />}
     </>
   );
 };
-// Wrap this component in the higher order component withFirestore to directly access the database
-export default withFirestore(AddItem);
+
+export default AddItem;
