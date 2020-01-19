@@ -4,13 +4,13 @@
   justify-content: space-around;
   border: 3px solid red;
   text-align: center;
-  width: 100%;
   flex-shrink: 0;
 }
 .container-container {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
 }
 .left-tab {
   float: left;
