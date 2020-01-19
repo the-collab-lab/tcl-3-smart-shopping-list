@@ -20,7 +20,7 @@ const ListContextProvider = props => {
 
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
-    var db = firebase.firestore();
+    let db = firebase.firestore();
     let itemsRef = db.collection('items');
     let query = itemsRef.orderBy('name').where('token', '==', token);
 
@@ -46,11 +46,6 @@ const ListContextProvider = props => {
     setError(found);
     return found;
   };
-  // Tell the ItemError component to show the error message when we enter a duplicate item
-  function toggleShow(isError) {
-    setError(isError);
-    return isError ? 'show' : 'hide';
-  }
 
   return (
     <ListContext.Provider
@@ -62,7 +57,6 @@ const ListContextProvider = props => {
         duplicate,
         fetchList,
         checkForDuplicates,
-        toggleShow,
         error,
         setError,
       }}

@@ -15,7 +15,6 @@ const AddItem = ({ firestore }) => {
     checkForDuplicates,
     shoppingList,
     fetchList,
-    toggleShow,
     error,
     setError,
   } = useContext(ListContext);
@@ -109,11 +108,7 @@ const AddItem = ({ firestore }) => {
         </div>
       </form>
 
-      {error ? (
-        <ItemError className={toggleShow(true)} />
-      ) : (
-        <ItemError className={toggleShow(false)} />
-      )}
+      {error && <ItemError />}
     </>
   );
 };
