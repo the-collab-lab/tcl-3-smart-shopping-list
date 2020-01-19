@@ -39,6 +39,7 @@ const AddItem = ({ firestore }) => {
       firestore.collection('items').add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setDuplicate(false);
+      setName('');
     }
   };
 
@@ -54,7 +55,6 @@ const AddItem = ({ firestore }) => {
   const handleSubmit = event => {
     event.preventDefault();
     addItem();
-    setName('');
   };
 
   return (
