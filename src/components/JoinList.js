@@ -12,7 +12,7 @@ const JoinList = () => {
   const getJoinToken = () => window.localStorage.getItem('token');
   const [joinToken] = useState(getJoinToken);
 
-  const [submittedToken, setSubmittedToken] = useState('')
+  const [submittedToken, setSubmittedToken] = useState('');
 
   useEffect(() => {
     window.localStorage.setItem('token', userJoinToken);
@@ -23,7 +23,7 @@ const JoinList = () => {
     setUserJoinToken(event.target.value);
   };
 
-  // token to use: conner oaken liz
+  // token to use: jimmy torn jolt, conner oaken liz
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -33,37 +33,34 @@ const JoinList = () => {
     setUserJoinToken('');
   };
 
-  db.collection("items").where("token", "==", submittedToken).get()
+  db.collection('items')
+    .where('token', '==', submittedToken)
+    .get()
     .then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data()); 
-        if (doc.data.length === 0){
-          localStorage.setItem('token', "")
-        } 
+        console.log(doc.id, ' => ', doc.data());
       });
-  })
-  .catch(function(error) {
-    console.log("Error getting list: ", error);
-  });
+    })
+    .catch(function(error) {
+      console.log('Error getting list: ', error);
+    });
 
-  // console.log(query)
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-          <label>Need to join a list?</label>
+      <form onSubmit={handleSubmit}>
+        <label>Need to join a list?</label>
 
-          <input
-            value={userJoinToken}
-            placeholder="Add token here"
-            type="text"
-            onChange={handleChange}
-          />
-          <Link to="/list">
-            <input type="submit" value="Grab Your List" />
-          </Link>
-        </form>
-      </div>
+        <input
+          value={userJoinToken}
+          placeholder="Add token here"
+          type="text"
+          onChange={handleChange}
+        />
+        <Link to="/list">
+          <input type="submit" value="Grab Your List" />
+        </Link>
+      </form>
+    </div>
   );
 };
 
