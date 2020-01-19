@@ -42,8 +42,6 @@ const ListContextProvider = props => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     const isDupe = normalizedList.includes(normalizedName);
-
-    console.log('here, isDupe?', isDupe);
     return isDupe;
   }
 
