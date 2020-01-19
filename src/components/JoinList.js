@@ -14,9 +14,9 @@ const JoinList = () => {
 
   const [submittedToken, setSubmittedToken] = useState('')
 
-  // useEffect(() => {
-  //   window.localStorage.setItem('token', userJoinToken);
-  // }, [userJoinToken]);
+  useEffect(() => {
+    window.localStorage.setItem('token', userJoinToken);
+  }, [userJoinToken]);
 
   console.log('the join token added to localStorage:', joinToken);
   const handleChange = event => {
