@@ -52,6 +52,7 @@ const ListContextProvider = props => {
     <ListContext.Provider
       value={{
         token,
+        shoppingList,
         setShoppingList,
         fetchList,
         isDuplicate,
