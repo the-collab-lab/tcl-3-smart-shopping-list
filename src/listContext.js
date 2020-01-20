@@ -42,7 +42,7 @@ const ListContextProvider = props => {
 
   function addItem(name, nextExpectedPurchase) {
     if (!isDuplicate(name)) {
-      firestore.collection('items').add({ name, token, nextExpectedPurchase });
+      itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
     }
