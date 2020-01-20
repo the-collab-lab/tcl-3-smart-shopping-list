@@ -8,7 +8,6 @@ The app will work in many of the same ways as [iNeedToBuy.xyz](https://app.ineed
 
 For additional details, please check out the [project brief](PROJECT-BRIEF.md).
 
-
 <hr>
 
 ## ↓↓↓ create-react-app boilerplate ↓↓↓
