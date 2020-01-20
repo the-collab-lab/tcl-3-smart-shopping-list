@@ -4,14 +4,14 @@ import { FirestoreProvider } from 'react-firestore';
 import { fb as firebase } from './lib/firebase.js';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-import { ListContextProvider } from './listContext';
+import { ListContextProviderWithFirestore } from './listContext';
 
 ReactDOM.render(
   <FirestoreProvider firebase={firebase}>
     <Router>
-      <ListContextProvider>
+      <ListContextProviderWithFirestore>
         <App />
-      </ListContextProvider>
+      </ListContextProviderWithFirestore>
     </Router>
   </FirestoreProvider>,
   document.getElementById('root'),
