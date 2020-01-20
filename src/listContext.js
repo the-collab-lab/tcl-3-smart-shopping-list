@@ -65,5 +65,6 @@ const ListContextProvider = props => {
     </ListContext.Provider>
   );
 };
+
 const ListContextProviderWithFirestore = withFirestore(ListContextProvider);
 export { ListContextProviderWithFirestore, ListContext };
