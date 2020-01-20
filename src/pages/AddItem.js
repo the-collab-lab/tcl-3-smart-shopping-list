@@ -93,3 +93,5 @@ const AddItem = ({ firestore }) => {
 };
 // Wrap this component in the higher order component withFirestore to directly access the database
 export default withFirestore(AddItem);
+
+//testing for first commit
