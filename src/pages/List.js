@@ -38,10 +38,10 @@ const List = () => {
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <div key={index}>
-                  <div>
+                  <label>
                     <input type="checkbox"></input>
-                  </div>
-                  {item.name}
+                    {item.name}
+                  </label>
                 </div>
               ))}
             </div>
