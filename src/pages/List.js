@@ -33,18 +33,18 @@ const List = () => {
           return isLoading ? (
             <Loading />
           ) : (
-            <ul>
+            <div>
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
-                <li key={index}>
+                <div key={index}>
                   <div>
                     <input type="checkbox"></input>
                   </div>
                   {item.name}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           );
         }}
       />
