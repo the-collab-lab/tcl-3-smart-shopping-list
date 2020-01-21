@@ -37,7 +37,12 @@ const List = () => {
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
-                <li key={index}>{item.name}</li>
+                <li key={index}>
+                  <div>
+                    <input type="checkbox"></input>
+                  </div>
+                  {item.name}
+                </li>
               ))}
             </ul>
           );
