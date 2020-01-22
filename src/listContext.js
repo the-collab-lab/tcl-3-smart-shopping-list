@@ -8,7 +8,7 @@ import ErrorMessage from './components/ErrorMessage';
 const ListContext = React.createContext();
 
 const ListContextProvider = props => {
-  const { token, getLocalStorageToken, setToken } = useContext(TokenContext);
+  const { token, getLocalStorageToken } = useContext(TokenContext);
   const { firestore } = props;
   const itemsRef = firestore.collection('items');
 
@@ -47,12 +47,6 @@ const ListContextProvider = props => {
   };
 
   const addItem = (name, nextExpectedPurchase) => {
-    if (!validToken) {
-      setToken(getLocalStorageToken());
-      console.log('from addItem: ', token);
-      return;
-    }
-
     if (!isDuplicate(name)) {
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);

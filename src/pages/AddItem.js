@@ -10,7 +10,7 @@ import HomePage from './HomePage';
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
-  const { token, setToken, getLocalStorageToken } = useContext(TokenContext);
+  const { token, getLocalStorageToken } = useContext(TokenContext);
   const {
     shoppingList,
     fetchList,
@@ -42,12 +42,6 @@ const AddItem = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (!validToken(token)) {
-      setToken(getLocalStorageToken());
-      fetchList(token);
-      setName('');
-      return;
-    }
     setError(isDuplicate(name));
     addItem(name, nextExpectedPurchase);
   };
