@@ -14,7 +14,6 @@ const HomePage = () => {
       <h1>Here's our homepage! Go to your list or add an item below.</h1>
       <NavTabs />
       {!joinFieldVisible && <HiddenButton joinList={triggerJoinListState} />}
-
       {joinFieldVisible && <JoinList />}
     </div>
   );

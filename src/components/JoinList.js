@@ -27,7 +27,6 @@ const JoinList = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label>Need to join a list?</label>
-
         <input
           value={token}
           placeholder="Add token here"
