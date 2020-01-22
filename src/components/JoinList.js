@@ -10,7 +10,6 @@ const JoinList = () => {
     setLocalStorageToken(token);
   }, [setLocalStorageToken, token]);
 
-  console.log('the join token added to localStorage:', token);
   const handleChange = event => {
     setToken(event.target.value);
     setLocalStorageToken(event.target.value);
