@@ -8,11 +8,16 @@ const TokenContextProvider = props => {
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token, setToken] = useState(initialToken);
 
+  const getLocalStorageToken = token => window.localStorage.getItem('token');
+  const setLocalStorageToken = token => localStorage.setItem('token', token);
+
   return (
     <TokenContext.Provider
       value={{
         token,
         setToken,
+        getLocalStorageToken,
+        setLocalStorageToken,
       }}
     >
       {props.children}

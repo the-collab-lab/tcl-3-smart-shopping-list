@@ -8,12 +8,9 @@ import { ListContext } from '../listContext';
 import { TokenContext } from '../tokenContext';
 
 const List = () => {
-  const { token, setToken } = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
   const { setShoppingList, shoppingList } = useContext(ListContext);
-  const getStoredToken = () => {
-    setToken(window.localStorage.getItem('token'));
-    return window.localStorage.getItem('token');
-  };
+
   return (
     <>
       <HomePageButton />
@@ -24,7 +21,7 @@ const List = () => {
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', token || getStoredToken()]}
+        filter={['token', '==', token]}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
@@ -32,7 +29,6 @@ const List = () => {
             localStorage.setItem('token', token);
             return <ErrorMessage />;
           }
-          console.log('data:', data);
 
           return isLoading ? (
             <Loading />

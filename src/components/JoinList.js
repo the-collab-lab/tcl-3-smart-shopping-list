@@ -1,45 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
 import { db } from '../lib/firebase.js';
-// import { withFirestore } from 'react-firestore';
+import { TokenContext } from '../tokenContext';
 
 const JoinList = () => {
-  const [userJoinToken, setUserJoinToken] = useState(
-    localStorage.getItem('token') || '',
-  );
-
-  const getJoinToken = () => window.localStorage.getItem('token');
-  const [joinToken] = useState(getJoinToken);
-
-  const [submittedToken, setSubmittedToken] = useState('');
+  const { token, setToken, setLocalStorageToken } = useContext(TokenContext);
 
   useEffect(() => {
-    window.localStorage.setItem('token', userJoinToken);
-  }, [userJoinToken]);
+    setLocalStorageToken(token);
+  }, [setLocalStorageToken, token]);
 
-  console.log('the join token added to localStorage:', joinToken);
+  console.log('the join token added to localStorage:', token);
   const handleChange = event => {
-    setUserJoinToken(event.target.value);
+    setToken(event.target.value);
+    setLocalStorageToken(event.target.value);
   };
 
   // token to use: jimmy torn jolt, conner oaken liz
 
   const handleSubmit = event => {
     event.preventDefault();
-    localStorage.setItem('token', userJoinToken);
-    console.log('the join token inside of console.log:', userJoinToken);
-    setSubmittedToken(userJoinToken);
-    setUserJoinToken('');
+
+    console.log('the join token inside of console.log:', token);
   };
 
   db.collection('items')
-    .where('token', '==', submittedToken)
+    .where('token', '==', token)
     .get()
     .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
-        console.log(doc.id, ' => ', doc.data());
-      });
+      querySnapshot.forEach(function(doc) {});
     })
     .catch(function(error) {
       console.log('Error getting list: ', error);
@@ -51,7 +41,7 @@ const JoinList = () => {
         <label>Need to join a list?</label>
 
         <input
-          value={userJoinToken}
+          value={token}
           placeholder="Add token here"
           type="text"
           onChange={handleChange}
