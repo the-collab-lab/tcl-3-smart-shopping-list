@@ -11,6 +11,7 @@ const List = () => {
   const {
     token,
     setToken,
+    initialToken,
     getLocalStorageToken,
     setLocalStorageToken,
   } = useContext(TokenContext);
@@ -31,7 +32,10 @@ const List = () => {
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
           if (!isLoading && data.length === 0) {
-            setLocalStorageToken(getLocalStorageToken());
+            // If a list wasn't found create a new token in case the user adds an item. That way a new list will be created
+
+            // Not working. TODO: Maybe make a function that clears the token in storage and generates a new one?
+            setLocalStorageToken(initialToken());
             setToken(getLocalStorageToken());
             return <ErrorMessage />;
           }
