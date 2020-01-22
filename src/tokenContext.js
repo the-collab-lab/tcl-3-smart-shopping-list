@@ -7,10 +7,13 @@ const TokenContextProvider = props => {
   const initialToken = () => window.localStorage.getItem('token') || getToken();
   const [token, setToken] = useState(initialToken);
 
-  const getLocalStorageToken = () => {
-    return window.localStorage.getItem('token');
+  const getLocalStorageToken = () =>
+    window.localStorage.getItem('token') || getToken();
+
+  const setLocalStorageToken = token => {
+    setToken(token);
+    localStorage.setItem('token', token);
   };
-  const setLocalStorageToken = token => localStorage.setItem('token', token);
 
   return (
     <TokenContext.Provider

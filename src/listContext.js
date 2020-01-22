@@ -8,13 +8,7 @@ import ErrorMessage from './components/ErrorMessage';
 const ListContext = React.createContext();
 
 const ListContextProvider = props => {
-  const {
-    token,
-    setToken,
-    initialToken,
-    getLocalStorageToken,
-    setLocalStorageToken,
-  } = useContext(TokenContext);
+  const { token, getLocalStorageToken, setToken } = useContext(TokenContext);
   const { firestore } = props;
   const itemsRef = firestore.collection('items');
 
@@ -24,11 +18,10 @@ const ListContextProvider = props => {
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
     let query = itemsRef.orderBy('name').where('token', '==', token);
-
+    const tempArray = [];
     query
       .get()
       .then(function(querySnapshot) {
-        const tempArray = [];
         querySnapshot.forEach(function(doc) {
           tempArray.push(doc.data());
         });
@@ -37,24 +30,37 @@ const ListContextProvider = props => {
       .catch(function(error) {
         console.error('Error getting shopping list ', error);
       });
+    return tempArray;
   };
 
-  function isDuplicate(name) {
+  const isDuplicate = name => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     const isDupe = normalizedList.includes(normalizedName);
     return isDupe;
-  }
+  };
+  const validToken = token => {
+    let filteredByToken = shoppingList.filter(item => item.token === token);
+    console.log('filtered by token', filteredByToken);
+    console.log('includes token? ', filteredByToken.length > 0);
+    return filteredByToken.length > 0;
+  };
 
-  function addItem(name, nextExpectedPurchase) {
+  const addItem = (name, nextExpectedPurchase) => {
+    if (!validToken) {
+      setToken(getLocalStorageToken());
+      console.log('from addItem: ', token);
+      return;
+    }
+
     if (!isDuplicate(name)) {
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
     }
-  }
+  };
 
-  function displayList(token) {
+  const displayList = token => {
     return (
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
@@ -71,8 +77,6 @@ const ListContextProvider = props => {
 
             // Not working. TODO: Maybe make a function that clears the token in storage and generates a new one?
 
-            setLocalStorageToken(initialToken());
-            setToken(getLocalStorageToken());
             return <ErrorMessage />;
           }
 
@@ -90,12 +94,13 @@ const ListContextProvider = props => {
         }}
       />
     );
-  }
+  };
 
   return (
     <ListContext.Provider
       value={{
         token,
+        validToken,
         displayList,
         shoppingList,
         setShoppingList,
