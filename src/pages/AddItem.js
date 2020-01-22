@@ -4,12 +4,13 @@ import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
+import { TokenContext } from '../tokenContext';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
+  const { token } = useContext(TokenContext);
   const {
-    token,
     shoppingList,
     fetchList,
     isDuplicate,

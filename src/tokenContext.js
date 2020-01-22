@@ -12,6 +12,7 @@ const TokenContextProvider = props => {
     <TokenContext.Provider
       value={{
         token,
+        setToken,
       }}
     >
       {props.children}

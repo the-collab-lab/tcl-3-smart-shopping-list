@@ -5,11 +5,15 @@ import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
 import { ListContext } from '../listContext';
+import { TokenContext } from '../tokenContext';
 
 const List = () => {
+  const { token, setToken } = useContext(TokenContext);
   const { setShoppingList, shoppingList } = useContext(ListContext);
-  const getStoredToken = () => window.localStorage.getItem('token');
-
+  const getStoredToken = () => {
+    setToken(window.localStorage.getItem('token'));
+    return window.localStorage.getItem('token');
+  };
   return (
     <>
       <HomePageButton />
@@ -25,7 +29,7 @@ const List = () => {
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
           if (!isLoading && data.length === 0) {
-            localStorage.setItem('token', '');
+            localStorage.setItem('token', token);
             return <ErrorMessage />;
           }
           console.log('data:', data);
