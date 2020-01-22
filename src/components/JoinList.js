@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
-import { db } from '../lib/firebase.js';
 import { TokenContext } from '../tokenContext';
 
 const JoinList = () => {
@@ -24,16 +23,6 @@ const JoinList = () => {
 
     console.log('the join token inside of console.log:', token);
   };
-
-  db.collection('items')
-    .where('token', '==', token)
-    .get()
-    .then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {});
-    })
-    .catch(function(error) {
-      console.log('Error getting list: ', error);
-    });
 
   return (
     <div>
