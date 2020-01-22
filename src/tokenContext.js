@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import getToken from './lib/token';
 
 let TokenContext;
-const { Provider, Consumer } = (TokenContext = React.createContext());
+const { Consumer } = (TokenContext = React.createContext());
 
 const TokenContextProvider = props => {
   const initialToken = () => window.localStorage.getItem('token') || getToken();
@@ -19,4 +19,8 @@ const TokenContextProvider = props => {
   );
 };
 
-export { Provider as TokenProvider, Consumer as TokenConsumer, TokenContext };
+export {
+  TokenContextProvider as TokenProvider,
+  Consumer as TokenConsumer,
+  TokenContext,
+};

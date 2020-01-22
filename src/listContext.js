@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import getToken from './lib/token';
-import firebase from 'firebase/app';
+import React, { useState, useContext } from 'react';
 import normalizeName from './lib/normalizeName';
+import { withFirestore } from 'react-firestore';
+import { TokenContext } from './tokenContext';
 
 const ListContext = React.createContext();
 
 const ListContextProvider = props => {
-  const initialToken = () => window.localStorage.getItem('token') || getToken();
+  const { token } = useContext(TokenContext);
+  const { firestore } = props;
+  const itemsRef = firestore.collection('items');
 
-  const [token] = useState(initialToken);
   const [name, setName] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
 
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
-    let db = firebase.firestore();
-    let itemsRef = db.collection('items');
     let query = itemsRef.orderBy('name').where('token', '==', token);
 
     query
@@ -41,9 +40,7 @@ const ListContextProvider = props => {
 
   function addItem(name, nextExpectedPurchase) {
     if (!isDuplicate(name)) {
-      let db = firebase.firestore();
-      let itemsRef = db.collection('items');
-      itemsRef.doc().set({ name, token, nextExpectedPurchase });
+      itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
     }
@@ -66,4 +63,6 @@ const ListContextProvider = props => {
     </ListContext.Provider>
   );
 };
-export { ListContextProvider, ListContext };
+
+const ListContextProviderWithFirestore = withFirestore(ListContextProvider);
+export { ListContextProviderWithFirestore, ListContext };
