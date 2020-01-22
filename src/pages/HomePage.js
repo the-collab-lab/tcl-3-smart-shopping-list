@@ -1,35 +1,23 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './HomePage.css';
 import NavTabs from '../components/NavTabs';
 import JoinList from '../components/JoinList';
 import HiddenButton from '../components/HiddenButton';
 
-class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isEmptyState: true };
-  }
+const HomePage = () => {
+  const [joinFieldVisible, setJoinFieldVisible] = useState(false);
 
-  triggerJoinListState = () => {
-    this.setState({
-      ...this.state,
-      isEmptyState: false,
-      isJoinListState: true,
-    });
-  };
+  const triggerJoinListState = () => setJoinFieldVisible(true);
 
-  render() {
-    return (
-      <div className="whole-page">
-        <h1>Here's our homepage! Go to your list or add an item below.</h1>
-        <NavTabs />
-        {this.state.isEmptyState && (
-          <HiddenButton joinList={this.triggerJoinListState} />
-        )}
+  return (
+    <div className="whole-page">
+      <h1>Here's our homepage! Go to your list or add an item below.</h1>
+      <NavTabs />
+      {!joinFieldVisible && <HiddenButton joinList={triggerJoinListState} />}
 
-        {this.state.isJoinListState && <JoinList />}
-      </div>
-    );
-  }
-}
+      {joinFieldVisible && <JoinList />}
+    </div>
+  );
+};
+
 export default HomePage;
