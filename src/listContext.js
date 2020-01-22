@@ -41,8 +41,6 @@ const ListContextProvider = props => {
   };
   const validToken = token => {
     let filteredByToken = shoppingList.filter(item => item.token === token);
-    console.log('filtered by token', filteredByToken);
-    console.log('includes token? ', filteredByToken.length > 0);
     return filteredByToken.length > 0;
   };
 

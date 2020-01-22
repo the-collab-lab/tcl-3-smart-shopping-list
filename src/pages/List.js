@@ -4,13 +4,13 @@ import HomePageButton from '../components/HomePageButton';
 import { ListContext } from '../listContext';
 import { TokenContext } from '../tokenContext';
 
-const List = () => {
+const List = props => {
   const { token } = useContext(TokenContext);
   const { displayList } = useContext(ListContext);
 
   return (
     <>
-      <HomePageButton />
+      {props.showBackButton && <HomePageButton />}
       {displayList(token)}
       <NavTabs />
     </>
