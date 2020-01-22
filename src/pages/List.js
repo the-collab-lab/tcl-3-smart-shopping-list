@@ -24,7 +24,7 @@ const List = () => {
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', getStoredToken()]}
+        filter={['token', '==', token || getStoredToken()]}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
