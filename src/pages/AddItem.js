@@ -9,7 +9,13 @@ import { TokenContext } from '../tokenContext';
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
-  const { token } = useContext(TokenContext);
+  const {
+    token,
+    setToken,
+    getLocalStorageToken,
+    setLocalStorageToken,
+    initialToken,
+  } = useContext(TokenContext);
   const {
     shoppingList,
     fetchList,
@@ -23,10 +29,26 @@ const AddItem = () => {
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
   useEffect(() => {
+    getLocalStorageToken();
+    if (!getLocalStorageToken()) {
+      console.log('no token, generating...');
+      setToken(initialToken());
+      setLocalStorageToken(token);
+      fetchList(token);
+    }
+
     if (shoppingList.length === 0) {
       fetchList(token);
     }
-  }, [fetchList, shoppingList, token]);
+  }, [
+    fetchList,
+    shoppingList,
+    token,
+    getLocalStorageToken,
+    initialToken,
+    setToken,
+    setLocalStorageToken,
+  ]);
 
   // The state every time an event happens
   const handleChange = event => {
