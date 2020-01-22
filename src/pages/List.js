@@ -5,6 +5,13 @@ import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
 import { ListContext } from '../listContext';
+import dayjs from 'dayjs';
+
+const nowItem = new Date();
+const today = dayjs(nowItem);
+
+console.log('this is nowItem', nowItem);
+console.log('this is today', today);
 
 const List = () => {
   const { setShoppingList, shoppingList } = useContext(ListContext);
