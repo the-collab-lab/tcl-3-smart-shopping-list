@@ -43,7 +43,7 @@ const ListContextProvider = props => {
   };
 
   const addItem = (name, nextExpectedPurchase) => {
-    if (!isDuplicate(name)) {
+    if (!isDuplicate(name) && validToken(token)) {
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
