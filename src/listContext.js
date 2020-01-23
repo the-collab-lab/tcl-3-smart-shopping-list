@@ -6,7 +6,7 @@ import useListToken from './useListToken';
 const ListContext = React.createContext();
 
 const ListContextProvider = props => {
-  const { token } = useListToken();
+  const { token, saveToken } = useListToken();
   const { firestore } = props;
   const itemsRef = firestore.collection('items');
 
@@ -43,7 +43,11 @@ const ListContextProvider = props => {
   };
 
   const addItem = (name, nextExpectedPurchase) => {
-    if (!isDuplicate(name) && validToken(token)) {
+    if (!isDuplicate(name)) {
+      // so we can add a first item to a first list
+      if (!validToken(token)) {
+        saveToken(token);
+      }
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
