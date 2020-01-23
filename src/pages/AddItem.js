@@ -4,13 +4,12 @@ import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
-import getCurrentToken from '../useListToken';
-import HomePage from './HomePage';
+import useListToken from '../useListToken';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
-  const { token } = getCurrentToken();
+  const { token } = useListToken();
   const {
     shoppingList,
     fetchList,
@@ -18,7 +17,6 @@ const AddItem = () => {
     addItem,
     name,
     setName,
-    validToken,
   } = useContext(ListContext);
 
   const [error, setError] = useState(false);
@@ -49,60 +47,55 @@ const AddItem = () => {
   return (
     <>
       <AddItemHeader />
-      {!validToken(token) ? (
-        <HomePage />
-      ) : (
-        <>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Add Item:
-              <input
-                value={name}
-                placeholder="apples"
-                type="text"
-                onChange={handleChange}
-              />
-            </label>
-            <input type="submit" value="Add Item" />
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  id={expectedPurchase.soon}
-                  value={expectedPurchase.soon}
-                  checked={expectedPurchase.soon === nextExpectedPurchase}
-                  onChange={handleSelect}
-                />
-                Soon
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  id={expectedPurchase.verySoon}
-                  value={expectedPurchase.kindOfSoon}
-                  checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
-                  onChange={handleSelect}
-                />
-                Kind of Soon
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  id={expectedPurchase.notSoon}
-                  value={expectedPurchase.notSoon}
-                  checked={expectedPurchase.notSoon === nextExpectedPurchase}
-                  onChange={handleSelect}
-                />
-                Not Soon
-              </label>
-            </div>
-          </form>
-        </>
-      )}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Add Item:
+          <input
+            value={name}
+            placeholder="apples"
+            type="text"
+            onChange={handleChange}
+          />
+        </label>
+        <input type="submit" value="Add Item" />
+        <div>
+          <label>
+            <input
+              type="radio"
+              id={expectedPurchase.soon}
+              value={expectedPurchase.soon}
+              checked={expectedPurchase.soon === nextExpectedPurchase}
+              onChange={handleSelect}
+            />
+            Soon
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              id={expectedPurchase.verySoon}
+              value={expectedPurchase.kindOfSoon}
+              checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
+              onChange={handleSelect}
+            />
+            Kind of Soon
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              id={expectedPurchase.notSoon}
+              value={expectedPurchase.notSoon}
+              checked={expectedPurchase.notSoon === nextExpectedPurchase}
+              onChange={handleSelect}
+            />
+            Not Soon
+          </label>
+        </div>
+      </form>
+
       {error && name && <ItemError name={name} />}
     </>
   );

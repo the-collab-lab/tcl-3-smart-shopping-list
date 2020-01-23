@@ -4,13 +4,11 @@ import NavTabs from '../components/NavTabs';
 import JoinList from '../components/JoinList';
 import HiddenButton from '../components/HiddenButton';
 import useListToken from '../useListToken';
-import getCurrentToken from '../useListToken';
 import { ListContext } from '../listContext';
 import List from './List';
 
 const HomePage = () => {
-  const { saveToken } = useListToken();
-  const { token } = getCurrentToken();
+  const { saveToken, token } = useListToken();
   const { fetchList, validToken } = useContext(ListContext);
   const [joinFieldVisible, setJoinFieldVisible] = useState(false);
 

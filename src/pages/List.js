@@ -2,17 +2,18 @@ import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import HomePageButton from '../components/HomePageButton';
 import { ListContext } from '../listContext';
-import getCurrentToken from '../useListToken';
+import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 
 const List = props => {
   const { shoppingList, setShoppingList } = useContext(ListContext);
-  const { token } = getCurrentToken();
+  const { token } = useListToken();
   return (
     <>
-      <HomePageButton />
+      {props.showBackButton && <HomePageButton />}
+
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"

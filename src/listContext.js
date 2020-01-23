@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
-import getCurrentToken from './useListToken';
+import useListToken from './useListToken';
 
 const ListContext = React.createContext();
 
 const ListContextProvider = props => {
-  const { token } = getCurrentToken();
+  const { token } = useListToken();
   const { firestore } = props;
   const itemsRef = firestore.collection('items');
 
