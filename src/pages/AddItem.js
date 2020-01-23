@@ -4,13 +4,13 @@ import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
-import { TokenContext } from '../tokenContext';
+import getCurrentToken from '../useListToken';
 import HomePage from './HomePage';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
-  const { token, getLocalStorageToken } = useContext(TokenContext);
+  const { token } = getCurrentToken();
   const {
     shoppingList,
     fetchList,
@@ -49,7 +49,7 @@ const AddItem = () => {
   return (
     <>
       <AddItemHeader />
-      {!validToken(getLocalStorageToken()) ? (
+      {!validToken(token) ? (
         <HomePage />
       ) : (
         <>
