@@ -3,18 +3,21 @@ import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
+import { TokenContext } from '../tokenContext';
+import HomePage from './HomePage';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
+  const { token, getLocalStorageToken } = useContext(TokenContext);
   const {
-    token,
     shoppingList,
     fetchList,
     isDuplicate,
     addItem,
     name,
     setName,
+    validToken,
   } = useContext(ListContext);
 
   const [error, setError] = useState(false);
@@ -45,54 +48,60 @@ const AddItem = () => {
   return (
     <>
       <AddItemHeader />
-      <form onSubmit={handleSubmit}>
-        <label>
-          Add Item:
-          <input
-            value={name}
-            placeholder="apples"
-            type="text"
-            onChange={handleChange}
-          />
-        </label>
-        <input type="submit" value="Add Item" />
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.soon}
-              value={expectedPurchase.soon}
-              checked={expectedPurchase.soon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.verySoon}
-              value={expectedPurchase.kindOfSoon}
-              checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Kind of Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.notSoon}
-              value={expectedPurchase.notSoon}
-              checked={expectedPurchase.notSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Not Soon
-          </label>
-        </div>
-      </form>
+      {!validToken(getLocalStorageToken()) ? (
+        <HomePage />
+      ) : (
+        <>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Add Item:
+              <input
+                value={name}
+                placeholder="apples"
+                type="text"
+                onChange={handleChange}
+              />
+            </label>
+            <input type="submit" value="Add Item" />
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  id={expectedPurchase.soon}
+                  value={expectedPurchase.soon}
+                  checked={expectedPurchase.soon === nextExpectedPurchase}
+                  onChange={handleSelect}
+                />
+                Soon
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  id={expectedPurchase.verySoon}
+                  value={expectedPurchase.kindOfSoon}
+                  checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
+                  onChange={handleSelect}
+                />
+                Kind of Soon
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  id={expectedPurchase.notSoon}
+                  value={expectedPurchase.notSoon}
+                  checked={expectedPurchase.notSoon === nextExpectedPurchase}
+                  onChange={handleSelect}
+                />
+                Not Soon
+              </label>
+            </div>
+          </form>
+        </>
+      )}
       {error && name && <ItemError name={name} />}
     </>
   );
