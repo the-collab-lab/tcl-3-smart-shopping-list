@@ -22,7 +22,7 @@ const List = () => {
 
     const dateOfPurchaseJS = item.lastPurchaseDate;
 
-    console.log('thi is date of purchaseJS', dateOfPurchaseJS);
+    console.log('this is date of purchaseJS', dateOfPurchaseJS);
     // console.log('this is item', dayjs(item.lastPurchaseDate).hour());
 
     // console.log(today.diff(dateOfPurchaseJS, 'hour'));
