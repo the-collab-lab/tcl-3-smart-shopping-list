@@ -1,18 +1,16 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
-import { TokenContext } from '../tokenContext';
+import useListToken from '../useListToken';
 
 const JoinList = () => {
-  const { token, setToken, setLocalStorageToken } = useContext(TokenContext);
-
+  const { token, saveToken } = useListToken();
   useEffect(() => {
-    setLocalStorageToken(token);
-  }, [setLocalStorageToken, token]);
+    saveToken(token);
+  }, [saveToken, token]);
 
   const handleChange = event => {
-    setToken(event.target.value);
-    setLocalStorageToken(event.target.value);
+    saveToken(event.target.value);
   };
 
   // token to use: jimmy torn jolt, conner oaken liz
