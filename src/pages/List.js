@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
-import HomePageButton from '../components/HomePageButton';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
@@ -12,8 +11,6 @@ const List = props => {
   const { token } = useListToken();
   return (
     <>
-      {props.showBackButton && <HomePageButton />}
-
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
