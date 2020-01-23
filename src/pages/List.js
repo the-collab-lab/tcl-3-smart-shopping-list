@@ -8,14 +8,31 @@ import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
 const nowItem = new Date();
-const today = dayjs(nowItem).format('MM-DDTHH:mm:ss');
+const today = dayjs(nowItem).format('HH:mm:ss');
 
-console.log('this is nowItem', nowItem);
-console.log('this is today', today);
+// console.log('this is nowItem', nowItem);
+// console.log('this is today', today);
 
 const List = () => {
   const { setShoppingList, shoppingList } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
+
+  const calculateIfPurchased = item => {
+    // console.log(today);
+
+    const dateOfPurchaseJS = item.lastPurchaseDate;
+
+    console.log('thi is date of purchaseJS', dateOfPurchaseJS);
+    // console.log('this is item', dayjs(item.lastPurchaseDate).hour());
+
+    // console.log(today.diff(dateOfPurchaseJS, 'hour'));
+
+    if (today <= 24) {
+      console.log('true');
+    } else {
+      console.log('false');
+    }
+  };
 
   return (
     <>
@@ -43,7 +60,7 @@ const List = () => {
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
-                <div key={index}>
+                <div key={index} className={calculateIfPurchased(item)}>
                   <label>
                     <input type="checkbox"></input>
                     {item.name}
