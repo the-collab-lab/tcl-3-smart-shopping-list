@@ -18,16 +18,13 @@ const List = () => {
   const getStoredToken = () => window.localStorage.getItem('token');
 
   const calculateIfPurchased = item => {
-    // console.log(today);
+    console.log('this is item', item);
 
-    const dateOfPurchaseJS = item.lastPurchaseDate;
+    const dateOfPurchaseJS = parseInt(item.lastPurchaseDate);
 
     console.log('this is date of purchaseJS', dateOfPurchaseJS);
-    // console.log('this is item', dayjs(item.lastPurchaseDate).hour());
 
-    // console.log(today.diff(dateOfPurchaseJS, 'hour'));
-
-    if (today <= 24) {
+    if (dateOfPurchaseJS <= 24) {
       console.log('true');
     } else {
       console.log('false');
