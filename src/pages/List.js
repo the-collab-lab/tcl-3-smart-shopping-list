@@ -8,7 +8,7 @@ import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
 const nowItem = new Date();
-const today = dayjs(nowItem);
+const today = dayjs(nowItem).format('MM-DDTHH:mm:ss');
 
 console.log('this is nowItem', nowItem);
 console.log('this is today', today);
@@ -35,7 +35,6 @@ const List = () => {
             localStorage.setItem('token', '');
             return <ErrorMessage />;
           }
-          console.log('data:', data);
 
           return isLoading ? (
             <Loading />

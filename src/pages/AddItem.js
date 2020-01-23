@@ -4,8 +4,11 @@ import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
 import { ListContext } from '../listContext';
+import dayjs from 'dayjs';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
+const nowItem = new Date();
+const lastPurchaseDate = dayjs(nowItem).format('MM-DDTHH:mm:ss');
 
 const AddItem = () => {
   const {
@@ -40,7 +43,7 @@ const AddItem = () => {
   const handleSubmit = event => {
     event.preventDefault();
     setError(isDuplicate(name));
-    addItem(name, nextExpectedPurchase);
+    addItem(name, nextExpectedPurchase, lastPurchaseDate);
   };
 
   return (

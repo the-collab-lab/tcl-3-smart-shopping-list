@@ -40,9 +40,9 @@ const ListContextProvider = props => {
     return isDupe;
   }
 
-  function addItem(name, nextExpectedPurchase) {
+  function addItem(name, nextExpectedPurchase, lastPurchaseDate) {
     if (!isDuplicate(name)) {
-      itemsRef.add({ name, token, nextExpectedPurchase });
+      itemsRef.add({ name, token, nextExpectedPurchase, lastPurchaseDate });
       fetchList(token);
       setName('');
     }
