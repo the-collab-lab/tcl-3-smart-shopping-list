@@ -9,6 +9,7 @@ import ErrorMessage from '../components/ErrorMessage';
 const List = props => {
   const { shoppingList, setShoppingList } = useContext(ListContext);
   const { token } = useListToken();
+
   return (
     <>
       <FirestoreCollection

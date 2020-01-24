@@ -17,7 +17,6 @@ const JoinList = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('the join token inside of console.log:', token);
   };
 
   return (
