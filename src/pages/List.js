@@ -11,6 +11,11 @@ import dayjs from 'dayjs';
 const currentTime = new Date();
 const today = dayjs(currentTime);
 
+const isLessThan24hrs = purchased_date => {
+  let purchaseDateCalc = dayjs(purchased_date);
+  return today.diff(purchaseDateCalc), 'hour' <= 24;
+};
+
 // console.log('this is nowItem', nowItem);
 console.log('this is today', today);
 
@@ -21,19 +26,12 @@ const List = () => {
   // const [check, setChecked] = useState();
 
   // How do we update the DB with a clicked checkbox?
-  const isLessThan24hrs = item => {
-    //This variable will grab the items date it was purchased
+  // const isLessThan24hrs = item => {
+  //   //This variable will grab the items date it was purchased
 
-    const purchaseDateCalc = dayjs()(item.last_purchase_date);
+  //   const purchaseDateCalc = dayjs()(item.last_purchase_date);
 
-    if ((today.diff(purchaseDateCalc), 'hour' <= 24)) {
-      console.log('true');
-      //checked
-    } else {
-      console.log('false');
-      //setChecked
-    }
-  };
+  // };
 
   return (
     <>
@@ -64,9 +62,11 @@ const List = () => {
                 <div key={index}>
                   <label>
                     {/* <input type="checkbox"></input> */}
-                    {/* {isLessThan24hrs(item.last_purchase_date) ? (
-                      <Checkmark />
-                    ) : null} */}
+                    {isLessThan24hrs(item.last_purchase_date) ? (
+                      <input type="checkbox" checked="checked" />
+                    ) : (
+                      <input type="checkbox" />
+                    )}
 
                     {item.name}
                   </label>
