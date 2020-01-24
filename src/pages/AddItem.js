@@ -7,8 +7,6 @@ import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
-const nowItem = new Date();
-const lastPurchaseDate = dayjs(nowItem).format('HH');
 
 const AddItem = () => {
   const {
@@ -43,7 +41,7 @@ const AddItem = () => {
   const handleSubmit = event => {
     event.preventDefault();
     setError(isDuplicate(name));
-    addItem(name, nextExpectedPurchase, lastPurchaseDate);
+    addItem(name, nextExpectedPurchase);
   };
 
   return (

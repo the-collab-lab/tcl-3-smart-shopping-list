@@ -1,35 +1,59 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
+import Checkmark from '../components/Checkmark';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
-const nowItem = new Date();
-const today = dayjs(nowItem).format('HH:mm:ss');
+const currentTime = new Date();
+const today = dayjs(currentTime);
 
 // console.log('this is nowItem', nowItem);
-// console.log('this is today', today);
+console.log('this is today', today);
 
 const List = () => {
-  const { setShoppingList, shoppingList } = useContext(ListContext);
+  const { setShoppingList, shoppingList, addItem } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
 
-  const calculateIfPurchased = item => {
-    console.log('this is item', item);
+  const [check, setChecked] = useState();
 
-    const dateOfPurchaseJS = parseInt(item.lastPurchaseDate);
+  // const calculateIfPurchased = item => {
+  //   console.log('this is item', item);
 
-    console.log('this is date of purchaseJS', dateOfPurchaseJS);
+  //   const dateOfPurchaseJS = parseInt(item.lastPurchaseDate);
 
-    if (dateOfPurchaseJS <= 24) {
+  //   console.log('this is date of purchaseJS', dateOfPurchaseJS);
+
+  //   if (dateOfPurchaseJS <= 24) {
+  //     console.log('true');
+  //   } else {
+  //     console.log('false');
+  //   }
+  // };
+
+  // const updateDB = data => {
+
+  // }
+
+  const isLessThan24hrs = item => {
+    //This variable will grab the items date it was purchased
+
+    const purchaseDateCalc = dayjs()(item.last_purchase_date);
+
+    if ((today.diff(purchaseDateCalc), 'hour' <= 24)) {
       console.log('true');
+      //checked
     } else {
       console.log('false');
+      //setChecked
     }
   };
+
+  // console.log('comparing times is true or false?', comparePurchaseTime(dayjs().format('{2020} 01-22 15:32:45')))
+  // console.log('comparing times is true or false?', comparePurchaseTime(dayjs().isBefore(dayjs())))
 
   return (
     <>
@@ -57,9 +81,13 @@ const List = () => {
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
-                <div key={index} className={calculateIfPurchased(item)}>
+                <div key={index}>
                   <label>
-                    <input type="checkbox"></input>
+                    {/* <input type="checkbox"></input> */}
+                    {isLessThan24hrs(item.last_purchase_date) ? (
+                      <Checkmark />
+                    ) : null}
+
                     {item.name}
                   </label>
                 </div>
@@ -72,5 +100,3 @@ const List = () => {
     </>
   );
 };
-
-export default List;
