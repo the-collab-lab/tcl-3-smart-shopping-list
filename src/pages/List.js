@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
-import Checkmark from '../components/Checkmark';
+import Checkmark from './Checkmark';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
@@ -18,7 +18,7 @@ const List = () => {
   const { setShoppingList, shoppingList, addItem } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
 
-  const [check, setChecked] = useState();
+  // const [check, setChecked] = useState();
 
   // const calculateIfPurchased = item => {
   //   console.log('this is item', item);
