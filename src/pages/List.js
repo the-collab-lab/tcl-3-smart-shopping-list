@@ -20,24 +20,7 @@ const List = () => {
 
   // const [check, setChecked] = useState();
 
-  // const calculateIfPurchased = item => {
-  //   console.log('this is item', item);
-
-  //   const dateOfPurchaseJS = parseInt(item.lastPurchaseDate);
-
-  //   console.log('this is date of purchaseJS', dateOfPurchaseJS);
-
-  //   if (dateOfPurchaseJS <= 24) {
-  //     console.log('true');
-  //   } else {
-  //     console.log('false');
-  //   }
-  // };
-
-  // const updateDB = data => {
-
-  // }
-
+  // How do we update the DB with a clicked checkbox?
   const isLessThan24hrs = item => {
     //This variable will grab the items date it was purchased
 
@@ -51,9 +34,6 @@ const List = () => {
       //setChecked
     }
   };
-
-  // console.log('comparing times is true or false?', comparePurchaseTime(dayjs().format('{2020} 01-22 15:32:45')))
-  // console.log('comparing times is true or false?', comparePurchaseTime(dayjs().isBefore(dayjs())))
 
   return (
     <>
@@ -84,9 +64,9 @@ const List = () => {
                 <div key={index}>
                   <label>
                     {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(item.last_purchase_date) ? (
+                    {/* {isLessThan24hrs(item.last_purchase_date) ? (
                       <Checkmark />
-                    ) : null}
+                    ) : null} */}
 
                     {item.name}
                   </label>
