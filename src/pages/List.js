@@ -17,10 +17,10 @@ const isLessThan24hrs = purchased_date => {
 };
 
 // console.log('this is nowItem', nowItem);
-console.log('this is today', today);
+// console.log('this is today', today);
 
 const List = () => {
-  const { setShoppingList, shoppingList, addItem } = useContext(ListContext);
+  const { setShoppingList, shoppingList, addTime } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
 
   /*
@@ -32,16 +32,16 @@ const List = () => {
 
   */
 
-  const [check, setChecked] = useState();
+  const [check, setChecked] = useState('');
 
   const handleSelect = event => {
-    event.preventDefeault();
-    setChecked(isLessThan24hrs());
+    event.preventDefault();
+    setChecked(isLessThan24hrs(today));
   };
 
   const handleSubmit = event => {
-    event.preventDefeault();
-    addItem(check);
+    event.preventDefault();
+    addTime(check);
     console.log('is this check working', check);
   };
 
@@ -72,7 +72,7 @@ const List = () => {
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <div key={index}>
-                  <label onSubmit={handleSubmit}>
+                  <label onChange={handleSubmit}>
                     {/* <input type="checkbox"></input> */}
                     {isLessThan24hrs(item.last_purchase_date) ? (
                       <input
@@ -84,7 +84,6 @@ const List = () => {
                     ) : (
                       <input type="checkbox" />
                     )}
-
                     {item.name}
                   </label>
                 </div>

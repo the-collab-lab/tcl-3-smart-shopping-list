@@ -40,12 +40,17 @@ const ListContextProvider = props => {
     return isDupe;
   }
 
-  function addItem(name, nextExpectedPurchase, lastPurchaseDate) {
+  function addItem(name, nextExpectedPurchase) {
     if (!isDuplicate(name)) {
-      itemsRef.add({ name, token, nextExpectedPurchase, lastPurchaseDate });
+      itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
       setName('');
     }
+  }
+
+  function addTime(lastPurchaseDate) {
+    itemsRef.add({ lastPurchaseDate });
+    fetchList(token);
   }
 
   return (
@@ -59,6 +64,7 @@ const ListContextProvider = props => {
         addItem,
         name,
         setName,
+        addTime,
       }}
     >
       {props.children}
