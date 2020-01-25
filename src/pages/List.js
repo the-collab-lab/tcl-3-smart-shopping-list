@@ -36,7 +36,6 @@ const List = props => {
   const [check, setChecked] = useState('');
 
   const handleSelect = event => {
-    event.preventDefault();
     setChecked(isLessThan24hrs(event.target.value));
   };
 
@@ -76,9 +75,9 @@ const List = props => {
                     {isLessThan24hrs(item.lastPurchaseDate) ? (
                       <input
                         type="checkbox"
-                        id={today}
+                        id={item.id}
                         checked={today === check}
-                        value={today}
+                        value={today === check}
                         onChange={handleSelect}
                       />
                     ) : (
