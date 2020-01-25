@@ -1,34 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
+import HomePageButton from '../components/HomePageButton';
+import dayjs from 'dayjs';
 import './List.css';
 
-import HomePageButton from '../components/HomePageButton';
-// import Checkmark from './Checkmark';
-import dayjs from 'dayjs';
-
-/*
-you have the item in list, so you can pass the whole item here: https://github.com/the-collab-lab/tcl-3-smart-shopping-list/blob/mj-mr-mark-an-item-purchased/src/pages/List.js#L81. that item can then be passed down so you’ll have the ID
-be sure to pass the whole item to set. it does an entire replace. think something like set({…oldItemData, newField: newData})
-checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} . then you can make your date comparison in that function
-src/pages/List.js:81
-*/
-
-// const currentTime = Date.now(); no longer being used since we are comparing with Date.now()?
 const today = dayjs();
 
-const isLessThan24hrs = purchased_date => {
-  let purchaseDateCalc = dayjs(purchased_date);
-  console.log('is it calculating', purchaseDateCalc);
-  return today.diff(purchaseDateCalc), 'hour' <= 24;
-};
+function isLessThan24hrs(datePurchased) {
+  let purchaseDateCalc = dayjs(datePurchased);
+  return today.diff(purchaseDateCalc, 'hour') <= 24;
+}
 
 const List = props => {
-  const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
+  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
+    ListContext,
+  );
   const { token } = useListToken();
 
   function isChecked(lastDatePurchased) {
@@ -37,8 +28,7 @@ const List = props => {
 
   function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
-    console.log('date purchased', datePurchased);
-    addTime(item, datePurchased);
+    addDatePurchased(item, datePurchased);
   }
 
   return (
@@ -57,12 +47,15 @@ const List = props => {
             return <ErrorMessage />;
           }
 
+          if (!isLoading) {
+            setShoppingList(data);
+          }
+
           return isLoading ? (
             // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
             <ul className="shopping-list">
-              {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <li key={index}>
                   <label>

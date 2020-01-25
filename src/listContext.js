@@ -54,7 +54,7 @@ const ListContextProvider = props => {
     }
   };
 
-  const addTime = (item, lastItemPurchased) => {
+  const addDatePurchased = (item, lastItemPurchased) => {
     itemsRef.doc(item.id).set({ ...item, lastItemPurchased });
   };
 
@@ -69,7 +69,7 @@ const ListContextProvider = props => {
         addItem,
         name,
         setName,
-        addTime,
+        addDatePurchased,
       }}
     >
       {props.children}
