@@ -54,8 +54,8 @@ const ListContextProvider = props => {
     }
   };
 
-  const addTime = data => {
-    itemsRef.doc('name').set({ lastItemPurchased: data });
+  const addTime = (item, data) => {
+    itemsRef.doc(item.id).set({ ...item, lastItemPurchased: data });
   };
 
   return (

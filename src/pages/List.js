@@ -9,7 +9,14 @@ import HomePageButton from '../components/HomePageButton';
 // import Checkmark from './Checkmark';
 import dayjs from 'dayjs';
 
-const currentTime = new Date();
+/*
+you have the item in list, so you can pass the whole item here: https://github.com/the-collab-lab/tcl-3-smart-shopping-list/blob/mj-mr-mark-an-item-purchased/src/pages/List.js#L81. that item can then be passed down so you’ll have the ID
+be sure to pass the whole item to set. it does an entire replace. think something like set({…oldItemData, newField: newData})
+checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} . then you can make your date comparison in that function
+src/pages/List.js:81
+*/
+
+const currentTime = Date.now();
 const today = dayjs(currentTime);
 
 const isLessThan24hrs = purchased_date => {
