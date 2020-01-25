@@ -31,14 +31,6 @@ const List = props => {
   const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
   const { token } = useListToken();
 
-  /*
-  Still need to figure out:
-    1. When box is check it will add `today`
-    2. When box is check for more than 24hrs it becomes unchecked
-
-
-
-  */
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
@@ -70,23 +62,10 @@ const List = props => {
             <Loading />
           ) : (
             <ul className="shopping-list">
-              {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <li key={index}>
                   <label>
-                    {/* <input type="checkbox"></input> */}
-                    {/* {isLessThan24hrs(check) ? (
-                      <input
-                        type="checkbox"
-                        id={item.id}
-                        checked={check === item.lastPurchaseDate}
-                        value={today === check}
-                        onChange={() => handleSelect(item)}
-                      />
-                    ) : (
-                      <input type="checkbox" />
-                    )} */}
                     <input
                       type="checkbox"
                       //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
