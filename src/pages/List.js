@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
@@ -8,7 +7,6 @@ import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
 // import Checkmark from './Checkmark';
-import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
 const currentTime = new Date();
@@ -23,7 +21,7 @@ const isLessThan24hrs = purchased_date => {
 // console.log('this is today', today);
 
 const List = props => {
-  const { shoppingList, setShoppingList } = useContext(ListContext);
+  const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
   const { token } = useListToken();
 
   /*
