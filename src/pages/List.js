@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
@@ -6,45 +6,32 @@ import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
-// import Checkmark from './Checkmark';
 import dayjs from 'dayjs';
+import './List.css';
 
-/*
-you have the item in list, so you can pass the whole item here: https://github.com/the-collab-lab/tcl-3-smart-shopping-list/blob/mj-mr-mark-an-item-purchased/src/pages/List.js#L81. that item can then be passed down so you’ll have the ID
-be sure to pass the whole item to set. it does an entire replace. think something like set({…oldItemData, newField: newData})
-checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} . then you can make your date comparison in that function
-src/pages/List.js:81
-*/
+const today = dayjs();
 
-const currentTime = Date.now();
-const today = dayjs(currentTime);
-
-const isLessThan24hrs = purchased_date => {
-  let purchaseDateCalc = dayjs(purchased_date);
-  return today.diff(purchaseDateCalc), 'hour' <= 24;
-};
-
-// console.log('this is nowItem', nowItem);
-// console.log('this is today', today);
+function isLessThan24hrs(datePurchased) {
+  let purchaseDateCalc = dayjs(datePurchased);
+  return today.diff(purchaseDateCalc, 'hour') <= 24;
+}
 
 const List = props => {
-  const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
+  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
+    ListContext,
+  );
   const { token } = useListToken();
 
-  /*
-  Still need to figure out:
-    1. When box is check it will add `today`
-    2. When box is check for more than 24hrs it becomes unchecked
+  //we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
+  function isChecked(lastDatePurchased) {
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+  }
 
-
-
-  */
-
-  const [check, setChecked] = useState('');
-
-  const handleSelect = (item, check) => {
-    setChecked(addTime(item, check));
-  };
+  //we are adding the item.id as well as the date purchased when clicking on the checkbox
+  function handlePurchasedChange(item) {
+    const datePurchased = item.lastDatePurchased ? null : Date.now();
+    addDatePurchased(item, datePurchased);
+  }
 
   return (
     <>
@@ -62,33 +49,29 @@ const List = props => {
             return <ErrorMessage />;
           }
 
+          if (!isLoading) {
+            setShoppingList(data);
+          }
+
           return isLoading ? (
             // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
-            <div>
-              {/* need to add checkbox input here */}
-              {setShoppingList(data)}
+            <ul className="shopping-list">
               {shoppingList.map((item, index) => (
-                <div key={index}>
+                <li key={index}>
                   <label>
-                    {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(check) ? (
-                      <input
-                        type="checkbox"
-                        id={item.id}
-                        checked={check === item.lastPurchaseDate}
-                        value={today === check}
-                        onChange={() => handleSelect(item)}
-                      />
-                    ) : (
-                      <input type="checkbox" />
-                    )}
+                    <input
+                      type="checkbox"
+                      //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                      checked={isChecked(item.lastDatePurchased)}
+                      onChange={() => handlePurchasedChange(item)}
+                    />
                     {item.name}
                   </label>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           );
         }}
       />
