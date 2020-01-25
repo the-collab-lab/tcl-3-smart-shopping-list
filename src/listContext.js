@@ -48,8 +48,8 @@ const ListContextProvider = props => {
     }
   }
 
-  function addTime(lastPurchaseDate) {
-    itemsRef.add({ lastPurchaseDate });
+  function addTime(data) {
+    itemsRef.doc('lastPurchaseDate').set(data);
   }
 
   return (
