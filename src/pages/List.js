@@ -5,6 +5,8 @@ import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
+import './List.css';
+
 import HomePageButton from '../components/HomePageButton';
 // import Checkmark from './Checkmark';
 import dayjs from 'dayjs';
@@ -16,16 +18,13 @@ checked is a reflection of a field on the item. it shouldn’t be local state. y
 src/pages/List.js:81
 */
 
-const currentTime = Date.now();
-const today = dayjs(currentTime);
+// const currentTime = Date.now(); no longer being used since we are comparing with Date.now()?
+const today = dayjs();
 
 const isLessThan24hrs = purchased_date => {
   let purchaseDateCalc = dayjs(purchased_date);
   return today.diff(purchaseDateCalc), 'hour' <= 24;
 };
-
-// console.log('this is nowItem', nowItem);
-// console.log('this is today', today);
 
 const List = props => {
   const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
@@ -39,12 +38,14 @@ const List = props => {
 
 
   */
+  function isChecked(lastDatePurchased) {
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+  }
 
-  const [check, setChecked] = useState('');
-
-  const handleSelect = (item, check) => {
-    setChecked(addTime(item, check));
-  };
+  function handlePurchasedChange(item) {
+    const datePurchased = item.lastDatePurchased ? null : Date.now();
+    addTime(item, datePurchased);
+  }
 
   return (
     <>
@@ -66,14 +67,14 @@ const List = props => {
             // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
-            <div>
+            <div className="itemList">
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <div key={index}>
                   <label>
                     {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(check) ? (
+                    {/* {isLessThan24hrs(check) ? (
                       <input
                         type="checkbox"
                         id={item.id}
@@ -83,7 +84,13 @@ const List = props => {
                       />
                     ) : (
                       <input type="checkbox" />
-                    )}
+                    )} */}
+                    <input
+                      type="checkbox"
+                      //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                      checked={isChecked(item.lastDatePurchased)}
+                      onChange={() => handlePurchasedChange(item)}
+                    />
                     {item.name}
                   </label>
                 </div>
