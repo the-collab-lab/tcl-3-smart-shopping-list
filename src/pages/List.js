@@ -1,49 +1,35 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
-import HomePageButton from '../components/HomePageButton';
-// import Checkmark from './Checkmark';
 import dayjs from 'dayjs';
 
-const currentTime = new Date();
-const today = dayjs(currentTime);
+import './List.css';
 
-const isLessThan24hrs = purchased_date => {
-  let purchaseDateCalc = dayjs(purchased_date);
-  return today.diff(purchaseDateCalc), 'hour' <= 24;
-};
+const today = dayjs();
 
-// console.log('this is nowItem', nowItem);
-// console.log('this is today', today);
+function isLessThan24hrs(datePurchased) {
+  const purchaseDateCalc = dayjs(datePurchased);
+  return today.diff(purchaseDateCalc, 'hour') <= 24;
+}
 
 const List = props => {
-  const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
+  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
+    ListContext,
+  );
   const { token } = useListToken();
 
-  /*
-  Still need to figure out:
-    1. When box is check it will add `today`
-    2. When box is check for more than 24hrs it becomes unchecked
+  function isChecked(lastDatePurchased) {
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+  }
 
-
-
-  */
-
-  const [check, setChecked] = useState('');
-
-  const handleSelect = event => {
-    setChecked(isLessThan24hrs(event.target.value));
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    addTime(check);
-    console.log('is this check working', check);
-  };
+  function handlePurchasedChange(item) {
+    const datePurchased = item.lastDatePurchased ? null : Date.now();
+    addDatePurchased(item, datePurchased);
+  }
 
   return (
     <>
@@ -61,33 +47,29 @@ const List = props => {
             return <ErrorMessage />;
           }
 
+          // TODO: We shouldn't be setting state here. FirebaseCollection knows when there's an update
+          if (!isLoading) {
+            setShoppingList(data);
+          }
+
           return isLoading ? (
             // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
-            <div>
-              {/* need to add checkbox input here */}
-              {setShoppingList(data)}
+            <ul className="shopping-list">
               {shoppingList.map((item, index) => (
-                <div key={index}>
-                  <label onChange={handleSubmit}>
-                    {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(item.lastPurchaseDate) ? (
-                      <input
-                        type="checkbox"
-                        id={item.id}
-                        checked={today === check}
-                        value={today === check}
-                        onChange={handleSelect}
-                      />
-                    ) : (
-                      <input type="checkbox" />
-                    )}
+                <li key={index}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={isChecked(item.lastDatePurchased)}
+                      onChange={() => handlePurchasedChange(item)}
+                    />
                     {item.name}
                   </label>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           );
         }}
       />
