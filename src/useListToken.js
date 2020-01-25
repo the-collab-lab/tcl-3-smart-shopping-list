@@ -4,7 +4,16 @@ import getToken from './lib/token';
 const TOKEN_NAME = 'token';
 
 export function getCurrentToken() {
-  return window.localStorage.getItem(TOKEN_NAME) || getToken();
+  let token = window.localStorage.getItem(TOKEN_NAME);
+
+  if (token) {
+    return token;
+  }
+
+  token = getToken();
+  window.localStorage.setItem(TOKEN_NAME, token);
+
+  return token;
 }
 
 function useListToken() {
@@ -12,7 +21,7 @@ function useListToken() {
 
   const saveToken = token => {
     setToken(token);
-    localStorage.setItem(TOKEN_NAME, token);
+    window.localStorage.setItem(TOKEN_NAME, token);
   };
 
   return {
