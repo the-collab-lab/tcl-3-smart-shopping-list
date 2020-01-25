@@ -1,46 +1,15 @@
-import React, { Component } from 'react';
-import './HomePage.css';
-import NavTabs from '../components/NavTabs';
-import JoinList from '../components/JoinList';
-import HiddenButton from '../components/HiddenButton';
+import React, { useContext } from 'react';
 
-// export default function HomePage() {
-//   return (
-//     <div className="whole-page">
-//       <h1>Here's our homepage! Go to your list or add an item below.</h1>
-//       <JoinList />
-//       <NavTabs />
-//       <HiddenButton />
-//     </div>
-//   );
-// }
+import useListToken from '../useListToken';
+import { ListContext } from '../listContext';
+import List from './List';
+import Welcome from '../components/Welcome';
 
-class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isEmptyState: true };
-  }
+const HomePage = () => {
+  const { token } = useListToken();
+  const { validToken } = useContext(ListContext);
 
-  triggerJoinListState = () => {
-    this.setState({
-      ...this.state,
-      isEmptyState: false,
-      isJoinListState: true,
-    });
-  };
-
-  render() {
-    return (
-      <div className="whole-page">
-        <h1>Here's our homepage! Go to your list or add an item below.</h1>
-        <NavTabs />
-        {this.state.isEmptyState && (
-          <HiddenButton joinList={this.triggerJoinListState} />
-        )}
-
-        {this.state.isJoinListState && <JoinList />}
-      </div>
-    );
-  }
-}
+  return <>{validToken(token) ? <List /> : <Welcome />}</>;
+};
+// afar weld impel
 export default HomePage;
