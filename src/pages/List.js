@@ -36,7 +36,7 @@ const List = () => {
 
   const handleSelect = event => {
     event.preventDefault();
-    setChecked(isLessThan24hrs(today));
+    setChecked(isLessThan24hrs(event.target.value));
   };
 
   const handleSubmit = event => {
@@ -74,9 +74,10 @@ const List = () => {
                 <div key={index}>
                   <label onChange={handleSubmit}>
                     {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(item.last_purchase_date) ? (
+                    {isLessThan24hrs(item.lastPurchaseDate) ? (
                       <input
                         type="checkbox"
+                        id={today}
                         checked={today === check}
                         value={today}
                         onChange={handleSelect}

@@ -50,7 +50,6 @@ const ListContextProvider = props => {
 
   function addTime(lastPurchaseDate) {
     itemsRef.add({ lastPurchaseDate });
-    fetchList(token);
   }
 
   return (
