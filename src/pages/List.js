@@ -5,6 +5,7 @@ import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
+import HomePageButton from '../components/HomePageButton';
 // import Checkmark from './Checkmark';
 import dayjs from 'dayjs';
 
@@ -36,7 +37,7 @@ const List = props => {
 
   const handleSelect = event => {
     event.preventDefault();
-    setChecked(isLessThan24hrs(today));
+    setChecked(isLessThan24hrs(event.target.value));
   };
 
   const handleSubmit = event => {
@@ -72,9 +73,10 @@ const List = props => {
                 <div key={index}>
                   <label onChange={handleSubmit}>
                     {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(item.last_purchase_date) ? (
+                    {isLessThan24hrs(item.lastPurchaseDate) ? (
                       <input
                         type="checkbox"
+                        id={today}
                         checked={today === check}
                         value={today}
                         onChange={handleSelect}
