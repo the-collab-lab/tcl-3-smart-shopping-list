@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
+import NavTabs from '../components/NavTabs';
+import { ListContext } from '../listContext';
+import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
-import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
-import HomePageButton from '../components/HomePageButton';
 // import Checkmark from './Checkmark';
-import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
 const currentTime = new Date();
@@ -19,9 +19,9 @@ const isLessThan24hrs = purchased_date => {
 // console.log('this is nowItem', nowItem);
 // console.log('this is today', today);
 
-const List = () => {
-  const { setShoppingList, shoppingList, addTime } = useContext(ListContext);
-  const getStoredToken = () => window.localStorage.getItem('token');
+const List = props => {
+  const { shoppingList, setShoppingList, addTime } = useContext(ListContext);
+  const { token } = useListToken();
 
   /*
   Still need to figure out:
@@ -47,24 +47,22 @@ const List = () => {
 
   return (
     <>
-      <HomePageButton />
-
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', getStoredToken()]}
+        filter={['token', '==', token]}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
           if (!isLoading && data.length === 0) {
-            localStorage.setItem('token', '');
             return <ErrorMessage />;
           }
 
           return isLoading ? (
+            // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
             <div>
