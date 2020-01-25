@@ -42,14 +42,8 @@ const List = props => {
 
   const [check, setChecked] = useState('');
 
-  const handleSelect = event => {
-    setChecked(isLessThan24hrs(event.target.value));
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    addTime(check);
-    console.log('is this check working', check);
+  const handleSelect = (item, check) => {
+    setChecked(addTime(item, check));
   };
 
   return (
@@ -77,15 +71,15 @@ const List = props => {
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <div key={index}>
-                  <label onChange={handleSubmit}>
+                  <label>
                     {/* <input type="checkbox"></input> */}
-                    {isLessThan24hrs(item.lastPurchaseDate) ? (
+                    {isLessThan24hrs(check) ? (
                       <input
                         type="checkbox"
                         id={item.id}
-                        checked={today === check}
+                        checked={check === item.lastPurchaseDate}
                         value={today === check}
-                        onChange={handleSelect}
+                        onChange={() => handleSelect(item)}
                       />
                     ) : (
                       <input type="checkbox" />
