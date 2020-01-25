@@ -23,6 +23,7 @@ const today = dayjs();
 
 const isLessThan24hrs = purchased_date => {
   let purchaseDateCalc = dayjs(purchased_date);
+  console.log('is it calculating', purchaseDateCalc);
   return today.diff(purchaseDateCalc), 'hour' <= 24;
 };
 
@@ -44,6 +45,7 @@ const List = props => {
 
   function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
+    console.log('date purchased', datePurchased);
     addTime(item, datePurchased);
   }
 
@@ -67,11 +69,11 @@ const List = props => {
             // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
-            <div className="itemList">
+            <ul className="shopping-list">
               {/* need to add checkbox input here */}
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
-                <div key={index}>
+                <li key={index}>
                   <label>
                     {/* <input type="checkbox"></input> */}
                     {/* {isLessThan24hrs(check) ? (
@@ -93,9 +95,9 @@ const List = props => {
                     />
                     {item.name}
                   </label>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           );
         }}
       />
