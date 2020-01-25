@@ -4,7 +4,7 @@ import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
-import Checkmark from './Checkmark';
+// import Checkmark from './Checkmark';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 
@@ -23,15 +23,27 @@ const List = () => {
   const { setShoppingList, shoppingList, addItem } = useContext(ListContext);
   const getStoredToken = () => window.localStorage.getItem('token');
 
-  // const [check, setChecked] = useState();
+  /*
+  Still need to figure out:
+    1. When box is check it will add `today`
+    2. When box is check for more than 24hrs it becomes unchecked
 
-  // How do we update the DB with a clicked checkbox?
-  // const isLessThan24hrs = item => {
-  //   //This variable will grab the items date it was purchased
 
-  //   const purchaseDateCalc = dayjs()(item.last_purchase_date);
 
-  // };
+  */
+
+  const [check, setChecked] = useState();
+
+  const handleSelect = event => {
+    event.preventDefeault();
+    setChecked(isLessThan24hrs());
+  };
+
+  const handleSubmit = event => {
+    event.preventDefeault();
+    addItem(check);
+    console.log('is this check working', check);
+  };
 
   return (
     <>
@@ -60,10 +72,15 @@ const List = () => {
               {setShoppingList(data)}
               {shoppingList.map((item, index) => (
                 <div key={index}>
-                  <label>
+                  <label onSubmit={handleSubmit}>
                     {/* <input type="checkbox"></input> */}
                     {isLessThan24hrs(item.last_purchase_date) ? (
-                      <input type="checkbox" checked="checked" />
+                      <input
+                        type="checkbox"
+                        checked={today === check}
+                        value={today}
+                        onChange={handleSelect}
+                      />
                     ) : (
                       <input type="checkbox" />
                     )}
