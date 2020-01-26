@@ -22,7 +22,7 @@ const List = props => {
   );
   const { token } = useListToken();
 
-  //we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
+  //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
