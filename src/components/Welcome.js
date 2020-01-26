@@ -22,7 +22,7 @@ const NewListView = props => {
         <div className="new-list-view">
           <p>Tap "Create Shopping List" to get started</p>
 
-          <Link to="/add-item">
+          <Link to="/list">
             <button className="cta-button">Create Shopping List</button>
           </Link>
 

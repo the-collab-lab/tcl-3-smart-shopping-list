@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import '../pages/HomePage.css';
 import useListToken from '../useListToken';
 
@@ -10,12 +10,12 @@ const JoinList = () => {
 
   const handleChange = event => {
     setJoinToken(event.target.value);
-    saveToken(event.target.value);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
     saveToken(joinToken);
+    return joinToken && <Redirect to="/list" />;
   };
 
   // token to use: jimmy torn jolt, conner oaken liz
@@ -36,11 +36,11 @@ const JoinList = () => {
           onChange={handleChange}
         />
 
-        <Link to={`/list/`}>
-          <button type="submit" className="cta-button">
-            Grab Your List
-          </button>
-        </Link>
+        {/* <Link to={`/list/`}> */}
+        <button type="submit" className="cta-button">
+          Grab Your List
+        </button>
+        {/* </Link> */}
       </form>
     </div>
   );

@@ -21,7 +21,6 @@ const ListContextProvider = props => {
     let query = itemsRef
       .orderBy('name')
       .where('token', '==', token || generateToken());
-    // const tempArray = dummyList;
     const tempArray = [];
     query
       .get()
@@ -56,10 +55,10 @@ const ListContextProvider = props => {
   };
 
   const addItem = (name, nextExpectedPurchase, token) => {
-    // so we can add a first item to a first list
-
     if (!isDuplicate(name)) {
       if (!validToken(token)) {
+        // If there is not a valid token when the item is added save a generated token to localState so a new list can be started
+
         saveToken(token);
         itemsRef.add({ name, token, nextExpectedPurchase });
         console.log('from addItem() new list token', token);
