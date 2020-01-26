@@ -8,7 +8,7 @@ import Welcome from '../components/Welcome';
 const HomePage = () => {
   const { initializeList, shoppingList } = useContext(ListContext);
 
-  const [existingList, setExistingList] = useState(
+  const [existingList, setExistingList] = useState(() =>
     initializeList(getCurrentToken()),
   );
   const confirmListStatus = useCallback(() => {
