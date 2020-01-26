@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
-import useListToken from '../useListToken';
+import useListToken, { getCurrentToken } from '../useListToken';
 
 const JoinList = () => {
-  const { token, saveToken } = useListToken();
-  useEffect(() => {
-    saveToken(token);
-  }, [saveToken, token]);
+  const { saveToken } = useListToken();
 
   const handleChange = event => {
     saveToken(event.target.value);
@@ -16,21 +13,30 @@ const JoinList = () => {
   // token to use: jimmy torn jolt, conner oaken liz
 
   const handleSubmit = event => {
+    saveToken(getCurrentToken());
     event.preventDefault();
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>Need to join a list?</label>
+      <form onSubmit={handleSubmit} className="form-flex-container">
+        <label htmlFor="join-list-input">
+          Need to join a list? Enter your share code below, then tap "Grab Your
+          List"
+        </label>
+
         <input
-          value={token}
-          placeholder="Add token here"
+          className="token-input"
+          name="join-list-input"
+          placeholder="Enter share code here"
           type="text"
           onChange={handleChange}
         />
+
         <Link to="/list">
-          <input type="submit" value="Grab Your List" />
+          <button type="submit" className="cta-button">
+            Grab Your List
+          </button>
         </Link>
       </form>
     </div>

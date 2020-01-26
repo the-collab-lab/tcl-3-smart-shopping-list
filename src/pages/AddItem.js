@@ -40,7 +40,7 @@ const AddItem = () => {
   const handleSubmit = event => {
     event.preventDefault();
     setError(isDuplicate(name));
-    addItem(name, nextExpectedPurchase);
+    addItem(name, nextExpectedPurchase, token);
   };
 
   return (

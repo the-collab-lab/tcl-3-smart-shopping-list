@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
-import { ListContext } from '../listContext';
-import useListToken from '../useListToken';
-import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
+import useListToken from '../useListToken';
+import { FirestoreCollection } from 'react-firestore';
+import { ListContext } from '../listContext';
 
 const List = props => {
-  const { shoppingList, setShoppingList } = useContext(ListContext);
   const { token } = useListToken();
-
+  const { setShoppingList, shoppingList } = useContext(ListContext);
   return (
     <>
       <FirestoreCollection
@@ -27,7 +26,6 @@ const List = props => {
           }
 
           return isLoading ? (
-            // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
             <ul>
