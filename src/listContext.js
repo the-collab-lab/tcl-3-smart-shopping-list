@@ -36,15 +36,6 @@ const ListContextProvider = props => {
     return tempArray;
   };
 
-  const getShoppingList = token => {
-    const list = fetchList(token);
-    if (list.length === 0) {
-      return [];
-    }
-    console.log(list);
-    return list;
-  };
-
   const isDuplicate = name => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
@@ -92,7 +83,6 @@ const ListContextProvider = props => {
       value={{
         validToken,
         shoppingList,
-        getShoppingList,
         setShoppingList,
         fetchList,
         isDuplicate,
