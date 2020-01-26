@@ -6,9 +6,10 @@ import useListToken from '../useListToken';
 const JoinList = () => {
   const { saveToken } = useListToken();
 
-  const [joinToken] = React.useState('');
+  const [joinToken, setJoinToken] = React.useState('');
 
   const handleChange = event => {
+    setJoinToken(event.target.value);
     saveToken(event.target.value);
   };
 
