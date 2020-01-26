@@ -36,7 +36,7 @@ const JoinList = () => {
           onChange={handleChange}
         />
 
-        <Link to={`/list/${joinToken}`}>
+        <Link to={`/list/`}>
           <button type="submit" className="cta-button">
             Grab Your List
           </button>

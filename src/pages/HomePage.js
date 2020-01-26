@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 
 import { getCurrentToken } from '../useListToken';
 import { ListContext } from '../listContext';
@@ -11,7 +11,7 @@ const HomePage = () => {
   const [existingList, setExistingList] = useState(
     initializeList(getCurrentToken()),
   );
-  const confirmListStatus = React.useCallback(() => {
+  const confirmListStatus = useCallback(() => {
     setExistingList(shoppingList.length > 0);
   }, [shoppingList.length]);
 

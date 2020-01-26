@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
-import useListToken from './useListToken';
+import useListToken, { generateToken } from './useListToken';
 
 const ListContext = React.createContext();
 // const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
@@ -18,7 +18,9 @@ const ListContextProvider = props => {
   };
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
-    let query = itemsRef.orderBy('name').where('token', '==', token);
+    let query = itemsRef
+      .orderBy('name')
+      .where('token', '==', token || generateToken());
     // const tempArray = dummyList;
     const tempArray = [];
     query

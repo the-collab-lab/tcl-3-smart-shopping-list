@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCurrentToken } from '../useListToken';
 
 function AddItemHeader() {
   return (
     <div>
-      <Link to={`/list/${getCurrentToken()}`}>
+      <Link to={`/list/`}>
         <img src={require('../assets/back-button.png')} alt="back button" />
       </Link>
     </div>

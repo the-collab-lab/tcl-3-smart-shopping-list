@@ -6,17 +6,13 @@ import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
-import { useParams } from 'react-router-dom';
 import './List.css';
 
 const List = props => {
   const { shoppingList, setShoppingList, addDatePurchased } = useContext(
     ListContext,
   );
-  let { token: tokenFromUrlParams } = useParams();
-  const { token: listTokenFromContext } = useListToken();
-  const token = tokenFromUrlParams || listTokenFromContext;
-
+  const { token } = useListToken();
   const today = dayjs();
 
   function isLessThan24hrs(datePurchased) {
