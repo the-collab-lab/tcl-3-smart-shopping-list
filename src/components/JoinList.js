@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import '../pages/HomePage.css';
 import useListToken from '../useListToken';
@@ -6,15 +6,18 @@ import useListToken from '../useListToken';
 const JoinList = () => {
   const { saveToken } = useListToken();
 
-  const [joinToken, setJoinToken] = React.useState('');
+  const [joinToken, setJoinToken] = useState('');
+  const [loading, setLoading] = useState();
 
   const handleChange = event => {
     setJoinToken(event.target.value);
   };
 
   const handleSubmit = event => {
+    setLoading(true);
     event.preventDefault();
     saveToken(joinToken);
+    joinToken && setLoading(false);
     return joinToken && <Redirect to="/list" />;
   };
 
@@ -36,11 +39,10 @@ const JoinList = () => {
           onChange={handleChange}
         />
 
-        {/* <Link to={`/list/`}> */}
         <button type="submit" className="cta-button">
           Grab Your List
         </button>
-        {/* </Link> */}
+        {loading && <p>Fetching your list...</p>}
       </form>
     </div>
   );
