@@ -22,10 +22,12 @@ const List = props => {
   );
   const { token } = useListToken();
 
+  //we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
 
+  //we are adding the item.id as well as the date purchased when clicking on the checkbox
   function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
