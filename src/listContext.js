@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
-import useListToken, { generateToken } from './useListToken';
+import useListToken, { generateToken, getCurrentToken } from './useListToken';
 
 const ListContext = React.createContext();
 // const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
@@ -20,7 +20,7 @@ const ListContextProvider = props => {
   const fetchList = token => {
     let query = itemsRef
       .orderBy('name')
-      .where('token', '==', token || generateToken());
+      .where('token', '==', token || 'token not set');
     const tempArray = [];
     query
       .get()
@@ -59,10 +59,10 @@ const ListContextProvider = props => {
       if (!validToken(token)) {
         // If there is not a valid token when the item is added save a generated token to localState so a new list can be started
 
-        saveToken(token);
-        itemsRef.add({ name, token, nextExpectedPurchase });
-        console.log('from addItem() new list token', token);
-        fetchList(token);
+        saveToken(generateToken());
+        itemsRef.add({ name, token: getCurrentToken(), nextExpectedPurchase });
+        console.log('from addItem() new list token', getCurrentToken());
+        fetchList(getCurrentToken());
         console.log('here from addItem() new list', shoppingList);
         setName('');
         return;
