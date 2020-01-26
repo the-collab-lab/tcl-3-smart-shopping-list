@@ -8,6 +8,7 @@ const JoinList = () => {
 
   const [joinToken, setJoinToken] = useState('');
   const [loading, setLoading] = useState();
+  const [joinFail, setJoinFail] = useState();
 
   const handleChange = event => {
     setJoinToken(event.target.value);
@@ -18,6 +19,9 @@ const JoinList = () => {
     event.preventDefault();
     saveToken(joinToken);
     joinToken && setLoading(false);
+    if (joinToken && !loading) {
+      setJoinFail(true);
+    }
     return joinToken && <Redirect to="/list" />;
   };
 
@@ -43,6 +47,9 @@ const JoinList = () => {
           Grab Your List
         </button>
         {loading && <p>Fetching your list...</p>}
+        {joinToken && joinFail && (
+          <p>That list doesn't exist. Please try again</p>
+        )}
       </form>
     </div>
   );
