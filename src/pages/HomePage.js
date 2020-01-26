@@ -13,18 +13,15 @@ const HomePage = () => {
   const [existingList, setExistingList] = useState(
     initializeList(getCurrentToken()),
   );
-  const confirmListStatus = React.useCallback(
-    bool => {
-      setExistingList(shoppingList.length > 0);
-      setLoading(false);
-    },
-    [shoppingList.length],
-  );
+  const confirmListStatus = React.useCallback(() => {
+    setExistingList(shoppingList.length > 0);
+    setLoading(false);
+  }, [shoppingList.length]);
 
   useEffect(() => {
     confirmListStatus();
-    console.log('token from useEffect', getCurrentToken());
-    console.log('existingList value from useEffect', existingList);
+    console.log('token from HomePage useEffect', getCurrentToken());
+    console.log('existingList value from HomePage useEffect', existingList);
   }, [confirmListStatus, existingList]);
 
   return (

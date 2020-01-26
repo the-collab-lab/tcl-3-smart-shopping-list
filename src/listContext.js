@@ -70,8 +70,9 @@ const ListContextProvider = props => {
         saveToken(token);
         itemsRef.add({ name, token, nextExpectedPurchase });
         console.log('from addItem() new list token', token);
+        fetchList(token);
+        console.log('here from addItem() new list', shoppingList);
         setName('');
-
         return;
       }
       itemsRef.add({ name, token, nextExpectedPurchase });

@@ -24,7 +24,6 @@ const List = props => {
           if (!isLoading && data.length === 0) {
             return <ErrorMessage />;
           }
-
           return isLoading ? (
             <Loading />
           ) : (
