@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../pages/HomePage.css';
+import { getCurrentToken } from '../useListToken';
 
 const NavTabs = () => {
   return (
@@ -10,7 +11,7 @@ const NavTabs = () => {
           to add item
         </NavLink>
 
-        <NavLink className="right-tab" to="/list">
+        <NavLink className="right-tab" to={`/list/${getCurrentToken()}`}>
           to list
         </NavLink>
       </div>

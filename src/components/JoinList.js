@@ -1,30 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../pages/HomePage.css';
-import useListToken, { getCurrentToken } from '../useListToken';
+import useListToken from '../useListToken';
 
 const JoinList = () => {
   const { saveToken } = useListToken();
 
-   const [joinToken, setJoinToken] = useState('');
+  const [joinToken] = React.useState('');
 
-   const handleChange = event => {
-     setJoinToken(event.target.value)
-   }
-   
-   const handleSubmit = event => {
-     event.preventDefault();
-     saveToken(joinToken)
-   }
+  const handleChange = event => {
     saveToken(event.target.value);
   };
 
-  // token to use: jimmy torn jolt, conner oaken liz
-
   const handleSubmit = event => {
-    saveToken(getCurrentToken());
     event.preventDefault();
+    saveToken(joinToken);
   };
+
+  // token to use: jimmy torn jolt, conner oaken liz
 
   return (
     <div>
@@ -42,7 +35,7 @@ const JoinList = () => {
           onChange={handleChange}
         />
 
-        <Link to="/list">
+        <Link to={`/list/${joinToken}`}>
           <button type="submit" className="cta-button">
             Grab Your List
           </button>

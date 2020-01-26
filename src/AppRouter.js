@@ -10,7 +10,7 @@ export default function AppRouter() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/add-item" component={AddItem} />
-        <Route path="/list" component={List} />
+        <Route path="/list/:token" component={List} />
       </Switch>
     </BrowserRouter>
   );

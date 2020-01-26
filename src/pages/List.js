@@ -6,14 +6,16 @@ import useListToken from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
+import { useParams } from 'react-router-dom';
 import './List.css';
-import HomePageButton from '../components/HomePageButton';
 
 const List = props => {
   const { shoppingList, setShoppingList, addDatePurchased } = useContext(
     ListContext,
   );
-  const { token } = useListToken();
+  let { token: tokenFromUrlParams } = useParams();
+  const { token: listTokenFromContext } = useListToken();
+  const token = tokenFromUrlParams || listTokenFromContext;
 
   const today = dayjs();
 

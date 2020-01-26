@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
 import ItemError from './ItemError';
@@ -9,25 +9,11 @@ const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
   const { token } = useListToken();
-  const {
-    shoppingList,
-    fetchList,
-    isDuplicate,
-    addItem,
-    name,
-    setName,
-  } = useContext(ListContext);
+  const { isDuplicate, addItem, name, setName } = useContext(ListContext);
 
   const [error, setError] = useState(false);
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
-  useEffect(() => {
-    if (shoppingList.length === 0) {
-      fetchList(token);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // The state every time an event happens
   const handleChange = event => {
     setName(event.target.value);
     setError(isDuplicate(event.target.value));
