@@ -54,6 +54,11 @@ const ListContextProvider = props => {
     }
   };
 
+  //we use .set to add the time the item was purchased to an already existing document we search for the item.id
+  const addDatePurchased = (item, lastDatePurchased) => {
+    itemsRef.doc(item.id).set({ ...item, lastDatePurchased });
+  };
+
   return (
     <ListContext.Provider
       value={{
@@ -65,6 +70,7 @@ const ListContextProvider = props => {
         addItem,
         name,
         setName,
+        addDatePurchased,
       }}
     >
       {props.children}

@@ -25,7 +25,7 @@ const AddItem = () => {
     if (shoppingList.length === 0) {
       fetchList(token);
     }
-  }, [fetchList, shoppingList, token]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The state every time an event happens
   const handleChange = event => {
