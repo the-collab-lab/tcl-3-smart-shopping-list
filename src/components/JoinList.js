@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import '../pages/HomePage.css';
 import useListToken from '../useListToken';
 
 const JoinList = () => {
   const { saveToken } = useListToken();
+  const history = useHistory();
 
   const [joinToken, setJoinToken] = useState('');
   const [loading, setLoading] = useState();
-  const [joinFail, setJoinFail] = useState();
 
   const handleChange = event => {
     setJoinToken(event.target.value);
@@ -19,10 +19,8 @@ const JoinList = () => {
     event.preventDefault();
     saveToken(joinToken);
     joinToken && setLoading(false);
-    if (joinToken && !loading) {
-      setJoinFail(true);
-    }
-    return joinToken && <Redirect to="/list" />;
+
+    return joinToken && history.push('/list');
   };
 
   // token to use: jimmy torn jolt, conner oaken liz
@@ -47,9 +45,6 @@ const JoinList = () => {
           Grab Your List
         </button>
         {loading && <p>Fetching your list...</p>}
-        {joinToken && joinFail && (
-          <p>That list doesn't exist. Please try again</p>
-        )}
       </form>
     </div>
   );
