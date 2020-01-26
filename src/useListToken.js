@@ -9,8 +9,10 @@ export function getCurrentToken() {
   if (token) {
     return token;
   }
+}
 
-  token = getToken();
+export function generateToken() {
+  let token = getToken();
   window.localStorage.setItem(TOKEN_NAME, token);
 
   return token;
