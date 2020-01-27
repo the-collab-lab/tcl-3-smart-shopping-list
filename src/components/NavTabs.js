@@ -10,7 +10,7 @@ const NavTabs = () => {
           to add item
         </NavLink>
 
-        <NavLink className="right-tab" to="/list">
+        <NavLink className="right-tab" to={`/list/`}>
           to list
         </NavLink>
       </div>

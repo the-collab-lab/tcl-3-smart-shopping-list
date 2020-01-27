@@ -1,15 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 
-import useListToken from '../useListToken';
+import { getCurrentToken } from '../useListToken';
 import { ListContext } from '../listContext';
 import List from './List';
 import Welcome from '../components/Welcome';
 
 const HomePage = () => {
-  const { token } = useListToken();
-  const { validToken } = useContext(ListContext);
+  const { initializeList, shoppingList } = useContext(ListContext);
 
-  return <>{validToken(token) ? <List /> : <Welcome />}</>;
+  const [existingList, setExistingList] = useState(() =>
+    initializeList(getCurrentToken()),
+  );
+  const confirmListStatus = useCallback(() => {
+    setExistingList(shoppingList.length > 0);
+  }, [shoppingList.length]);
+
+  useEffect(() => {
+    confirmListStatus();
+    console.log('token from HomePage useEffect', getCurrentToken());
+    console.log('existingList value from HomePage useEffect', existingList);
+  }, [confirmListStatus, existingList]);
+
+  return <>{existingList ? <List /> : <Welcome />}</>;
 };
 // afar weld impel
 export default HomePage;
