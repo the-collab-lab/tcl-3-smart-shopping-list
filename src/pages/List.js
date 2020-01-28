@@ -15,6 +15,21 @@ const List = props => {
   const { token } = useListToken;
   const today = dayjs();
 
+  //1. useState to filter input
+
+  /*
+
+  2. Filter Function
+
+  const filterAr = ar => {
+  return ar.filter(
+    item =>
+      item.id.slice(0, filteredInput.length) === filteredInput,
+  );
+};
+
+*/
+
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
     return today.diff(purchaseDateCalc, 'hour') <= 24;
@@ -29,6 +44,8 @@ const List = props => {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
   }
+
+  //4. handleFilterChange: update the state when filter input changes
 
   return (
     <>
@@ -53,6 +70,7 @@ const List = props => {
           return isLoading ? (
             <Loading />
           ) : (
+            // filter feature: includes a handleChange and an onClick()
             <ul className="shopping-list">
               {shoppingList.map((item, index) => (
                 <li key={index}>
@@ -77,5 +95,3 @@ const List = props => {
 };
 
 export default List;
-
-//filter items on list
