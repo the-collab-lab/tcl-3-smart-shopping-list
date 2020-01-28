@@ -1,25 +1,20 @@
 import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 // import ErrorMessage from '../components/ErrorMessage';
-import useListToken, { getCurrentToken } from '../useListToken';
-import { FirestoreCollection } from 'react-firestore';
+import { getCurrentToken } from '../useListToken';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 import './List.css';
+import normalizeName from '../lib/normalizeName';
 
 const List = props => {
-  const {
-    shoppingList,
-    setShoppingList,
-    addDatePurchased,
-    isDuplicate,
-  } = useContext(ListContext);
-  const { token } = useListToken;
+  const { fetchList, addDatePurchased } = useContext(ListContext);
   const today = dayjs();
 
   const [filteredInput, setFilteredInput] = useState('');
-  const [existingItem, setExistingItem] = useState(false);
+  const [list] = useState(() => fetchList(getCurrentToken()));
+  const [listCopy, setListCopy] = useState(list);
 
   //1. useState to filter input
 
@@ -37,11 +32,10 @@ const List = props => {
 */
   function handleFilterChange(event) {
     setFilteredInput(event.target.value);
-    setExistingItem(isDuplicate(event.target.value));
-    console.log(
-      `value: ${event.target.value} from handleFilterChange, ${isDuplicate(
-        event.target.value,
-      )}`,
+    setListCopy(
+      list.filter(item =>
+        item.name.includes(normalizeName(event.target.value)),
+      ),
     );
   }
 
@@ -66,62 +60,32 @@ const List = props => {
 
   return (
     <>
-      <FirestoreCollection
-        // Specify the path to the collection you're pulling data from
-        path="items"
-        // Sort the data
-        sort="name"
-        // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', token || getCurrentToken() || 'no token set']}
-        // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
-        // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
-        render={({ isLoading, data }) => {
-          // if (!isLoading && data.length === 0) {
-          //   return <ErrorMessage />;
-          // }
+      {/* filter feature: includes a handleChange and an onClick() to clear text: Add a X or clear field button*/}
+      <div className="listFilter">
+        <input
+          type="search"
+          className=""
+          onChange={handleFilterChange}
+          value={filteredInput}
+        ></input>
+      </div>
 
-          if (!isLoading) {
-            setShoppingList(data);
-          }
+      <ul className="shopping-list">
+        {listCopy.map((item, index) => (
+          <li key={index}>
+            <label>
+              <input
+                type="checkbox"
+                //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                checked={isChecked(item.lastDatePurchased)}
+                onChange={() => handlePurchasedChange(item)}
+              />
+              {item.name}
+            </label>
+          </li>
+        ))}
+      </ul>
 
-          return isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              {/* filter feature: includes a handleChange and an onClick() to clear text: Add a X or clear field button*/}
-              <div className="listFilter">
-                <input
-                  type="search"
-                  className=""
-                  onChange={handleFilterChange}
-                  value={filteredInput}
-                ></input>
-              </div>
-
-              <ul className="shopping-list">
-                {shoppingList
-                  .filter(
-                    item =>
-                      (item.name && isDuplicate(filteredInput)) || item.name,
-                  )
-                  .map((item, index) => (
-                    <li key={index}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                          checked={isChecked(item.lastDatePurchased)}
-                          onChange={() => handlePurchasedChange(item)}
-                        />
-                        {item.name}
-                      </label>
-                    </li>
-                  ))}
-              </ul>
-            </>
-          );
-        }}
-      />
       <NavTabs />
     </>
   );
