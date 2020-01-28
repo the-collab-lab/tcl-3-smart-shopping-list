@@ -47,6 +47,8 @@ const List = props => {
 
   //4. handleFilterChange: update the state when filter input changes
 
+  //5. way to clear out the filter
+
   return (
     <>
       <FirestoreCollection
@@ -70,22 +72,33 @@ const List = props => {
           return isLoading ? (
             <Loading />
           ) : (
-            // filter feature: includes a handleChange and an onClick()
-            <ul className="shopping-list">
-              {shoppingList.map((item, index) => (
-                <li key={index}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                      checked={isChecked(item.lastDatePurchased)}
-                      onChange={() => handlePurchasedChange(item)}
-                    />
-                    {item.name}
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <>
+              {/* filter feature: includes a handleChange and an onClick() to clear text: Add a X or clear field button*/}
+              <div className="listFilter">
+                <input
+                  type="search"
+                  className=""
+                  onChange="handleFilterChange"
+                  // value={filteredInput}
+                ></input>
+              </div>
+
+              <ul className="shopping-list">
+                {shoppingList.map((item, index) => (
+                  <li key={index}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                        checked={isChecked(item.lastDatePurchased)}
+                        onChange={() => handlePurchasedChange(item)}
+                      />
+                      {item.name}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </>
           );
         }}
       />
