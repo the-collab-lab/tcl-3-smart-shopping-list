@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
 import Loading from '../components/Loading';
 // import ErrorMessage from '../components/ErrorMessage';
@@ -9,11 +9,17 @@ import dayjs from 'dayjs';
 import './List.css';
 
 const List = props => {
-  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
-    ListContext,
-  );
+  const {
+    shoppingList,
+    setShoppingList,
+    addDatePurchased,
+    isDuplicate,
+  } = useContext(ListContext);
   const { token } = useListToken;
   const today = dayjs();
+
+  const [filteredInput, setFilteredInput] = useState('');
+  const [existingItem, setExistingItem] = useState(false);
 
   //1. useState to filter input
 
@@ -29,6 +35,15 @@ const List = props => {
 };
 
 */
+  function handleFilterChange(event) {
+    setFilteredInput(event.target.value);
+    setExistingItem(isDuplicate(event.target.value));
+    console.log(
+      `value: ${event.target.value} from handleFilterChange, ${isDuplicate(
+        event.target.value,
+      )}`,
+    );
+  }
 
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
@@ -78,25 +93,30 @@ const List = props => {
                 <input
                   type="search"
                   className=""
-                  onChange="handleFilterChange"
-                  // value={filteredInput}
+                  onChange={handleFilterChange}
+                  value={filteredInput}
                 ></input>
               </div>
 
               <ul className="shopping-list">
-                {shoppingList.map((item, index) => (
-                  <li key={index}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                        checked={isChecked(item.lastDatePurchased)}
-                        onChange={() => handlePurchasedChange(item)}
-                      />
-                      {item.name}
-                    </label>
-                  </li>
-                ))}
+                {shoppingList
+                  .filter(
+                    item =>
+                      (item.name && isDuplicate(filteredInput)) || item.name,
+                  )
+                  .map((item, index) => (
+                    <li key={index}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                          checked={isChecked(item.lastDatePurchased)}
+                          onChange={() => handlePurchasedChange(item)}
+                        />
+                        {item.name}
+                      </label>
+                    </li>
+                  ))}
               </ul>
             </>
           );
