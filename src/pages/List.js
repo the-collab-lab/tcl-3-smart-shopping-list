@@ -50,7 +50,6 @@ const List = props => {
   }
   //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
-    console.log(!!lastDatePurchased && isLessThan24hrs(lastDatePurchased));
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
   const toggleChecked = (e, name) => {
