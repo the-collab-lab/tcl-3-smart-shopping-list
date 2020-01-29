@@ -9,12 +9,16 @@ import './List.css';
 import normalizeName from '../lib/normalizeName';
 
 const List = props => {
-  const { fetchList, addDatePurchased } = useContext(ListContext);
+  const {
+    fetchList,
+    addDatePurchased,
+    shoppingList,
+    setShoppingList,
+  } = useContext(ListContext);
   const today = dayjs();
 
   const [filteredInput, setFilteredInput] = useState('');
   const [list] = useState(() => fetchList(getCurrentToken()));
-  const [listCopy, setListCopy] = useState(list);
 
   //1. useState to filter input
 
@@ -33,7 +37,7 @@ const List = props => {
 
   function handleFilterChange(event) {
     setFilteredInput(event.target.value);
-    setListCopy(
+    setShoppingList(
       list.filter(item =>
         item.name.includes(normalizeName(event.target.value)),
       ),
@@ -50,11 +54,9 @@ const List = props => {
   }
 
   //we are adding the item.id as well as the date purchased when clicking on the checkbox
-  function handlePurchasedChange(event, item) {
+  function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
-    console.log(event);
-    return event;
   }
 
   //4. handleFilterChange: update the state when filter input changes
@@ -63,7 +65,7 @@ const List = props => {
   function handleFilterClearClick(event) {
     event.preventDefault();
     setFilteredInput('');
-    setListCopy(list);
+    setShoppingList(list);
   }
 
   return (
@@ -86,17 +88,15 @@ const List = props => {
       </div>
 
       <ul className="shopping-list">
-        {listCopy.map((item, index) => (
+        {shoppingList.map((item, index) => (
           <li key={index}>
             <label>
               <input
                 type="checkbox"
                 //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                name={item.name}
-                checked={isChecked(item.lastDatePurchased)}
-                onChange={event =>
-                  handlePurchasedChange(event.currentTarget.checked, item)
-                }
+                name={`${item.name}-checkbox`}
+                checked={isChecked(item.lastDatePurchased) ? 'checked' : null}
+                onChange={() => handlePurchasedChange(item)}
               />
 
               {item.name}
