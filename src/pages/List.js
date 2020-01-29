@@ -60,6 +60,7 @@ const List = props => {
   function handleFilterClearClick(event) {
     event.preventDefault();
     setFilteredInput('');
+    setListCopy(list);
   }
 
   return (
