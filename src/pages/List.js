@@ -92,7 +92,6 @@ const List = props => {
             <Loading />
           ) : (
             <>
-              {/* filter feature: includes a handleChange and an onClick() to clear text: Add a X or clear field button*/}
               <div className="listFilter">
                 <input
                   type="search"
