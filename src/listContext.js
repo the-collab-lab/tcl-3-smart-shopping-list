@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
 import useListToken, { generateToken, getCurrentToken } from './useListToken';
+import calculateEstimate from './lib/estimates.js';
 
 const ListContext = React.createContext();
 // const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
