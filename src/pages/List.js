@@ -30,6 +30,7 @@ const List = props => {
 };
 
 */
+
   function handleFilterChange(event) {
     setFilteredInput(event.target.value);
     setListCopy(
@@ -49,9 +50,11 @@ const List = props => {
   }
 
   //we are adding the item.id as well as the date purchased when clicking on the checkbox
-  function handlePurchasedChange(item) {
+  function handlePurchasedChange(event, item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
+    console.log(event);
+    return event;
   }
 
   //4. handleFilterChange: update the state when filter input changes
@@ -89,8 +92,11 @@ const List = props => {
               <input
                 type="checkbox"
                 //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                name={item.name}
                 checked={isChecked(item.lastDatePurchased)}
-                onChange={() => handlePurchasedChange(item)}
+                onChange={event =>
+                  handlePurchasedChange(event.currentTarget.checked, item)
+                }
               />
 
               {item.name}
