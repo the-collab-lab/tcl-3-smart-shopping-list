@@ -63,6 +63,10 @@ const List = props => {
   //4. handleFilterChange: update the state when filter input changes
 
   //5. way to clear out the filter
+  function handleFilterClearClick(event) {
+    event.preventDefault();
+    setFilteredInput('');
+  }
 
   return (
     <>
@@ -96,6 +100,13 @@ const List = props => {
                   onChange={handleFilterChange}
                   value={filteredInput}
                 ></input>
+                <button
+                  className=""
+                  onClick={handleFilterClearClick}
+                  value={filteredInput}
+                >
+                  x
+                </button>
               </div>
 
               <ul className="shopping-list">
