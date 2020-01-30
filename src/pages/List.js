@@ -1,27 +1,24 @@
 import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
-import { ListContext } from '../listContext';
-import useListToken from '../useListToken';
-import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
-import ErrorMessage from '../components/ErrorMessage';
-import HomePageButton from '../components/HomePageButton';
+// import ErrorMessage from '../components/ErrorMessage';
+import useListToken, { getCurrentToken } from '../useListToken';
+import { FirestoreCollection } from 'react-firestore';
+import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 import './List.css';
-
-const today = dayjs();
-
-function isLessThan24hrs(datePurchased) {
-  let purchaseDateCalc = dayjs(datePurchased);
-  return today.diff(purchaseDateCalc, 'hour') <= 24;
-}
 
 const List = props => {
   const { shoppingList, setShoppingList, addDatePurchased } = useContext(
     ListContext,
   );
-  const { token } = useListToken();
+  const { token } = useListToken;
+  const today = dayjs();
 
+  function isLessThan24hrs(datePurchased) {
+    let purchaseDateCalc = dayjs(datePurchased);
+    return today.diff(purchaseDateCalc, 'hour') <= 24;
+  }
   //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
@@ -41,20 +38,19 @@ const List = props => {
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', token]}
+        filter={['token', '==', token || getCurrentToken() || 'no token set']}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
-          if (!isLoading && data.length === 0) {
-            return <ErrorMessage />;
-          }
+          // if (!isLoading && data.length === 0) {
+          //   return <ErrorMessage />;
+          // }
 
           if (!isLoading) {
             setShoppingList(data);
           }
 
           return isLoading ? (
-            // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
             <ul className="shopping-list">
