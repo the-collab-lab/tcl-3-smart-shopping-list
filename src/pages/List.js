@@ -50,18 +50,23 @@ const List = props => {
   }
   //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
-    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased)
+      ? 'checked'
+      : null;
   }
-  const toggleChecked = (e, name) => {
+  const toggleChecked = (e, datePurchased) => {
     setShoppingList(shoppingList);
-    console.log('checkbox clicked');
+    console.log('checkbox clicked', !!e);
+    return isChecked(datePurchased);
   };
 
   //we are adding the item.id as well as the date purchased when clicking on the checkbox
   function handlePurchasedChange(event, item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
-    toggleChecked(event, item.name);
+    toggleChecked(event, datePurchased);
+    setShoppingList(shoppingList);
+
     console.log(event, item.name);
     return event;
   }
@@ -102,8 +107,10 @@ const List = props => {
                 type="checkbox"
                 //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
                 name={`${item.name}-checkbox`}
-                checked={isChecked(item.lastDatePurchased) ? 'checked' : null}
-                onChange={event => handlePurchasedChange(event, item)}
+                checked={isChecked(item.lastDatePurchased)}
+                onChange={event =>
+                  handlePurchasedChange(event.currentTarget.checked, item)
+                }
               />
 
               {item.name}
