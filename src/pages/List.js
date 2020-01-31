@@ -22,7 +22,7 @@ const List = props => {
   const [filteredInput, setFilteredInput] = useState('');
 
   function handleFilterChange(event) {
-    setFilteredInput(event.target.value);
+    setFilteredInput(event.target.value.toLowerCase());
   }
 
   function isLessThan24hrs(datePurchased) {
