@@ -17,7 +17,7 @@ const List = props => {
 
   const today = dayjs();
 
-  // let normalize = normalizeName();
+  let normalize = normalizeName;
 
   const [filteredInput, setFilteredInput] = useState('');
 
@@ -88,7 +88,8 @@ const List = props => {
                 {shoppingList
                   .filter(
                     item =>
-                      item.name.slice(0, filteredInput.length) == filteredInput,
+                      normalize(item.name).slice(0, filteredInput.length) ===
+                      filteredInput,
                   )
                   .map((item, index) => (
                     <li key={index}>
