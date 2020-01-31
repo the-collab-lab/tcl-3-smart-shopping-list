@@ -1,127 +1,110 @@
 import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
-// import Loading from '../components/Loading';
+import Loading from '../components/Loading';
 // import ErrorMessage from '../components/ErrorMessage';
-import { getCurrentToken } from '../useListToken';
+import useListToken, { getCurrentToken } from '../useListToken';
+import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 import './List.css';
-import normalizeName from '../lib/normalizeName';
-
 const List = props => {
-  const {
-    fetchList,
-    addDatePurchased,
-    shoppingList,
-    setShoppingList,
-  } = useContext(ListContext);
+  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
+    ListContext,
+  );
+
+  const { token } = useListToken;
+
   const today = dayjs();
 
   const [filteredInput, setFilteredInput] = useState('');
-  const [list] = useState(() => fetchList(getCurrentToken()));
-
-  //1. useState to filter input
-
-  /*
-
-  2. Filter Function
-
-  const filterAr = ar => {
-  return ar.filter(
-    item =>
-      item.id.slice(0, filteredInput.length) === filteredInput,
-  );
-};
-
-*/
 
   function handleFilterChange(event) {
     setFilteredInput(event.target.value);
-    setShoppingList(
-      list.filter(item =>
-        item.name.includes(normalizeName(event.target.value)),
-      ),
-    );
   }
 
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
     return today.diff(purchaseDateCalc, 'hour') <= 24;
   }
+
   //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
-    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased)
-      ? 'checked'
-      : null;
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
-  const toggleChecked = (e, datePurchased) => {
-    setShoppingList(shoppingList);
-    console.log('checkbox clicked', !!e);
-    return isChecked(datePurchased);
-  };
 
   //we are adding the item.id as well as the date purchased when clicking on the checkbox
-  function handlePurchasedChange(event, item) {
+  function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
-    toggleChecked(event, datePurchased);
-    setShoppingList(shoppingList);
-
-    console.log(event, item.name);
-    return event;
   }
-
-  //4. handleFilterChange: update the state when filter input changes
 
   //5. way to clear out the filter
   function handleFilterClearClick(event) {
     event.preventDefault();
-    setFilteredInput('');
-    setShoppingList(list);
   }
-
   return (
     <>
-      {/* filter feature: includes a handleChange and an onClick() to clear text: Add a X or clear field button*/}
-      <div className="listFilter">
-        <input
-          type="search"
-          className=""
-          onChange={handleFilterChange}
-          value={filteredInput}
-        ></input>
-        <button
-          className=""
-          onClick={handleFilterClearClick}
-          value={filteredInput}
-        >
-          x
-        </button>
-      </div>
-
-      <ul className="shopping-list">
-        {shoppingList.map((item, index) => (
-          <li key={index}>
-            <label>
-              <input
-                type="checkbox"
-                //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                name={`${item.name}-checkbox`}
-                checked={isChecked(item.lastDatePurchased)}
-                onChange={event =>
-                  handlePurchasedChange(event.currentTarget.checked, item)
-                }
-              />
-
-              {item.name}
-            </label>
-          </li>
-        ))}
-      </ul>
-
+      <FirestoreCollection
+        // Specify the path to the collection you're pulling data from
+        path="items"
+        // Sort the data
+        sort="name"
+        // Only fetch the items associated with the token saved in localStorage
+        filter={['token', '==', token || getCurrentToken() || 'no token set']}
+        // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
+        // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
+        render={({ isLoading, data }) => {
+          // if (!isLoading && data.length === 0) {
+          //   return <ErrorMessage />;
+          // }
+          if (!isLoading) {
+            setShoppingList(data);
+          }
+          return isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <div className="listFilter">
+                <input
+                  type="search"
+                  className=""
+                  onChange={handleFilterChange}
+                  value={filteredInput}
+                ></input>
+                <button
+                  className=""
+                  onClick={handleFilterClearClick}
+                  value={filteredInput}
+                >
+                  x
+                </button>
+              </div>
+              <ul className="shopping-list">
+                {shoppingList
+                  .filter(
+                    item =>
+                      item.name.slice(0, filteredInput.length) == filteredInput,
+                  )
+                  .map((item, index) => (
+                    <li key={index}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          //checked is a reflection of a field on the item. it shouldn't be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
+                          checked={isChecked(item.lastDatePurchased)}
+                          onChange={() => handlePurchasedChange(item)}
+                        />
+                        {item.name}
+                      </label>
+                    </li>
+                  ))}
+              </ul>
+            </>
+          );
+        }}
+      />
       <NavTabs />
     </>
   );
 };
-
 export default List;
