@@ -13,17 +13,13 @@ const List = props => {
     ListContext,
   );
 
+  const [filteredInput, setFilteredInput] = useState('');
+
   const { token } = useListToken;
 
   const today = dayjs();
 
   let normalize = normalizeName;
-
-  const [filteredInput, setFilteredInput] = useState('');
-
-  function handleFilterChange(event) {
-    setFilteredInput(event.target.value.toLowerCase());
-  }
 
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
@@ -39,6 +35,10 @@ const List = props => {
   function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
     addDatePurchased(item, datePurchased);
+  }
+
+  function handleFilterChange(event) {
+    setFilteredInput(event.target.value.toLowerCase());
   }
 
   //5. way to clear out the filter
