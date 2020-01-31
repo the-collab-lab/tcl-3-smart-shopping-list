@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
 import Loading from '../components/Loading';
-// import ErrorMessage from '../components/ErrorMessage';
+import normalizeName from '../lib/normalizeName';
 import useListToken, { getCurrentToken } from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
 import dayjs from 'dayjs';
 import './List.css';
+
 const List = props => {
   const { shoppingList, setShoppingList, addDatePurchased } = useContext(
     ListContext,
@@ -15,6 +16,8 @@ const List = props => {
   const { token } = useListToken;
 
   const today = dayjs();
+
+  // let normalize = normalizeName();
 
   const [filteredInput, setFilteredInput] = useState('');
 
@@ -41,7 +44,9 @@ const List = props => {
   //5. way to clear out the filter
   function handleFilterClearClick(event) {
     event.preventDefault();
+    setFilteredInput('');
   }
+
   return (
     <>
       <FirestoreCollection
@@ -76,7 +81,7 @@ const List = props => {
                   onClick={handleFilterClearClick}
                   value={filteredInput}
                 >
-                  x
+                  X
                 </button>
               </div>
               <ul className="shopping-list">
