@@ -5,9 +5,9 @@ import Welcome from '../components/Welcome';
 import { ListContext } from '../listContext';
 
 const HomePage = props => {
+  const { token, saveToken } = useListToken();
   const { fetchList } = useContext(ListContext);
   const [list] = useState(() => fetchList(getCurrentToken()));
-  const { token, saveToken } = useListToken();
 
   useEffect(() => {
     saveToken(getCurrentToken());
