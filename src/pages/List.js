@@ -42,7 +42,7 @@ const List = props => {
   //5. way to clear out the filter
 
   function filterListInput(name) {
-    return name.includes(normalizeName(filteredInput));
+    return normalizeName(name).includes(normalizeName(filteredInput));
   }
   return (
     <>
@@ -79,7 +79,6 @@ const List = props => {
                       <label>
                         <input
                           type="checkbox"
-                          //checked is a reflection of a field on the item. it shouldn't be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
                           checked={isChecked(item.lastDatePurchased)}
                           onChange={() => handlePurchasedChange(item)}
                         />

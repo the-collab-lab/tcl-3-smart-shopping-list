@@ -10,7 +10,7 @@ const HomePage = props => {
   const [list] = useState(() => fetchList(getCurrentToken()));
 
   useEffect(() => {
-    saveToken(getCurrentToken());
+    saveToken(token);
     console.log('token from HomePage', token);
   }, [saveToken, token]);
 
