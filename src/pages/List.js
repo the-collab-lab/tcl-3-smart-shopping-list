@@ -19,8 +19,6 @@ const List = props => {
 
   const today = dayjs();
 
-  let normalize = normalizeName;
-
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
     return today.diff(purchaseDateCalc, 'hour') <= 24;
@@ -42,11 +40,10 @@ const List = props => {
   }
 
   //5. way to clear out the filter
-  function handleFilterClearClick(event) {
-    event.preventDefault();
-    setFilteredInput('');
-  }
 
+  function filterListInput(name) {
+    return name.includes(normalizeName(filteredInput));
+  }
   return (
     <>
       <FirestoreCollection
@@ -76,11 +73,7 @@ const List = props => {
               </div>
               <ul className="shopping-list">
                 {shoppingList
-                  .filter(
-                    item =>
-                      normalize(item.name).slice(0, filteredInput.length) ===
-                      normalize(filteredInput),
-                  )
+                  .filter(item => filterListInput(item.name))
                   .map((item, index) => (
                     <li key={index}>
                       <label>
