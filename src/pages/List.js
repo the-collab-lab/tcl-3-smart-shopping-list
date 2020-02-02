@@ -81,6 +81,11 @@ const List = props => {
                           type="checkbox"
                           checked={isChecked(item.lastDatePurchased)}
                           onChange={() => handlePurchasedChange(item)}
+                          disabled={
+                            isChecked(item.lastDatePurchased)
+                              ? 'disabled'
+                              : false
+                          }
                         />
                         {item.name}
                       </label>
