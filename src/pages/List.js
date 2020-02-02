@@ -44,8 +44,13 @@ const List = props => {
     let lastEstimate = item.nextExpectedPurchase
       ? item.nextExpectedPurchase
       : 14;
+
+    let prevDate = item.lastDatePurchased ? item.lastDatePurchased : null;
+
+    console.log('prevDate:', prevDate);
+    console.log('currentDate:', datePurchased);
     console.log('lastEstimate:', lastEstimate);
-    console.log('numberOfPurchases:', numberOfPurchases);
+
     const calculatedEstimate = calculateEstimate(
       lastEstimate,
       latestInterval,
