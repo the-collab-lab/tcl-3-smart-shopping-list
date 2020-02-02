@@ -59,9 +59,6 @@ const List = props => {
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
-          // if (!isLoading && data.length === 0) {
-          //   return <ErrorMessage />;
-          // }
           if (!isLoading) {
             setShoppingList(data);
           }
@@ -72,17 +69,10 @@ const List = props => {
               <div className="listFilter">
                 <input
                   type="search"
-                  className=""
                   onChange={handleFilterChange}
                   value={filteredInput}
                 ></input>
-                <button
-                  className=""
-                  onClick={handleFilterClearClick}
-                  value={filteredInput}
-                >
-                  X
-                </button>
+                <button onClick={() => setFilteredInput('')}>X</button>
               </div>
               <ul className="shopping-list">
                 {shoppingList

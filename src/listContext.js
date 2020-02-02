@@ -29,7 +29,6 @@ const ListContextProvider = props => {
           tempArray.push({ ...doc.data(), id: doc.id });
         });
         setShoppingList(tempArray);
-        console.log(tempArray);
       })
       .catch(function(error) {
         console.error('Error getting shopping list ', error);
