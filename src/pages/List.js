@@ -38,7 +38,7 @@ const List = props => {
   }
 
   function handleFilterChange(event) {
-    setFilteredInput(event.target.value.toLowerCase());
+    setFilteredInput(event.target.value);
   }
 
   //5. way to clear out the filter
@@ -79,7 +79,7 @@ const List = props => {
                   .filter(
                     item =>
                       normalize(item.name).slice(0, filteredInput.length) ===
-                      filteredInput,
+                      normalize(filteredInput),
                   )
                   .map((item, index) => (
                     <li key={index}>
