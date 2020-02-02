@@ -106,7 +106,7 @@ const ListContextProvider = props => {
     const purchase = {
       numberOfPurchases,
       lastDatePurchased: datePurchased,
-      latestInterval: calculateLatestInterval(
+      nextExpectedPurchase: calculateLatestInterval(
         item,
         datePurchased,
         numberOfPurchases,
