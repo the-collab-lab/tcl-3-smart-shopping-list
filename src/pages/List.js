@@ -6,6 +6,8 @@ import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import HomePageButton from '../components/HomePageButton';
+import calculateEstimate from '../lib/estimates.js';
+import latestInterval from '../lib/estimates.js';
 import dayjs from 'dayjs';
 import './List.css';
 
@@ -17,9 +19,12 @@ function isLessThan24hrs(datePurchased) {
 }
 
 const List = props => {
-  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
-    ListContext,
-  );
+  const {
+    shoppingList,
+    setShoppingList,
+    addDatePurchased,
+    addCalculatedEstimate,
+  } = useContext(ListContext);
   const { token } = useListToken();
 
   //we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
@@ -33,8 +38,22 @@ const List = props => {
     const numberOfPurchases = item.numberOfPurchases
       ? item.numberOfPurchases + 1
       : 1;
-    console.log(item);
+    console.log('Item before:', item);
     addDatePurchased(item, datePurchased, numberOfPurchases);
+
+    let lastEstimate = item.nextExpectedPurchase
+      ? item.nextExpectedPurchase
+      : 14;
+    console.log('lastEstimate:', lastEstimate);
+    console.log('numberOfPurchases:', numberOfPurchases);
+    const calculatedEstimate = calculateEstimate(
+      lastEstimate,
+      latestInterval,
+      numberOfPurchases,
+    );
+    console.log('the calculateEstimate ran:', calculatedEstimate);
+    addCalculatedEstimate(item, calculatedEstimate);
+    console.log('Item after:', item);
   }
 
   return (

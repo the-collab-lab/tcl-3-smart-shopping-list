@@ -10,6 +10,10 @@ const calculateEstimate = (lastEstimate, latestInterval, numberOfPurchases) => {
     lastEstimate = 14;
   }
 
+  // fake interval to see if variable is added to database - need to store prev and current buy day to calculate difference
+  if (isNaN(latestInterval)) {
+    latestInterval = 10;
+  }
   // FIXME algorithm doesn't work when there's only 1 purchase in the database
   let previousFactor = lastEstimate * numberOfPurchases;
   let latestFactor = latestInterval * (numberOfPurchases - 1);

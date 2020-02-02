@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
 import useListToken, { generateToken, getCurrentToken } from './useListToken';
-import calculateEstimate from './lib/estimates.js';
 
 const ListContext = React.createContext();
 // const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
@@ -82,12 +81,17 @@ const ListContextProvider = props => {
       .set({ ...item, lastDatePurchased, numberOfPurchases });
   };
 
+  const addCalculatedEstimate = (item, calculatedEstimate) => {
+    itemsRef.doc(item.id).set({ ...item, calculatedEstimate });
+  };
+
   return (
     <ListContext.Provider
       value={{
         validToken,
         shoppingList,
         setShoppingList,
+        addCalculatedEstimate,
         fetchList,
         isDuplicate,
         addItem,
