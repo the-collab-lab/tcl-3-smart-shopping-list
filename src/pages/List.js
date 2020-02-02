@@ -26,12 +26,13 @@ const List = props => {
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
-  let count = 1;
+  // let count = 1;
   //we are adding the item.id as well as the date purchased when clicking on the checkbox
   function handlePurchasedChange(item) {
     const datePurchased = item.lastDatePurchased ? null : Date.now();
-    const numberOfPurchases =
-      item.numberOfPurchases === 0 || null ? item.numberOfPurchases++ : count;
+    const numberOfPurchases = item.numberOfPurchases
+      ? item.numberOfPurchases + 1
+      : 1;
     console.log(item);
     addDatePurchased(item, datePurchased, numberOfPurchases);
   }

@@ -76,10 +76,10 @@ const ListContextProvider = props => {
   };
 
   //we use .set to add the time the item was purchased to an already existing document we search for the item.id
-  const addDatePurchased = (item, lastDatePurchased, numberofPurchases) => {
+  const addDatePurchased = (item, lastDatePurchased, numberOfPurchases) => {
     itemsRef
       .doc(item.id)
-      .set({ ...item, lastDatePurchased, numberofPurchases });
+      .set({ ...item, lastDatePurchased, numberOfPurchases });
   };
 
   return (
