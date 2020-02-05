@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
 import Loading from '../components/Loading';
-// import ErrorMessage from '../components/ErrorMessage';
+import normalizeName from '../lib/normalizeName';
 import useListToken, { getCurrentToken } from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
@@ -12,13 +12,18 @@ const List = props => {
   const { shoppingList, setShoppingList, addDatePurchased } = useContext(
     ListContext,
   );
+
+  const [filteredInput, setFilteredInput] = useState('');
+
   const { token } = useListToken;
+
   const today = dayjs();
 
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
     return today.diff(purchaseDateCalc, 'hour') <= 24;
   }
+
   //when an item has been created but not yet purchased.
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
@@ -30,6 +35,15 @@ const List = props => {
     addDatePurchased(item, datePurchased);
   }
 
+  function handleFilterChange(event) {
+    setFilteredInput(event.target.value);
+  }
+
+  //5. way to clear out the filter
+
+  function filterListInput(name) {
+    return normalizeName(name).includes(normalizeName(filteredInput));
+  }
   return (
     <>
       <FirestoreCollection
@@ -42,32 +56,43 @@ const List = props => {
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
-          // if (!isLoading && data.length === 0) {
-          //   return <ErrorMessage />;
-          // }
-
           if (!isLoading) {
             setShoppingList(data);
           }
-
           return isLoading ? (
             <Loading />
           ) : (
-            <ul className="shopping-list">
-              {shoppingList.map((item, index) => (
-                <li key={index}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      //checked is a reflection of a field on the item. it shouldn’t be local state. you should be able to have something like checked={isChecked(item.lastDatePurchased)} .
-                      checked={isChecked(item.lastDatePurchased)}
-                      onChange={() => handlePurchasedChange(item)}
-                    />
-                    {item.name}
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <>
+              <div className="listFilter">
+                <input
+                  type="search"
+                  onChange={handleFilterChange}
+                  value={filteredInput}
+                ></input>
+                <button onClick={() => setFilteredInput('')}>X</button>
+              </div>
+              <ul className="shopping-list">
+                {shoppingList
+                  .filter(item => filterListInput(item.name))
+                  .map((item, index) => (
+                    <li key={index}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={isChecked(item.lastDatePurchased)}
+                          onChange={() => handlePurchasedChange(item)}
+                          disabled={
+                            isChecked(item.lastDatePurchased)
+                              ? 'disabled'
+                              : false
+                          }
+                        />
+                        {item.name}
+                      </label>
+                    </li>
+                  ))}
+              </ul>
+            </>
           );
         }}
       />
@@ -75,5 +100,4 @@ const List = props => {
     </>
   );
 };
-
 export default List;
