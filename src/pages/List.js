@@ -193,9 +193,9 @@ const List = props => {
                               content={`delete ${item.name}?`}
                               trigger={
                                 <Button
-                                  icon="trash alternate outline"
-                                  size="mini"
-                                  color="red"
+                                  icon="delete"
+                                  size="small"
+                                  // color="white"
                                   floated="right"
                                   onClick={() => {
                                     deleteItem(item);

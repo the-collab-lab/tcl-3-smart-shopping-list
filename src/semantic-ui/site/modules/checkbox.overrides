@@ -6,11 +6,9 @@
 }
 
 .ui.list .list > .item > .content, .ui.list > .item > .content {
-  line-height: 1.13333333em;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: 
-  white;
+    line-height: 2.133em;
+    padding: 9px;
+    border-radius: 5px;
 }
 
 .ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
