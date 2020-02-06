@@ -34,6 +34,26 @@ const List = props => {
 
   const today = dayjs();
 
+  function setBackgroundColor(nextExpectedPurchase) {
+    const colorCode = {
+      SOON: '#49c6498f',
+      KIND_OF_SOON: '#ffff6496',
+      NOT_SOON: '#ffbbc770',
+    };
+
+    switch (nextExpectedPurchase) {
+      case 7:
+        return colorCode.SOON;
+      case 14:
+        return colorCode.KIND_OF_SOON;
+
+      case 30:
+        return colorCode.NOT_SOON;
+      default:
+        return 'white';
+    }
+  }
+
   function isLessThan24hrs(datePurchased) {
     let purchaseDateCalc = dayjs(datePurchased);
     return today.diff(purchaseDateCalc, 'hour') <= 24;
@@ -151,7 +171,13 @@ const List = props => {
                     .filter(item => filterListInput(item.name))
                     .map((item, index) => (
                       <ListUI.Item key={index} className="shopping-list">
-                        <ListUI.Content>
+                        <ListUI.Content
+                          style={{
+                            backgroundColor: setBackgroundColor(
+                              item.nextExpectedPurchase,
+                            ),
+                          }}
+                        >
                           <Checkbox
                             label={item.name}
                             checked={isChecked(item.lastDatePurchased)}

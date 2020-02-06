@@ -7,8 +7,12 @@
 
 .ui.list .list > .item > .content, .ui.list > .item > .content {
   line-height: 1.13333333em;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
   background-color: 
   white;
+}
+
+.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
+  padding-bottom: 0;
 }
