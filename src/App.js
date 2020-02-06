@@ -1,11 +1,14 @@
 import React from 'react';
 import AppRouter from './AppRouter';
+import { Container } from 'semantic-ui-react';
 
 function App() {
   return (
-    <main>
-      <AppRouter />
-    </main>
+    <Container>
+      <main>
+        <AppRouter />
+      </main>
+    </Container>
   );
 }
 

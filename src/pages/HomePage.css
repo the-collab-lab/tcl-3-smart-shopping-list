@@ -1,9 +1,7 @@
 .container {
   bottom: 0px;
   display: flex;
-  justify-content: space-around;
-  border: 3px solid red;
-  text-align: center;
+
   flex-shrink: 0;
 }
 .container-container {
@@ -26,8 +24,7 @@
   width: 50%;
   border: 1px solid black;
 }
-.whole-page {
-}
+
 .flex-container {
   text-align: center;
   height: 100vh;
