@@ -1,0 +1,6 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.checkbox .box, .ui.checkbox label {
+  font-size: 1.3rem;
+}

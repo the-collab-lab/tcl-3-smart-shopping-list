@@ -1,4 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Nunito';
+}
+
 header {
-  margin: 20px;
-  padding: 20px;
+  margin: 2rem;
+  padding: 2rem;
 }

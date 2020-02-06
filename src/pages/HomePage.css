@@ -1,29 +1,9 @@
-.container {
-  bottom: 0px;
-  display: flex;
-
-  flex-shrink: 0;
-}
-.container-container {
-  position: absolute;
+/* .sticky {
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
-}
-.left-tab {
-  float: left;
-  padding: 15px;
-  text-align: center;
-  width: 50%;
-  border: 1px solid rgb(178, 122, 230);
-}
-.right-tab {
-  float: right;
-  padding: 15px;
-  text-align: center;
-  width: 50%;
-  border: 1px solid black;
-}
+} */
 
 .flex-container {
   text-align: center;

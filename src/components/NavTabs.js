@@ -1,16 +1,19 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../pages/HomePage.css';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 
 const NavTabs = () => {
   return (
-    <div className="container">
-      <Menu fluid widths={2}>
-        <Menu.Item as={NavLink} name="to add item" to="/add-item" />
-        <Menu.Item as={NavLink} name="to list" to="/list" />
-      </Menu>
-    </div>
+    <Menu fluid fixed bottom sticky widths={2}>
+      <Menu.Item as={NavLink} name="to add item" to="/add-item">
+        <Icon name="add" /> Add Item
+      </Menu.Item>
+
+      <Menu.Item as={NavLink} name="to list" to="/list">
+        <Icon name="list" /> Shopping List
+      </Menu.Item>
+    </Menu>
   );
 };
 
