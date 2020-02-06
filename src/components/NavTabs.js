@@ -5,14 +5,10 @@ import { Menu } from 'semantic-ui-react';
 
 const NavTabs = () => {
   return (
-    <div className="container-container">
-      <div className="container">
-        <Menu fluid widths={2}>
-          <Menu.Item as={NavLink} name="to add item" to="/add-item" />
-          <Menu.Item as={NavLink} name="to list" to="/list" />
-        </Menu>
-      </div>
-    </div>
+    <Menu fluid widths={2}>
+      <Menu.Item as={NavLink} name="to add item" to="/add-item" />
+      <Menu.Item as={NavLink} name="to list" to="/list" />
+    </Menu>
   );
 };
 
