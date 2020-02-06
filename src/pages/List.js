@@ -1,11 +1,17 @@
 import React, { useContext, useState } from 'react';
 import NavTabs from '../components/NavTabs';
-import Loading from '../components/Loading';
 import normalizeName from '../lib/normalizeName';
 import useListToken, { getCurrentToken } from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
-import { Container, Loader, Dimmer } from 'semantic-ui-react';
+import {
+  Container,
+  Loader,
+  Dimmer,
+  Input,
+  Checkbox,
+  List as ListUI,
+} from 'semantic-ui-react';
 
 import dayjs from 'dayjs';
 import './List.css';
@@ -68,35 +74,36 @@ const List = props => {
               </Dimmer>
             ) : (
               <>
-                <div className="listFilter">
-                  <input
-                    type="search"
-                    onChange={handleFilterChange}
-                    value={filteredInput}
-                  ></input>
-                  <button onClick={() => setFilteredInput('')}>X</button>
-                </div>
-                <ul className="shopping-list">
-                  {shoppingList
-                    .filter(item => filterListInput(item.name))
-                    .map((item, index) => (
-                      <li key={index}>
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={isChecked(item.lastDatePurchased)}
-                            onChange={() => handlePurchasedChange(item)}
-                            disabled={
-                              isChecked(item.lastDatePurchased)
-                                ? 'disabled'
-                                : false
-                            }
-                          />
-                          {item.name}
-                        </label>
-                      </li>
-                    ))}
-                </ul>
+                <Input
+                  action={{
+                    icon: 'erase',
+                    content: 'clear',
+                    onClick: () => setFilteredInput(''),
+                  }}
+                  className="listFilter"
+                  placeholder="Search..."
+                  type="search"
+                  onChange={handleFilterChange}
+                  value={filteredInput}
+                ></Input>
+                <Container className="list-container">
+                  <ListUI>
+                    {shoppingList
+                      .filter(item => filterListInput(item.name))
+                      .map((item, index) => (
+                        <ListUI.Item key={index} className="shopping-list">
+                          <ListUI.Content>
+                            <Checkbox
+                              label={item.name}
+                              checked={isChecked(item.lastDatePurchased)}
+                              onChange={() => handlePurchasedChange(item)}
+                              readOnly={isChecked(item.lastDatePurchased)}
+                            />
+                          </ListUI.Content>
+                        </ListUI.Item>
+                      ))}
+                  </ListUI>
+                </Container>
               </>
             );
           }}

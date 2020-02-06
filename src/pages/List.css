@@ -2,3 +2,6 @@ ul.shopping-list {
   list-style: none;
   padding: 0;
 }
+.list-container {
+  margin: 20px;
+}
