@@ -79,6 +79,18 @@ const ListContextProvider = props => {
     itemsRef.doc(item.id).set({ ...item, lastDatePurchased });
   };
 
+  const deleteItem = item => {
+    itemsRef
+      .doc(item.id)
+      .delete()
+      .then(function() {
+        console.log(`${item.name} successfully deleted!`);
+      })
+      .catch(function(error) {
+        console.error('Error removing document: ', error);
+      });
+  };
+
   return (
     <ListContext.Provider
       value={{
@@ -90,6 +102,7 @@ const ListContextProvider = props => {
         addItem,
         name,
         setName,
+        deleteItem,
         initializeList,
         addDatePurchased,
       }}

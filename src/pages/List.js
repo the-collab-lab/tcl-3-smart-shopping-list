@@ -14,6 +14,7 @@ import {
   Segment,
   Icon,
   Menu,
+  Popup,
   Responsive,
   Button,
   List as ListUI,
@@ -24,9 +25,12 @@ import './List.css';
 import NavTabs from '../components/NavTabs';
 
 const List = props => {
-  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
-    ListContext,
-  );
+  const {
+    shoppingList,
+    setShoppingList,
+    addDatePurchased,
+    deleteItem,
+  } = useContext(ListContext);
 
   const [filteredInput, setFilteredInput] = useState('');
 
@@ -166,10 +170,10 @@ const List = props => {
                   </Button>
                 </Responsive>
 
-                <ListUI relaxed className="list-container">
+                <ListUI relaxed animated className="list-container">
                   {shoppingList
                     .filter(item => filterListInput(item.name))
-                    .map((item, index) => (
+                    .map((item, index, array) => (
                       <ListUI.Item key={index} className="shopping-list">
                         <ListUI.Content
                           style={{
@@ -178,12 +182,29 @@ const List = props => {
                             ),
                           }}
                         >
-                          <Checkbox
-                            label={item.name}
-                            checked={isChecked(item.lastDatePurchased)}
-                            onChange={() => handlePurchasedChange(item)}
-                            readOnly={isChecked(item.lastDatePurchased)}
-                          />
+                          <div>
+                            <Checkbox
+                              label={item.name}
+                              checked={isChecked(item.lastDatePurchased)}
+                              onChange={() => handlePurchasedChange(item)}
+                              readOnly={isChecked(item.lastDatePurchased)}
+                            />
+                            <Popup
+                              content={`delete ${item.name}?`}
+                              trigger={
+                                <Button
+                                  icon="trash alternate outline"
+                                  size="mini"
+                                  color="red"
+                                  floated="right"
+                                  onClick={() => {
+                                    deleteItem(item);
+                                    array.splice(index, 1);
+                                  }}
+                                ></Button>
+                              }
+                            />
+                          </div>
                         </ListUI.Content>
                       </ListUI.Item>
                     ))}

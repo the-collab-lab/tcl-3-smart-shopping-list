@@ -5,7 +5,7 @@ import { Menu, Icon } from 'semantic-ui-react';
 
 const NavTabs = () => {
   return (
-    <Menu fluid fixed bottom sticky widths={2}>
+    <Menu fluid bottom="true" widths={2}>
       <Menu.Item as={NavLink} name="to add item" to="/add-item">
         <Icon name="add" /> Add Item
       </Menu.Item>
