@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
-import useListToken from '../useListToken';
+import useListToken, { getCurrentToken } from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
 import dayjs from 'dayjs';
 import './List.css';
+import getToken from '../lib/token';
 
 const today = dayjs();
 
@@ -44,7 +45,7 @@ const List = props => {
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', token]}
+        filter={['token', '==', token] || getCurrentToken || 'no token set'}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
