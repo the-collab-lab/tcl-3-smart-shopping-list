@@ -4,6 +4,7 @@ import useListToken, { getCurrentToken } from '../useListToken';
 import { FirestoreCollection } from 'react-firestore';
 import { ListContext } from '../listContext';
 import { Link } from 'react-router-dom';
+import AppHeader from '../components/AppHeader';
 import {
   Container,
   Loader,
@@ -60,6 +61,7 @@ const List = props => {
   }
   return (
     <>
+      <AppHeader></AppHeader>
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
@@ -100,7 +102,7 @@ const List = props => {
                       action={{
                         color: 'teal',
                         icon: 'erase',
-                        content: 'clear',
+                        // content: 'clear',
                         onClick: () => setFilteredInput(''),
                       }}
                       className="list-filter"
@@ -109,6 +111,8 @@ const List = props => {
                       onChange={handleFilterChange}
                       value={filteredInput}
                       size="large"
+                      icon="filter"
+                      iconPosition="left"
                     ></Input>
                   </Menu.Item>
                 </Responsive>
@@ -126,6 +130,8 @@ const List = props => {
                     onChange={handleFilterChange}
                     value={filteredInput}
                     size="large"
+                    icon="filter"
+                    iconPosition="left"
                   ></Input>
 
                   <Button
