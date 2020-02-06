@@ -1,9 +1,9 @@
 /*******************************
      User Global Variables
 *******************************/
-/*
+
 @primaryColor: #002f4e;
-@pageBackground: #eff0f1; */
+@pageBackground: #eff0f1; 
 
 @headerFont        : 'Overpass', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 @pageFont          : 'Overpass', 'Helvetica Neue', Arial, Helvetica, sans-serif;

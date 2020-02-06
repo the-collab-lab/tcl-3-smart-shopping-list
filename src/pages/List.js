@@ -13,6 +13,8 @@ import {
   Segment,
   Icon,
   Menu,
+  Responsive,
+  Button,
   List as ListUI,
 } from 'semantic-ui-react';
 
@@ -77,27 +79,67 @@ const List = props => {
             </Dimmer>
           ) : (
             <>
-              <Segment textAlign="center">
-                <Menu secondary>
-                  <Menu.Item as={Link} name="Add an item" to="/add-item">
-                    <Icon name="add" /> Add Item
-                  </Menu.Item>
-                </Menu>
-                <Input
-                  action={{
-                    icon: 'erase',
-                    content: 'clear',
-                    onClick: () => setFilteredInput(''),
-                  }}
-                  className="list-filter"
-                  placeholder="Filter list..."
-                  type="search"
-                  onChange={handleFilterChange}
-                  value={filteredInput}
-                  size="small"
-                ></Input>
-              </Segment>
               <Container>
+                <Responsive as={Menu} stackable maxWidth={554}>
+                  <Menu.Item>
+                    <Button
+                      fluid
+                      size="large"
+                      color="blue"
+                      floated="right"
+                      as={Link}
+                      name="Add an item"
+                      to="/add-item"
+                    >
+                      {' '}
+                      <Icon name="add" /> Add Item
+                    </Button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Input
+                      action={{
+                        color: 'teal',
+                        icon: 'erase',
+                        content: 'clear',
+                        onClick: () => setFilteredInput(''),
+                      }}
+                      className="list-filter"
+                      placeholder="Filter list..."
+                      type="search"
+                      onChange={handleFilterChange}
+                      value={filteredInput}
+                      size="large"
+                    ></Input>
+                  </Menu.Item>
+                </Responsive>
+                <Responsive as={Segment} minWidth={555} textAlign="left">
+                  <Input
+                    action={{
+                      color: 'teal',
+                      icon: 'erase',
+                      content: 'clear',
+                      onClick: () => setFilteredInput(''),
+                    }}
+                    className="list-filter"
+                    placeholder="Filter list..."
+                    type="search"
+                    onChange={handleFilterChange}
+                    value={filteredInput}
+                    size="large"
+                  ></Input>
+
+                  <Button
+                    size="large"
+                    color="blue"
+                    floated="right"
+                    as={Link}
+                    name="Add an item"
+                    to="/add-item"
+                  >
+                    <Icon name="add" /> Add Item
+                  </Button>
+                </Responsive>
+
                 <ListUI relaxed className="list-container">
                   {shoppingList
                     .filter(item => filterListInput(item.name))
