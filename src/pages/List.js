@@ -200,7 +200,6 @@ const List = props => {
                                 <Button
                                   icon="delete"
                                   size="small"
-                                  // color="white"
                                   floated="right"
                                   onClick={() => {
                                     deleteItem(item);
