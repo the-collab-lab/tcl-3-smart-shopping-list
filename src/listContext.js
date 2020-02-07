@@ -29,7 +29,7 @@ const ListContextProvider = props => {
       .get()
       .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-          tempArray.push(doc.data());
+          tempArray.push({ ...doc.data(), id: doc.id });
         });
         setShoppingList(tempArray);
       })
