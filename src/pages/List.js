@@ -28,7 +28,6 @@ const List = props => {
   const {
     shoppingList,
     setShoppingList,
-
     deleteItem,
     purchaseItem,
   } = useContext(ListContext);
@@ -176,7 +175,7 @@ const List = props => {
                   </Button>
                 </Responsive>
 
-                <ListUI relaxed animated className="list-container">
+                <ListUI relaxed className="list-container">
                   {shoppingList
                     .filter(item => filterListInput(item.name))
                     .map((item, index, array) => (
