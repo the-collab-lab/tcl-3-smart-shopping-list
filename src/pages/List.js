@@ -40,9 +40,9 @@ const List = props => {
 
   function setBackgroundColor(nextExpectedPurchase) {
     const colorCode = {
-      SOON: '#49c6498f',
-      KIND_OF_SOON: '#ffff6496',
-      NOT_SOON: '#ffbbc770',
+      SOON: 'green',
+      KIND_OF_SOON: 'orange',
+      NOT_SOON: 'red',
     };
 
     switch (nextExpectedPurchase) {
@@ -177,9 +177,9 @@ const List = props => {
                       <ListUI.Item key={index} className="shopping-list">
                         <ListUI.Content
                           style={{
-                            backgroundColor: setBackgroundColor(
+                            border: `thin solid ${setBackgroundColor(
                               item.nextExpectedPurchase,
-                            ),
+                            )}`,
                           }}
                         >
                           <div>

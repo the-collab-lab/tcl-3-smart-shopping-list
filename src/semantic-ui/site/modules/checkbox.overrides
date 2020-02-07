@@ -9,6 +9,7 @@
     line-height: 2.133em;
     padding: 9px;
     border-radius: 5px;
+    background-color: white;
 }
 
 .ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
