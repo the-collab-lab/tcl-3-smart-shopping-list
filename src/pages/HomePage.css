@@ -1,28 +1,14 @@
-.flex-container {
-  text-align: center;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-.form-flex-container {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.token-input {
-  margin: 15px;
-}
 a {
   text-decoration: none;
   cursor: pointer;
 }
 p {
   padding-top: 10px;
+  margin: 10px;
+  font-size: 1.2em;
+}
+button .ui .blue .large .button .grab-list-button {
+  margin: 1em;
 }
 .borderless-button {
   cursor: pointer;
