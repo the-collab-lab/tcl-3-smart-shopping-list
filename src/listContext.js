@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import calculateEstimate from './lib/estimates.js';
 import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
@@ -13,6 +15,12 @@ const ListContextProvider = props => {
   const [name, setName] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
 
+  // Should not be exposed in the API of this context
+  // This is super simple right now. A better version would have error handling backed into it
+  // as well as loading state management.
+  const updateItem = (item, data) => {
+    return itemsRef.doc(item.id).set({ ...item, ...data });
+  };
   const initializeList = token => {
     return validToken(token);
   };
@@ -73,6 +81,36 @@ const ListContextProvider = props => {
       setName('');
     }
   };
+  // We can augment this down the line if we want to allow purchasing more than 1 of something.
+
+  const calculateLatestInterval = (item, purchaseDate, numberOfPurchases) => {
+    // If this is our first purchase, their is no interval.
+    // If we pass dayjs undefined, it will give us the date for today
+    const latestInterval = item.lastDatePurchased
+      ? dayjs(purchaseDate).diff(dayjs(item.lastDatePurchased), 'days')
+      : 0;
+
+    return calculateEstimate(
+      // This simplifies an expression I saw:
+      // nextPurchase = item.nextPurchase ? item.nextPurchase : 14
+      item.nextExpectedPurchase || 14,
+      latestInterval,
+      numberOfPurchases,
+    );
+  };
+  const purchaseItem = (item, datePurchased) => {
+    const numberOfPurchases = (item.numberOfPurchases || 0) + 1;
+    const purchase = {
+      numberOfPurchases,
+      lastDatePurchased: datePurchased,
+      nextExpectedPurchase: calculateLatestInterval(
+        item,
+        datePurchased,
+        numberOfPurchases,
+      ),
+    };
+    return updateItem(item, purchase);
+  };
 
   //we use .set to add the time the item was purchased to an already existing document we search for the item.id
   const addDatePurchased = (item, lastDatePurchased) => {
@@ -102,6 +140,7 @@ const ListContextProvider = props => {
         addItem,
         name,
         setName,
+        purchaseItem,
         deleteItem,
         initializeList,
         addDatePurchased,
