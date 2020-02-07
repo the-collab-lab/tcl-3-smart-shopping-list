@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
 import normalizeName from '../lib/normalizeName';
 import useListToken, { getCurrentToken } from '../useListToken';
@@ -20,9 +21,19 @@ import {
   List as ListUI,
 } from 'semantic-ui-react';
 
-import dayjs from 'dayjs';
 import './List.css';
 import NavTabs from '../components/NavTabs';
+
+function isLessThan24hrs(datePurchased) {
+  return dayjs().diff(dayjs(datePurchased), 'hours') <= 24;
+}
+
+//we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
+function isChecked(lastDatePurchased) {
+  return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+}
+
+//we are adding the item.id as well as the date purchased when clicking on the checkbox
 
 const List = props => {
   const {
@@ -30,6 +41,7 @@ const List = props => {
     setShoppingList,
     addDatePurchased,
     deleteItem,
+    purchaseItem,
   } = useContext(ListContext);
 
   const [filteredInput, setFilteredInput] = useState('');
@@ -68,10 +80,14 @@ const List = props => {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
 
-  //we are adding the item.id as well as the date purchased when clicking on the checkbox
   function handlePurchasedChange(item) {
-    const datePurchased = item.lastDatePurchased ? null : Date.now();
-    addDatePurchased(item, datePurchased);
+    // We don't want to uncheck ourselves. We should have a separate ticket for handling a mis-check
+    // What would we set datePurchased to on an uncheck? Can't be null if we've purchased or our suggestions
+    // are goofed. Maybe we live with that, or we could keep the most recent lastDatePurchased in case
+    // of a mistake. For this ticket, let's keep it simple.
+    if (!isChecked(item.lastDatePurchased)) {
+      purchaseItem(item, Date.now());
+    }
   }
 
   function handleFilterChange(event) {
