@@ -1,38 +1,39 @@
+import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
+import { FirestoreCollection } from 'react-firestore';
+
+import { ListContext } from '../listContext';
+import useListToken, { getCurrentToken } from '../useListToken';
 import NavTabs from '../components/NavTabs';
 import Loading from '../components/Loading';
 import normalizeName from '../lib/normalizeName';
-import useListToken, { getCurrentToken } from '../useListToken';
-import { FirestoreCollection } from 'react-firestore';
-import { ListContext } from '../listContext';
-import dayjs from 'dayjs';
+
 import './List.css';
 
+function isLessThan24hrs(datePurchased) {
+  return dayjs().diff(dayjs(datePurchased), 'hours') <= 24;
+}
+
+//we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
+function isChecked(lastDatePurchased) {
+  return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+}
+
 const List = props => {
-  const { shoppingList, setShoppingList, addDatePurchased } = useContext(
+  const [filteredInput, setFilteredInput] = useState('');
+  const { shoppingList, setShoppingList, purchaseItem } = useContext(
     ListContext,
   );
+  const { token } = useListToken();
 
-  const [filteredInput, setFilteredInput] = useState('');
-
-  const { token } = useListToken;
-
-  const today = dayjs();
-
-  function isLessThan24hrs(datePurchased) {
-    let purchaseDateCalc = dayjs(datePurchased);
-    return today.diff(purchaseDateCalc, 'hour') <= 24;
-  }
-
-  //when an item has been created but not yet purchased.
-  function isChecked(lastDatePurchased) {
-    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
-  }
-
-  //we are adding the item.id as well as the date purchased when clicking on the checkbox
   function handlePurchasedChange(item) {
-    const datePurchased = item.lastDatePurchased ? null : Date.now();
-    addDatePurchased(item, datePurchased);
+    // We don't want to uncheck ourselves. We should have a separate ticket for handling a mis-check
+    // What would we set datePurchased to on an uncheck? Can't be null if we've purchased or our suggestions
+    // are goofed. Maybe we live with that, or we could keep the most recent lastDatePurchased in case
+    // of a mistake. For this ticket, let's keep it simple.
+    if (!isChecked(item.lastDatePurchased)) {
+      purchaseItem(item, Date.now());
+    }
   }
 
   function handleFilterChange(event) {
@@ -60,6 +61,7 @@ const List = props => {
             setShoppingList(data);
           }
           return isLoading ? (
+            // TODO: Make a display list function is listContext.js
             <Loading />
           ) : (
             <>
