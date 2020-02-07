@@ -7,9 +7,7 @@ p {
   margin: 10px;
   font-size: 1.2em;
 }
-button .ui .blue .large .button .grab-list-button {
-  margin: 1em;
-}
+
 .borderless-button {
   cursor: pointer;
   text-decoration: underline;

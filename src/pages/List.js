@@ -11,11 +11,11 @@ import {
   Loader,
   Dimmer,
   Input,
+  Accordion,
   Checkbox,
   Segment,
   Icon,
   Menu,
-  Popup,
   Responsive,
   Button,
   List as ListUI,
@@ -38,6 +38,13 @@ const List = props => {
 
   const today = dayjs();
 
+  const [accordionState, setAccordionState] = useState(-1);
+
+  const handleClick = index => {
+    const activeIndex = accordionState;
+    const newIndex = activeIndex === index ? -1 : index;
+    setAccordionState(newIndex);
+  };
   function setBackgroundColor(nextExpectedPurchase) {
     const colorCode = {
       SOON: 'green',
@@ -111,7 +118,7 @@ const List = props => {
           ) : (
             <>
               <Container>
-                <Responsive as={Menu} stackable maxWidth={554}>
+                <Responsive as={Menu} stackable maxWidth={584}>
                   <Menu.Item>
                     <Button
                       fluid
@@ -129,7 +136,6 @@ const List = props => {
                   <Menu.Item>
                     <Input
                       action={{
-                        color: 'teal',
                         icon: 'erase',
                         // content: 'clear',
                         onClick: () => setFilteredInput(''),
@@ -145,10 +151,9 @@ const List = props => {
                     ></Input>
                   </Menu.Item>
                 </Responsive>
-                <Responsive as={Segment} minWidth={555} textAlign="left">
+                <Responsive as={Segment} minWidth={585} textAlign="left">
                   <Input
                     action={{
-                      color: 'teal',
                       icon: 'erase',
                       content: 'clear',
                       onClick: () => setFilteredInput(''),
@@ -194,20 +199,36 @@ const List = props => {
                               onChange={() => handlePurchasedChange(item)}
                               readOnly={isChecked(item.lastDatePurchased)}
                             />
-                            <Popup
-                              content={`delete ${item.name}?`}
-                              trigger={
+                            <Accordion>
+                              <Accordion.Title
+                                active={accordionState === index}
+                                index={index}
+                                onClick={() => handleClick(index)}
+                              >
+                                <Icon name="dropdown" />
+                                Details
+                              </Accordion.Title>
+
+                              <Accordion.Content
+                                active={accordionState === index}
+                              >
+                                <p>test</p>
+                                {item.nextExpectedPurchase}
                                 <Button
-                                  icon="delete"
+                                  color="red"
                                   size="small"
                                   floated="right"
                                   onClick={() => {
                                     deleteItem(item);
                                     array.splice(index, 1);
+                                    setAccordionState(-1);
                                   }}
-                                ></Button>
-                              }
-                            />
+                                >
+                                  <Icon name="delete" />
+                                  delete
+                                </Button>
+                              </Accordion.Content>
+                            </Accordion>
                           </div>
                         </ListUI.Content>
                       </ListUI.Item>
