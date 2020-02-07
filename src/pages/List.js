@@ -180,7 +180,11 @@ const List = props => {
                   </Button>
                 </Responsive>
 
-                <ListUI relaxed className="list-container">
+                <ListUI
+                  relaxed
+                  className="list-container"
+                  style={{ paddingBottom: 50 }}
+                >
                   {shoppingList
                     .filter(item => filterListInput(item.name))
                     .map((item, index, array) => (
