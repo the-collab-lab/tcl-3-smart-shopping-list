@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // import '../pages/HomePage.css';
+import { Button, Container } from 'semantic-ui-react';
+import AppHeader from '../components/AppHeader';
 import JoinList from '../components/JoinList';
 
 const JoinListView = props => {
@@ -20,15 +22,16 @@ const NewListView = props => {
     <>
       {!joinViewVisible && (
         <div className="new-list-view">
-          <p>Tap "Create Shopping List" to get started</p>
-
           <Link to="/list">
-            <button className="cta-button">Create Shopping List</button>
+            <Button size="massive" color="green">
+              Create Shopping List
+            </Button>
           </Link>
 
           <p>
-            You can also{' '}
+            You can also
             <button
+              style={{ display: 'inline' }}
               className="borderless-button"
               onClick={() => setJoinViewVisible(true)}
             >
@@ -44,12 +47,10 @@ const NewListView = props => {
 
 const Welcome = props => {
   return (
-    <main className="flex-container">
-      <div>
-        <h1>Welcome to Your Smart Shopping List!</h1>
-        <NewListView />
-      </div>
-    </main>
+    <Container textAlign="center">
+      <AppHeader>Welcome to Your Smart Shopping List!</AppHeader>
+      <NewListView />
+    </Container>
   );
 };
 

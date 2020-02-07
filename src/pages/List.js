@@ -90,7 +90,7 @@ const List = props => {
   }
   return (
     <>
-      <AppHeader></AppHeader>
+      <AppHeader>Smart Shopping List</AppHeader>
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"

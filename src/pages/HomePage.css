@@ -13,16 +13,7 @@
   justify-content: center;
   flex-direction: column;
 }
-.cta-button {
-  margin: 20px;
-  font-size: 1.2rem;
-  color: white;
-  padding: 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: forestgreen;
-  border: none;
-}
+
 .token-input {
   margin: 15px;
 }
@@ -30,8 +21,13 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+p {
+  padding-top: 10px;
+}
 .borderless-button {
   cursor: pointer;
-
+  text-decoration: underline;
   border: none;
+  margin-top: 15px;
+  font-size: 1.2em;
 }
