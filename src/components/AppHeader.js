@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Header, Segment, Button } from 'semantic-ui-react';
+import { Image, Header, Segment, Button, Divider } from 'semantic-ui-react';
 import Logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 
@@ -18,15 +18,16 @@ function AppHeader(props) {
           floated="left"
         ></Button>
       )}
+      <Divider hidden />
       <header>
-        <Image
+        {/* <Image
           src={Logo}
           centered
           size="tiny"
           verticalAlign="middle"
           alt="Shopping List"
-        />
-        <Header as="h1" style={{ display: 'inline-block', marginLeft: '10px' }}>
+        /> */}
+        <Header as="h1">
           <Header.Content>{props.children}</Header.Content>
         </Header>
       </header>

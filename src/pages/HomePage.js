@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import useListToken, { getCurrentToken } from '../useListToken';
 import List from './List';
-import JoinList from '../components/JoinList';
+import JoinList from './JoinList';
 import { ListContext } from '../listContext';
 
 const HomePage = props => {
@@ -16,5 +16,4 @@ const HomePage = props => {
 
   return <>{list.length > 0 ? <List /> : list && <JoinList />}</>;
 };
-// afar weld impel
 export default HomePage;

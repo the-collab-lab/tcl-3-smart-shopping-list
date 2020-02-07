@@ -21,7 +21,6 @@ import {
   List as ListUI,
 } from 'semantic-ui-react';
 
-import './List.css';
 import NavTabs from '../components/NavTabs';
 
 const List = props => {

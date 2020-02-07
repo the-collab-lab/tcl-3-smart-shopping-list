@@ -6,7 +6,6 @@ import { withFirestore } from 'react-firestore';
 import useListToken, { generateToken, getCurrentToken } from './useListToken';
 
 const ListContext = React.createContext();
-// const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
 const ListContextProvider = props => {
   const { saveToken } = useListToken();
   const { firestore } = props;
@@ -21,9 +20,11 @@ const ListContextProvider = props => {
   const updateItem = (item, data) => {
     return itemsRef.doc(item.id).set({ ...item, ...data });
   };
+
   const initializeList = token => {
     return validToken(token);
   };
+
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
     let query = itemsRef

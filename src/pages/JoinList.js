@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../pages/HomePage.css';
 import useListToken from '../useListToken';
-import AppHeader from './AppHeader';
+import AppHeader from '../components/AppHeader';
 import { Link } from 'react-router-dom';
 import {
   Input,
@@ -88,7 +88,6 @@ const JoinList = () => {
             />
           </form>
         </Segment>
-        {/* {loading && <p>Fetching your list...</p>} */}
       </Container>
     </>
   );

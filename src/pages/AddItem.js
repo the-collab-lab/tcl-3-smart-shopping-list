@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import './AddItem.css';
-import ItemError from './ItemError';
+import ItemError from '../components/ItemError';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
 import AppHeader from '../components/AppHeader';
@@ -45,7 +45,7 @@ const AddItem = () => {
     <>
       <AppHeader showBackArrow={true}>Add Item to List</AppHeader>
 
-      <Container textAlign="center">
+      <Container textAlign="center" style={{ paddingBottom: 50 }}>
         <Segment>
           <div>
             <form onSubmit={handleSubmit}>
@@ -58,8 +58,8 @@ const AddItem = () => {
                 onChange={handleChange}
               />
               {error && name && <ItemError name={name} />}
-              <p>{`How soon do you expect to buy this item again?`}</p>
-              <List horizontal relaxed>
+              <p>How soon do you expect to buy this item again?</p>
+              <List>
                 <List.Item>
                   <List.Content>
                     <label>
