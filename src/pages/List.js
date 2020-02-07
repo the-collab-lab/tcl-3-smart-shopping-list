@@ -24,22 +24,11 @@ import {
 import './List.css';
 import NavTabs from '../components/NavTabs';
 
-function isLessThan24hrs(datePurchased) {
-  return dayjs().diff(dayjs(datePurchased), 'hours') <= 24;
-}
-
-//we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
-function isChecked(lastDatePurchased) {
-  return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
-}
-
-//we are adding the item.id as well as the date purchased when clicking on the checkbox
-
 const List = props => {
   const {
     shoppingList,
     setShoppingList,
-    addDatePurchased,
+
     deleteItem,
     purchaseItem,
   } = useContext(ListContext);
@@ -79,6 +68,7 @@ const List = props => {
   function isChecked(lastDatePurchased) {
     return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
   }
+  //we are adding the item.id as well as the date purchased when clicking on the checkbox
 
   function handlePurchasedChange(item) {
     // We don't want to uncheck ourselves. We should have a separate ticket for handling a mis-check
