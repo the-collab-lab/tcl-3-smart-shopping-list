@@ -1,7 +1,10 @@
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
-import normalizeName from './lib/normalizeName';
 import { withFirestore } from 'react-firestore';
+
 import useListToken, { generateToken, getCurrentToken } from './useListToken';
+import calculateEstimate from './lib/estimates.js';
+import normalizeName from './lib/normalizeName';
 
 const ListContext = React.createContext();
 // const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
@@ -37,12 +40,20 @@ const ListContextProvider = props => {
     return tempArray;
   };
 
+  // Should not be exposed in the API of this context
+  // This is super simple right now. A better version would have error handling backed into it
+  // as well as loading state management.
+  const updateItem = (item, data) => {
+    return itemsRef.doc(item.id).set({ ...item, ...data });
+  };
+
   const isDuplicate = name => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     const isDupe = normalizedList.includes(normalizedName);
     return isDupe;
   };
+
   const validToken = token => {
     if (fetchList(token).length > 0) {
       console.log('here from validToken()', token);
@@ -51,7 +62,6 @@ const ListContextProvider = props => {
     }
     let filteredByToken = shoppingList.filter(item => item.token === token);
     return filteredByToken.length > 0;
-    // return true;
   };
 
   const addItem = (name, nextExpectedPurchase, token) => {
@@ -61,28 +71,46 @@ const ListContextProvider = props => {
 
         saveToken(generateToken());
         itemsRef.add({ name, token: getCurrentToken(), nextExpectedPurchase });
-        console.log('from addItem() new list token', getCurrentToken());
         fetchList(getCurrentToken());
-        console.log('here from addItem() new list', shoppingList);
         setName('');
         return;
       }
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
-      console.log('here from addItem()', shoppingList);
       setName('');
     }
   };
 
-  //we use .set to add the time the item was purchased to an already existing document we search for the item.id
-  const addDatePurchased = (item, lastDatePurchased, numberOfPurchases) => {
-    itemsRef
-      .doc(item.id)
-      .set({ ...item, lastDatePurchased, numberOfPurchases });
+  const calculateLatestInterval = (item, purchaseDate, numberOfPurchases) => {
+    // If this is our first purchase, their is no interval.
+    // If we pass dayjs undefined, it will give us the date for today
+    const latestInterval = item.lastDatePurchased
+      ? dayjs(purchaseDate).diff(dayjs(item.lastDatePurchased), 'days')
+      : 0;
+
+    return calculateEstimate(
+      // This simplifies an expression I saw:
+      // nextPurchase = item.nextPurchase ? item.nextPurchase : 14
+      item.nextExpectedPurchase || 14,
+      latestInterval,
+      numberOfPurchases,
+    );
   };
 
-  const addCalculatedEstimate = (item, calculatedEstimate) => {
-    itemsRef.doc(item.id).set({ ...item, calculatedEstimate });
+  // We can augment this down the line if we want to allow purchasing more than 1 of something.
+  const purchaseItem = (item, datePurchased) => {
+    const numberOfPurchases = (item.numberOfPurchases || 0) + 1;
+    const purchase = {
+      numberOfPurchases,
+      lastDatePurchased: datePurchased,
+      nextExpectedPurchase: calculateLatestInterval(
+        item,
+        datePurchased,
+        numberOfPurchases,
+      ),
+    };
+
+    return updateItem(item, purchase);
   };
 
   return (
@@ -91,14 +119,13 @@ const ListContextProvider = props => {
         validToken,
         shoppingList,
         setShoppingList,
-        addCalculatedEstimate,
+        purchaseItem,
         fetchList,
         isDuplicate,
         addItem,
         name,
         setName,
         initializeList,
-        addDatePurchased,
       }}
     >
       {props.children}

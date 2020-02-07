@@ -1,64 +1,38 @@
+import dayjs from 'dayjs';
 import React, { useContext } from 'react';
+import { FirestoreCollection } from 'react-firestore';
+
+import ErrorMessage from '../components/ErrorMessage';
+import Loading from '../components/Loading';
 import NavTabs from '../components/NavTabs';
 import { ListContext } from '../listContext';
-import useListToken from '../useListToken';
-import { FirestoreCollection } from 'react-firestore';
-import Loading from '../components/Loading';
-import ErrorMessage from '../components/ErrorMessage';
-import HomePageButton from '../components/HomePageButton';
-import calculateEstimate from '../lib/estimates.js';
-import latestInterval from '../lib/estimates.js';
-import dayjs from 'dayjs';
+import useListToken, { getCurrentToken } from '../useListToken';
+
 import './List.css';
 
-const today = dayjs();
-
 function isLessThan24hrs(datePurchased) {
-  let purchaseDateCalc = dayjs(datePurchased);
-  return today.diff(purchaseDateCalc, 'hour') <= 24;
+  return dayjs().diff(dayjs(datePurchased), 'hours') <= 24;
 }
 
 const List = props => {
-  const {
-    shoppingList,
-    setShoppingList,
-    addDatePurchased,
-    addCalculatedEstimate,
-  } = useContext(ListContext);
+  const { shoppingList, setShoppingList, purchaseItem } = useContext(
+    ListContext,
+  );
   const { token } = useListToken();
 
   //we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
-  function isChecked(lastDatePurchased) {
-    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+  function isChecked(lastDatePurchased, name) {
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased, name);
   }
-  // let count = 1;
-  //we are adding the item.id as well as the date purchased when clicking on the checkbox
+
   function handlePurchasedChange(item) {
-    const datePurchased = item.lastDatePurchased ? null : Date.now();
-    const numberOfPurchases = item.numberOfPurchases
-      ? item.numberOfPurchases + 1
-      : 1;
-    console.log('Item before:', item);
-    addDatePurchased(item, datePurchased, numberOfPurchases);
-
-    let lastEstimate = item.nextExpectedPurchase
-      ? item.nextExpectedPurchase
-      : 14;
-
-    let prevDate = item.lastDatePurchased ? item.lastDatePurchased : null;
-
-    console.log('prevDate:', prevDate);
-    console.log('currentDate:', datePurchased);
-    console.log('lastEstimate:', lastEstimate);
-
-    const calculatedEstimate = calculateEstimate(
-      lastEstimate,
-      latestInterval,
-      numberOfPurchases,
-    );
-    console.log('the calculateEstimate ran:', calculatedEstimate);
-    addCalculatedEstimate(item, calculatedEstimate);
-    console.log('Item after:', item);
+    // We don't want to uncheck ourselves. We should have a separate ticket for handling a mis-check
+    // What would we set datePurchased to on an uncheck? Can't be null if we've purchased or our suggestions
+    // are goofed. Maybe we live with that, or we could keep the most recent lastDatePurchased in case
+    // of a mistake. For this ticket, let's keep it simple.
+    if (!isChecked(item.lastDatePurchased)) {
+      purchaseItem(item, Date.now());
+    }
   }
 
   return (
@@ -69,7 +43,7 @@ const List = props => {
         // Sort the data
         sort="name"
         // Only fetch the items associated with the token saved in localStorage
-        filter={['token', '==', token]}
+        filter={['token', '==', token || getCurrentToken() || 'no token set']}
         // isLoading = is a Boolean that represents the loading status for the firebase query. true until an initial payload from Firestore is received.
         // data = an Array containing all of the documents in the collection. Each item will contain an id along with the other data contained in the document.
         render={({ isLoading, data }) => {
