@@ -1,24 +1,27 @@
 import React from 'react';
-import { Image, Header, Segment, Button, Divider } from 'semantic-ui-react';
-import Logo from '../assets/logo.png';
+import { Header, Segment, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 function AppHeader(props) {
   return (
     <Segment textAlign="center" style={{ borderRadius: 0 }}>
       {props.showBackArrow && (
-        <Button
-          basic
-          as={Link}
-          to="/"
-          icon="arrow left"
-          size="medium"
-          color="blue"
-          circular
-          floated="left"
-        ></Button>
+        <>
+          <Button
+            style={{ marginRight: '-37.5px' }}
+            basic
+            as={Link}
+            to="/"
+            icon="arrow left"
+            size="medium"
+            color="blue"
+            circular
+            floated="left"
+          ></Button>
+          {/* <Divider hidden /> */}
+        </>
       )}
-      <Divider hidden />
+
       <header>
         {/* <Image
           src={Logo}
