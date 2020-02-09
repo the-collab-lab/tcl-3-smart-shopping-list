@@ -19,6 +19,7 @@ import {
   Responsive,
   Button,
   List as ListUI,
+  Divider,
 } from 'semantic-ui-react';
 
 import NavTabs from '../components/NavTabs';
@@ -215,21 +216,42 @@ const List = props => {
                               <Accordion.Content
                                 active={accordionState === index}
                               >
-                                <p>test</p>
-                                {item.nextExpectedPurchase}
-                                <Button
-                                  color="red"
-                                  size="small"
-                                  floated="right"
-                                  onClick={() => {
-                                    deleteItem(item);
-                                    array.splice(index, 1);
-                                    setAccordionState(-1);
-                                  }}
-                                >
-                                  <Icon name="delete" />
-                                  delete
-                                </Button>
+                                <ListUI>
+                                  <ListUI.Item>
+                                    <ListUI.Content>
+                                      Number of Purchases:
+                                    </ListUI.Content>
+                                  </ListUI.Item>
+                                  <ListUI.Item>
+                                    <ListUI.Content>
+                                      Last Purchase:
+                                    </ListUI.Content>
+                                  </ListUI.Item>
+                                  <ListUI.Item>
+                                    <ListUI.Content>
+                                      Next Purchase:
+                                    </ListUI.Content>
+                                  </ListUI.Item>
+
+                                  <Divider />
+                                  <ListUI.Item>
+                                    <ListUI.Content>
+                                      <Button
+                                        color="red"
+                                        size="small"
+                                        floated="right"
+                                        onClick={() => {
+                                          deleteItem(item);
+                                          array.splice(index, 1);
+                                          setAccordionState(-1);
+                                        }}
+                                      >
+                                        <Icon name="delete" />
+                                        delete
+                                      </Button>
+                                    </ListUI.Content>
+                                  </ListUI.Item>
+                                </ListUI>
                               </Accordion.Content>
                             </Accordion>
                           </div>
