@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import useListToken, { getCurrentToken } from '../useListToken';
 import List from './List';
-import Welcome from '../components/Welcome';
+import JoinList from './JoinList';
 import { ListContext } from '../listContext';
 
 const HomePage = props => {
@@ -11,10 +11,8 @@ const HomePage = props => {
 
   useEffect(() => {
     saveToken(token);
-    console.log('token from HomePage', token);
   }, [saveToken, token]);
 
-  return <>{list.length > 0 ? <List /> : list && <Welcome />}</>;
+  return <>{list.length > 0 ? <List /> : list && <JoinList />}</>;
 };
-// afar weld impel
 export default HomePage;

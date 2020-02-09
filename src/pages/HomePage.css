@@ -1,67 +1,17 @@
-.container {
-  bottom: 0px;
-  display: flex;
-  justify-content: space-around;
-  border: 3px solid red;
-  text-align: center;
-  flex-shrink: 0;
-}
-.container-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-}
-.left-tab {
-  float: left;
-  padding: 15px;
-  text-align: center;
-  width: 50%;
-  border: 1px solid rgb(178, 122, 230);
-}
-.right-tab {
-  float: right;
-  padding: 15px;
-  text-align: center;
-  width: 50%;
-  border: 1px solid black;
-}
-.whole-page {
-}
-.flex-container {
-  text-align: center;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-.form-flex-container {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-.cta-button {
-  margin: 20px;
-  font-size: 1.2rem;
-  color: white;
-  padding: 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: forestgreen;
-  border: none;
-}
-.token-input {
-  margin: 15px;
-}
 a {
   text-decoration: none;
   cursor: pointer;
 }
+p {
+  padding-top: 10px;
+  margin: 10px;
+  font-size: 1.2em;
+}
+
 .borderless-button {
   cursor: pointer;
-
+  text-decoration: underline;
   border: none;
+  margin-top: 15px;
+  font-size: 1.2em;
 }

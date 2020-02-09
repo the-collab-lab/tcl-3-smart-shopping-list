@@ -1,16 +1,28 @@
 import React, { useState, useContext } from 'react';
-import AddItemHeader from './AddItemHeader';
 import './AddItem.css';
-import ItemError from './ItemError';
+import ItemError from '../components/ItemError';
 import { ListContext } from '../listContext';
 import useListToken from '../useListToken';
+import AppHeader from '../components/AppHeader';
+import NavTabs from '../components/NavTabs';
+import {
+  Input,
+  Segment,
+  Container,
+  Button,
+  Radio,
+  List,
+  Divider,
+} from 'semantic-ui-react';
 
 const expectedPurchase = { soon: 7, kindOfSoon: 14, notSoon: 30 };
 
 const AddItem = () => {
   const { token } = useListToken();
-  const { isDuplicate, addItem, name, setName } = useContext(ListContext);
-
+  const { isDuplicate, addItem, name, setName, fetchList } = useContext(
+    ListContext,
+  );
+  const [list] = useState(() => fetchList(token));
   const [error, setError] = useState(false);
   const [nextExpectedPurchase, setNextExpectedPurchase] = useState(0);
 
@@ -31,57 +43,78 @@ const AddItem = () => {
 
   return (
     <>
-      <AddItemHeader />
-      <form onSubmit={handleSubmit}>
-        <label>
-          Add Item:
-          <input
-            value={name}
-            placeholder="apples"
-            type="text"
-            onChange={handleChange}
-          />
-        </label>
-        <input type="submit" value="Add Item" />
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.soon}
-              value={expectedPurchase.soon}
-              checked={expectedPurchase.soon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.verySoon}
-              value={expectedPurchase.kindOfSoon}
-              checked={expectedPurchase.kindOfSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Kind of Soon
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id={expectedPurchase.notSoon}
-              value={expectedPurchase.notSoon}
-              checked={expectedPurchase.notSoon === nextExpectedPurchase}
-              onChange={handleSelect}
-            />
-            Not Soon
-          </label>
-        </div>
-      </form>
+      <AppHeader showBackArrow={true}>Add Item to List</AppHeader>
 
-      {error && name && <ItemError name={name} />}
+      <Container textAlign="center" style={{ paddingBottom: 50 }}>
+        <Segment>
+          <form onSubmit={handleSubmit}>
+            <Input
+              disabled={!list ? 'disabled' : null}
+              value={name}
+              size="large"
+              placeholder="Name of Item"
+              type="text"
+              onChange={handleChange}
+            />
+            {error && name && <ItemError name={name} />}
+            <p>How soon do you expect to buy this item again?</p>
+            <List>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.soon}
+                      value={expectedPurchase.soon}
+                      checked={expectedPurchase.soon === nextExpectedPurchase}
+                      onChange={handleSelect}
+                    />
+                    Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.kindOfSoon}
+                      value={expectedPurchase.kindOfSoon}
+                      checked={
+                        expectedPurchase.kindOfSoon === nextExpectedPurchase
+                      }
+                      onChange={handleSelect}
+                    />
+                    Kind of Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.notSoon}
+                      value={expectedPurchase.notSoon}
+                      checked={
+                        expectedPurchase.notSoon === nextExpectedPurchase
+                      }
+                      onChange={handleSelect}
+                    />
+                    Not Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+            </List>
+            <Divider hidden />
+            <Button
+              color="green"
+              size="large"
+              type="submit"
+              value="Add Item"
+            >{`Add ${name} to List`}</Button>
+          </form>
+        </Segment>
+      </Container>
+
+      <NavTabs />
     </>
   );
 };

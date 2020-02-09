@@ -12,6 +12,9 @@
 # production
 /build
 
+# Semantic Theme Overrides and Variables
+/src/semantic-ui/site/
+
 # misc
 .DS_Store
 .env.local

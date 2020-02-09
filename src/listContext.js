@@ -1,13 +1,11 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
-import { withFirestore } from 'react-firestore';
-
-import useListToken, { generateToken, getCurrentToken } from './useListToken';
 import calculateEstimate from './lib/estimates.js';
+import React, { useState } from 'react';
 import normalizeName from './lib/normalizeName';
+import { withFirestore } from 'react-firestore';
+import useListToken, { generateToken, getCurrentToken } from './useListToken';
 
 const ListContext = React.createContext();
-// const dummyList = ['eggs', 'tomatoes', 'pink', 'purple'];
 const ListContextProvider = props => {
   const { saveToken } = useListToken();
   const { firestore } = props;
@@ -16,9 +14,17 @@ const ListContextProvider = props => {
   const [name, setName] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
 
+  // Should not be exposed in the API of this context
+  // This is super simple right now. A better version would have error handling backed into it
+  // as well as loading state management.
+  const updateItem = (item, data) => {
+    return itemsRef.doc(item.id).set({ ...item, ...data });
+  };
+
   const initializeList = token => {
     return validToken(token);
   };
+
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
     let query = itemsRef
@@ -40,24 +46,14 @@ const ListContextProvider = props => {
     return tempArray;
   };
 
-  // Should not be exposed in the API of this context
-  // This is super simple right now. A better version would have error handling backed into it
-  // as well as loading state management.
-  const updateItem = (item, data) => {
-    return itemsRef.doc(item.id).set({ ...item, ...data });
-  };
-
   const isDuplicate = name => {
     let normalizedName = normalizeName(name);
     let normalizedList = shoppingList.map(item => normalizeName(item.name));
     const isDupe = normalizedList.includes(normalizedName);
     return isDupe;
   };
-
   const validToken = token => {
     if (fetchList(token).length > 0) {
-      console.log('here from validToken()', token);
-
       return true;
     }
     let filteredByToken = shoppingList.filter(item => item.token === token);
@@ -80,6 +76,7 @@ const ListContextProvider = props => {
       setName('');
     }
   };
+  // We can augment this down the line if we want to allow purchasing more than 1 of something.
 
   const calculateLatestInterval = (item, purchaseDate, numberOfPurchases) => {
     // If this is our first purchase, their is no interval.
@@ -96,8 +93,6 @@ const ListContextProvider = props => {
       numberOfPurchases,
     );
   };
-
-  // We can augment this down the line if we want to allow purchasing more than 1 of something.
   const purchaseItem = (item, datePurchased) => {
     const numberOfPurchases = (item.numberOfPurchases || 0) + 1;
     const purchase = {
@@ -109,8 +104,22 @@ const ListContextProvider = props => {
         numberOfPurchases,
       ),
     };
-
     return updateItem(item, purchase);
+  };
+
+  //we use .set to add the time the item was purchased to an already existing document we search for the item.id
+  const addDatePurchased = (item, lastDatePurchased) => {
+    itemsRef.doc(item.id).set({ ...item, lastDatePurchased });
+  };
+
+  const deleteItem = item => {
+    itemsRef
+      .doc(item.id)
+      .delete()
+      .then(function() {})
+      .catch(function(error) {
+        console.error('Error removing document: ', error);
+      });
   };
 
   return (
@@ -119,13 +128,15 @@ const ListContextProvider = props => {
         validToken,
         shoppingList,
         setShoppingList,
-        purchaseItem,
         fetchList,
         isDuplicate,
         addItem,
         name,
         setName,
+        purchaseItem,
+        deleteItem,
         initializeList,
+        addDatePurchased,
       }}
     >
       {props.children}

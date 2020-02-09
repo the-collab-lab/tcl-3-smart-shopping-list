@@ -1,30 +1,78 @@
 import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
-import { FirestoreCollection } from 'react-firestore';
-
-import { ListContext } from '../listContext';
-import useListToken, { getCurrentToken } from '../useListToken';
-import NavTabs from '../components/NavTabs';
-import Loading from '../components/Loading';
 import normalizeName from '../lib/normalizeName';
+import useListToken, { getCurrentToken } from '../useListToken';
+import { FirestoreCollection } from 'react-firestore';
+import { ListContext } from '../listContext';
+import { Link } from 'react-router-dom';
+import AppHeader from '../components/AppHeader';
+import {
+  Container,
+  Loader,
+  Dimmer,
+  Input,
+  Accordion,
+  Checkbox,
+  Segment,
+  Icon,
+  Menu,
+  Responsive,
+  Button,
+  List as ListUI,
+  Divider,
+} from 'semantic-ui-react';
 
-import './List.css';
-
-function isLessThan24hrs(datePurchased) {
-  return dayjs().diff(dayjs(datePurchased), 'hours') <= 24;
-}
-
-//we are checking if the last date it was purchased is less than 24hrs using isLessThan24hrs function
-function isChecked(lastDatePurchased) {
-  return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
-}
+import NavTabs from '../components/NavTabs';
 
 const List = props => {
+  const {
+    shoppingList,
+    setShoppingList,
+    deleteItem,
+    purchaseItem,
+  } = useContext(ListContext);
+
   const [filteredInput, setFilteredInput] = useState('');
-  const { shoppingList, setShoppingList, purchaseItem } = useContext(
-    ListContext,
-  );
-  const { token } = useListToken();
+
+  const { token } = useListToken;
+
+  const today = dayjs();
+
+  const [accordionState, setAccordionState] = useState(-1);
+
+  const handleClick = index => {
+    const activeIndex = accordionState;
+    const newIndex = activeIndex === index ? -1 : index;
+    setAccordionState(newIndex);
+  };
+  function setBackgroundColor(nextExpectedPurchase) {
+    const colorCode = {
+      SOON: 'green',
+      KIND_OF_SOON: 'orange',
+      NOT_SOON: 'red',
+    };
+
+    if (nextExpectedPurchase <= 7) {
+      return colorCode.SOON;
+    } else if (nextExpectedPurchase <= 14) {
+      return colorCode.KIND_OF_SOON;
+    } else if (nextExpectedPurchase <= 30) {
+      return colorCode.NOT_SOON;
+    } else {
+      return 'white';
+    }
+  }
+
+  function isLessThan24hrs(datePurchased) {
+    let purchaseDateCalc = dayjs(datePurchased);
+    return today.diff(purchaseDateCalc, 'hour') <= 24;
+  }
+
+  //when an item has been created but not yet purchased.
+  function isChecked(lastDatePurchased) {
+    return !!lastDatePurchased && isLessThan24hrs(lastDatePurchased);
+  }
+  //we are adding the item.id as well as the date purchased when clicking on the checkbox
 
   function handlePurchasedChange(item) {
     // We don't want to uncheck ourselves. We should have a separate ticket for handling a mis-check
@@ -47,6 +95,7 @@ const List = props => {
   }
   return (
     <>
+      <AppHeader>Smart Shopping List</AppHeader>
       <FirestoreCollection
         // Specify the path to the collection you're pulling data from
         path="items"
@@ -61,44 +110,153 @@ const List = props => {
             setShoppingList(data);
           }
           return isLoading ? (
-            // TODO: Make a display list function is listContext.js
-            <Loading />
+            <Dimmer active>
+              <Loader />
+            </Dimmer>
           ) : (
             <>
-              <div className="listFilter">
-                <input
-                  type="search"
-                  onChange={handleFilterChange}
-                  value={filteredInput}
-                ></input>
-                <button onClick={() => setFilteredInput('')}>X</button>
-              </div>
-              <ul className="shopping-list">
-                {shoppingList
-                  .filter(item => filterListInput(item.name))
-                  .map((item, index) => (
-                    <li key={index}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={isChecked(item.lastDatePurchased)}
-                          onChange={() => handlePurchasedChange(item)}
-                          disabled={
-                            isChecked(item.lastDatePurchased)
-                              ? 'disabled'
-                              : false
-                          }
-                        />
-                        {item.name}
-                      </label>
-                    </li>
-                  ))}
-              </ul>
+              <Container>
+                <Responsive as={Menu} stackable maxWidth={584}>
+                  <Menu.Item>
+                    <Button
+                      fluid
+                      size="large"
+                      color="blue"
+                      floated="right"
+                      as={Link}
+                      name="Add an item"
+                      to="/add-item"
+                    >
+                      {' '}
+                      <Icon name="add" /> Add Item
+                    </Button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <Input
+                      action={{
+                        icon: 'erase',
+                        onClick: () => setFilteredInput(''),
+                      }}
+                      className="list-filter"
+                      placeholder="Filter list..."
+                      type="search"
+                      onChange={handleFilterChange}
+                      value={filteredInput}
+                      size="large"
+                      icon="filter"
+                      iconPosition="left"
+                    ></Input>
+                  </Menu.Item>
+                </Responsive>
+                <Responsive as={Segment} minWidth={585} textAlign="left">
+                  <Input
+                    action={{
+                      icon: 'erase',
+                      content: 'clear',
+                      onClick: () => setFilteredInput(''),
+                    }}
+                    className="list-filter"
+                    placeholder="Filter list..."
+                    type="search"
+                    onChange={handleFilterChange}
+                    value={filteredInput}
+                    size="large"
+                    icon="filter"
+                    iconPosition="left"
+                  ></Input>
+                  <Button
+                    size="large"
+                    color="blue"
+                    floated="right"
+                    as={Link}
+                    name="Add an item"
+                    to="/add-item"
+                  >
+                    <Icon name="add" /> Add Item
+                  </Button>
+                </Responsive>
+
+                <ListUI
+                  relaxed
+                  className="list-container"
+                  style={{ paddingBottom: 50 }}
+                >
+                  {shoppingList
+                    .filter(item => filterListInput(item.name))
+                    .map((item, index, array) => (
+                      <ListUI.Item key={index} className="shopping-list">
+                        <ListUI.Content
+                          style={{
+                            border: `thin solid ${setBackgroundColor(
+                              item.nextExpectedPurchase,
+                            )}`,
+                          }}
+                        >
+                          <Checkbox
+                            label={item.name}
+                            checked={isChecked(item.lastDatePurchased)}
+                            onChange={() => handlePurchasedChange(item)}
+                            readOnly={isChecked(item.lastDatePurchased)}
+                          />
+                          <Accordion>
+                            <Accordion.Title
+                              active={accordionState === index}
+                              index={index}
+                              onClick={() => handleClick(index)}
+                            >
+                              <Icon name="dropdown" />
+                              Details
+                            </Accordion.Title>
+                            <Accordion.Content
+                              active={accordionState === index}
+                            >
+                              <ListUI>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Number of Purchases:
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Last Purchase:
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Next Purchase:
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                                <Divider />
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    <Button
+                                      color="red"
+                                      size="small"
+                                      floated="right"
+                                      onClick={() => {
+                                        deleteItem(item);
+                                        array.splice(index, 1);
+                                        setAccordionState(-1);
+                                      }}
+                                    >
+                                      <Icon name="delete" />
+                                      delete
+                                    </Button>
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                              </ListUI>
+                            </Accordion.Content>
+                          </Accordion>
+                        </ListUI.Content>
+                      </ListUI.Item>
+                    ))}
+                </ListUI>
+              </Container>
+              <NavTabs />
             </>
           );
         }}
       />
-      <NavTabs />
     </>
   );
 };
