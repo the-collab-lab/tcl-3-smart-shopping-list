@@ -47,73 +47,70 @@ const AddItem = () => {
 
       <Container textAlign="center" style={{ paddingBottom: 50 }}>
         <Segment>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <Input
-                disabled={!list ? 'disabled' : null}
-                value={name}
-                size="large"
-                placeholder="Name of Item"
-                type="text"
-                onChange={handleChange}
-              />
-              {error && name && <ItemError name={name} />}
-              <p>How soon do you expect to buy this item again?</p>
-              <List>
-                <List.Item>
-                  <List.Content>
-                    <label>
-                      <Radio
-                        id={expectedPurchase.soon}
-                        value={expectedPurchase.soon}
-                        checked={expectedPurchase.soon === nextExpectedPurchase}
-                        onChange={handleSelect}
-                      />
-                      Soon
-                    </label>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content>
-                    <label>
-                      <Radio
-                        id={expectedPurchase.kindOfSoon}
-                        value={expectedPurchase.kindOfSoon}
-                        checked={
-                          expectedPurchase.kindOfSoon === nextExpectedPurchase
-                        }
-                        onChange={handleSelect}
-                      />
-                      Kind of Soon
-                    </label>
-                  </List.Content>
-                </List.Item>
-                <List.Item>
-                  <List.Content>
-                    <label>
-                      <Radio
-                        id={expectedPurchase.notSoon}
-                        value={expectedPurchase.notSoon}
-                        checked={
-                          expectedPurchase.notSoon === nextExpectedPurchase
-                        }
-                        onChange={handleSelect}
-                      />
-                      Not Soon
-                    </label>
-                  </List.Content>
-                </List.Item>
-              </List>
-              <Divider hidden />
-
-              <Button
-                color="green"
-                size="large"
-                type="submit"
-                value="Add Item"
-              >{`Add ${name} to List`}</Button>
-            </form>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <Input
+              disabled={!list ? 'disabled' : null}
+              value={name}
+              size="large"
+              placeholder="Name of Item"
+              type="text"
+              onChange={handleChange}
+            />
+            {error && name && <ItemError name={name} />}
+            <p>How soon do you expect to buy this item again?</p>
+            <List>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.soon}
+                      value={expectedPurchase.soon}
+                      checked={expectedPurchase.soon === nextExpectedPurchase}
+                      onChange={handleSelect}
+                    />
+                    Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.kindOfSoon}
+                      value={expectedPurchase.kindOfSoon}
+                      checked={
+                        expectedPurchase.kindOfSoon === nextExpectedPurchase
+                      }
+                      onChange={handleSelect}
+                    />
+                    Kind of Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content>
+                  <label>
+                    <Radio
+                      id={expectedPurchase.notSoon}
+                      value={expectedPurchase.notSoon}
+                      checked={
+                        expectedPurchase.notSoon === nextExpectedPurchase
+                      }
+                      onChange={handleSelect}
+                    />
+                    Not Soon
+                  </label>
+                </List.Content>
+              </List.Item>
+            </List>
+            <Divider hidden />
+            <Button
+              color="green"
+              size="large"
+              type="submit"
+              value="Add Item"
+            >{`Add ${name} to List`}</Button>
+          </form>
         </Segment>
       </Container>
 

@@ -164,7 +164,6 @@ const List = props => {
                     icon="filter"
                     iconPosition="left"
                   ></Input>
-
                   <Button
                     size="large"
                     color="blue"
@@ -208,7 +207,6 @@ const List = props => {
                               <Icon name="dropdown" />
                               Details
                             </Accordion.Title>
-
                             <Accordion.Content
                               active={accordionState === index}
                             >
@@ -228,7 +226,6 @@ const List = props => {
                                     Next Purchase:
                                   </ListUI.Content>
                                 </ListUI.Item>
-
                                 <Divider />
                                 <ListUI.Item>
                                   <ListUI.Content>
