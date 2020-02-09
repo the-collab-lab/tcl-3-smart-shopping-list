@@ -1,0 +1,17 @@
+/*******************************
+         Site Overrides
+*******************************/
+.ui.checkbox .box, .ui.checkbox label {
+  font-size: 1.3rem;
+}
+
+.ui.list .list > .item > .content, .ui.list > .item > .content {
+    line-height: 2.133em;
+    padding: 9px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.ui.relaxed.list:not(.horizontal) > .item:not(:last-child) {
+  padding-bottom: 0;
+}
