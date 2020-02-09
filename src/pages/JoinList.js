@@ -18,22 +18,17 @@ const JoinList = () => {
   const history = useHistory();
 
   const [joinToken, setJoinToken] = useState('');
-  // const [loading, setLoading] = useState();
 
   const handleChange = event => {
     setJoinToken(event.target.value);
   };
 
   const handleSubmit = event => {
-    // setLoading(true);
     event.preventDefault();
     saveToken(joinToken);
-    // joinToken && setLoading(false);
 
     return joinToken && history.push('/list');
   };
-
-  // token to use: jimmy torn jolt, conner oaken liz
 
   return (
     <>

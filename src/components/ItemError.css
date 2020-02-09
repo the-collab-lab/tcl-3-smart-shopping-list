@@ -5,7 +5,6 @@
     margin-left: 15px;
     margin-right: 15px;
     padding: 10px;
-    /* border-left: 10px solid rgb(178, 20, 14); */
     border-radius: 2px;
     background-color: rgb(240, 128, 128, 0.1);
   }
@@ -17,7 +16,6 @@
     margin-left: 1.2rem;
     margin-right: 1.2rem;
     padding: 1rem;
-    /* border-left: 1rem solid rgb(178, 20, 14); */
     border-radius: 2px;
     background-color: rgb(240, 128, 128, 0.1);
   }

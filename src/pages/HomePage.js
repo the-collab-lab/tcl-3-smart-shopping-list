@@ -11,7 +11,6 @@ const HomePage = props => {
 
   useEffect(() => {
     saveToken(token);
-    console.log('token from HomePage', token);
   }, [saveToken, token]);
 
   return <>{list.length > 0 ? <List /> : list && <JoinList />}</>;

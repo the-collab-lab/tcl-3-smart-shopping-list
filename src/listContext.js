@@ -54,13 +54,10 @@ const ListContextProvider = props => {
   };
   const validToken = token => {
     if (fetchList(token).length > 0) {
-      console.log('here from validToken()', token);
-
       return true;
     }
     let filteredByToken = shoppingList.filter(item => item.token === token);
     return filteredByToken.length > 0;
-    // return true;
   };
 
   const addItem = (name, nextExpectedPurchase, token) => {
@@ -70,15 +67,12 @@ const ListContextProvider = props => {
 
         saveToken(generateToken());
         itemsRef.add({ name, token: getCurrentToken(), nextExpectedPurchase });
-        console.log('from addItem() new list token', getCurrentToken());
         fetchList(getCurrentToken());
-        console.log('here from addItem() new list', shoppingList);
         setName('');
         return;
       }
       itemsRef.add({ name, token, nextExpectedPurchase });
       fetchList(token);
-      console.log('here from addItem()', shoppingList);
       setName('');
     }
   };
@@ -122,9 +116,7 @@ const ListContextProvider = props => {
     itemsRef
       .doc(item.id)
       .delete()
-      .then(function() {
-        console.log(`${item.name} successfully deleted!`);
-      })
+      .then(function() {})
       .catch(function(error) {
         console.error('Error removing document: ', error);
       });

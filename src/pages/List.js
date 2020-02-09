@@ -52,16 +52,14 @@ const List = props => {
       NOT_SOON: 'red',
     };
 
-    switch (nextExpectedPurchase) {
-      case 7:
-        return colorCode.SOON;
-      case 14:
-        return colorCode.KIND_OF_SOON;
-
-      case 30:
-        return colorCode.NOT_SOON;
-      default:
-        return 'white';
+    if (nextExpectedPurchase <= 7) {
+      return colorCode.SOON;
+    } else if (nextExpectedPurchase <= 14) {
+      return colorCode.KIND_OF_SOON;
+    } else if (nextExpectedPurchase <= 30) {
+      return colorCode.NOT_SOON;
+    } else {
+      return 'white';
     }
   }
 
@@ -137,7 +135,6 @@ const List = props => {
                     <Input
                       action={{
                         icon: 'erase',
-                        // content: 'clear',
                         onClick: () => setFilteredInput(''),
                       }}
                       className="list-filter"
@@ -196,65 +193,63 @@ const List = props => {
                             )}`,
                           }}
                         >
-                          <div>
-                            <Checkbox
-                              label={item.name}
-                              checked={isChecked(item.lastDatePurchased)}
-                              onChange={() => handlePurchasedChange(item)}
-                              readOnly={isChecked(item.lastDatePurchased)}
-                            />
-                            <Accordion>
-                              <Accordion.Title
-                                active={accordionState === index}
-                                index={index}
-                                onClick={() => handleClick(index)}
-                              >
-                                <Icon name="dropdown" />
-                                Details
-                              </Accordion.Title>
+                          <Checkbox
+                            label={item.name}
+                            checked={isChecked(item.lastDatePurchased)}
+                            onChange={() => handlePurchasedChange(item)}
+                            readOnly={isChecked(item.lastDatePurchased)}
+                          />
+                          <Accordion>
+                            <Accordion.Title
+                              active={accordionState === index}
+                              index={index}
+                              onClick={() => handleClick(index)}
+                            >
+                              <Icon name="dropdown" />
+                              Details
+                            </Accordion.Title>
 
-                              <Accordion.Content
-                                active={accordionState === index}
-                              >
-                                <ListUI>
-                                  <ListUI.Item>
-                                    <ListUI.Content>
-                                      Number of Purchases:
-                                    </ListUI.Content>
-                                  </ListUI.Item>
-                                  <ListUI.Item>
-                                    <ListUI.Content>
-                                      Last Purchase:
-                                    </ListUI.Content>
-                                  </ListUI.Item>
-                                  <ListUI.Item>
-                                    <ListUI.Content>
-                                      Next Purchase:
-                                    </ListUI.Content>
-                                  </ListUI.Item>
+                            <Accordion.Content
+                              active={accordionState === index}
+                            >
+                              <ListUI>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Number of Purchases:
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Last Purchase:
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    Next Purchase:
+                                  </ListUI.Content>
+                                </ListUI.Item>
 
-                                  <Divider />
-                                  <ListUI.Item>
-                                    <ListUI.Content>
-                                      <Button
-                                        color="red"
-                                        size="small"
-                                        floated="right"
-                                        onClick={() => {
-                                          deleteItem(item);
-                                          array.splice(index, 1);
-                                          setAccordionState(-1);
-                                        }}
-                                      >
-                                        <Icon name="delete" />
-                                        delete
-                                      </Button>
-                                    </ListUI.Content>
-                                  </ListUI.Item>
-                                </ListUI>
-                              </Accordion.Content>
-                            </Accordion>
-                          </div>
+                                <Divider />
+                                <ListUI.Item>
+                                  <ListUI.Content>
+                                    <Button
+                                      color="red"
+                                      size="small"
+                                      floated="right"
+                                      onClick={() => {
+                                        deleteItem(item);
+                                        array.splice(index, 1);
+                                        setAccordionState(-1);
+                                      }}
+                                    >
+                                      <Icon name="delete" />
+                                      delete
+                                    </Button>
+                                  </ListUI.Content>
+                                </ListUI.Item>
+                              </ListUI>
+                            </Accordion.Content>
+                          </Accordion>
                         </ListUI.Content>
                       </ListUI.Item>
                     ))}
