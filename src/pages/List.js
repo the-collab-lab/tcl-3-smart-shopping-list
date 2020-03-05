@@ -88,7 +88,7 @@ const List = props => {
     setFilteredInput(event.target.value);
   }
 
-  //5. way to clear out the filter
+  //need to add delete in list
 
   function filterListInput(name) {
     return normalizeName(name).includes(normalizeName(filteredInput));
