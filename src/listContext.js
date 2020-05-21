@@ -28,7 +28,9 @@ const ListContextProvider = props => {
   // fetch the latest shopping list from the database and save to state
   const fetchList = token => {
     let query = itemsRef
-      .orderBy('name')
+      // .orderBy('name')
+      // .where('nextExpectedPurchase', "===", )
+      .orderBy('nextExpectedPurchase')
       .where('token', '==', token || 'token not set');
     const tempArray = [];
     query
