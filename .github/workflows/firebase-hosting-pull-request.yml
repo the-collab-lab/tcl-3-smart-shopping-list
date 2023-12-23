@@ -14,6 +14,6 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: >-
-            ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TCL_3_SMART_SHOPPING_LIS_11116
+            ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TCL_3_SMART_SHOPPING_LIS_BDED2
             }}
-          projectId: tcl-3-smart-shopping-lis-11116
+          projectId: tcl-3-smart-shopping-lis-bded2
