@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { ArchivalNoticeModal } from '@the-collab-lab/shopping-list-utils';
+
 import '../pages/HomePage.css';
 import useListToken from '../useListToken';
 import AppHeader from '../components/AppHeader';
@@ -83,6 +85,7 @@ const JoinList = () => {
             />
           </form>
         </Segment>
+        <ArchivalNoticeModal />
       </Container>
     </>
   );
