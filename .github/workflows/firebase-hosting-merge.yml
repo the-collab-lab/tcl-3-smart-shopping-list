@@ -15,8 +15,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - run: npm ci --legacy-peer-deps && npm run build
-        with:
-          node-version-file: '.nvmrc'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
