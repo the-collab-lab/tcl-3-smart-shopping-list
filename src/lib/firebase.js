@@ -5,13 +5,13 @@ import 'firebase/firestore';
 
 // Config values for TCL-3
 const config = {
-  apiKey: 'AIzaSyBEobCBH0WCIi1pfEGbGhToeLFoVzvssys',
-  authDomain: 'tcl-3-smart-shopping-lis-bded2.firebaseapp.com',
-  projectId: 'tcl-3-smart-shopping-lis-bded2',
-  storageBucket: 'tcl-3-smart-shopping-lis-bded2.appspot.com',
-  messagingSenderId: '429959602992',
-  appId: '1:429959602992:web:f3b630a09acd9b80819ef5',
-  measurementId: 'G-7DJDCHPFPR',
+  apiKey: 'AIzaSyC4mabxU43sKhLopSYNV44FXChZXd0Is3g',
+  authDomain: 'tcl-3-shopping-list.firebaseapp.com',
+  projectId: 'tcl-3-shopping-list',
+  storageBucket: 'tcl-3-shopping-list.appspot.com',
+  messagingSenderId: '676317813970',
+  appId: '1:676317813970:web:da5cb6d28221d4d519a10b',
+  measurementId: 'G-2RHNVJPMYH',
 };
 
 // Initalize Firebase.

@@ -10,16 +10,14 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
       - run: npm ci --legacy-peer-deps && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: >-
-            ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TCL_3_SMART_SHOPPING_LIS_BDED2
-            }}
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TCL_3_SHOPPING_LIST }}'
           channelId: live
-          projectId: tcl-3-smart-shopping-lis-bded2
+          projectId: tcl-3-shopping-list
